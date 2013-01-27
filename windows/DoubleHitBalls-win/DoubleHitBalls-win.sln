@@ -2,17 +2,31 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DoubleHitBalls-win", "DoubleHitBalls-win\DoubleHitBalls-win.vcxproj", "{1CC98EEE-BBCB-4D79-B6D7-8511789172C5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{48ADCE9F-9539-4D3A-BCFA-C2ABABAF0B20} = {48ADCE9F-9539-4D3A-BCFA-C2ABABAF0B20}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Salmon Engine", "..\..\..\..\Engine\Salmon Engine\Salmon Engine.vcxproj", "{48ADCE9F-9539-4D3A-BCFA-C2ABABAF0B20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_nosound|Win32 = Debug_nosound|Win32
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CC98EEE-BBCB-4D79-B6D7-8511789172C5}.Debug_nosound|Win32.ActiveCfg = Debug|Win32
+		{1CC98EEE-BBCB-4D79-B6D7-8511789172C5}.Debug_nosound|Win32.Build.0 = Debug|Win32
 		{1CC98EEE-BBCB-4D79-B6D7-8511789172C5}.Debug|Win32.ActiveCfg = Debug|Win32
 		{1CC98EEE-BBCB-4D79-B6D7-8511789172C5}.Debug|Win32.Build.0 = Debug|Win32
 		{1CC98EEE-BBCB-4D79-B6D7-8511789172C5}.Release|Win32.ActiveCfg = Release|Win32
 		{1CC98EEE-BBCB-4D79-B6D7-8511789172C5}.Release|Win32.Build.0 = Release|Win32
+		{48ADCE9F-9539-4D3A-BCFA-C2ABABAF0B20}.Debug_nosound|Win32.ActiveCfg = Debug_nosound|Win32
+		{48ADCE9F-9539-4D3A-BCFA-C2ABABAF0B20}.Debug_nosound|Win32.Build.0 = Debug_nosound|Win32
+		{48ADCE9F-9539-4D3A-BCFA-C2ABABAF0B20}.Debug|Win32.ActiveCfg = Debug|Win32
+		{48ADCE9F-9539-4D3A-BCFA-C2ABABAF0B20}.Debug|Win32.Build.0 = Debug|Win32
+		{48ADCE9F-9539-4D3A-BCFA-C2ABABAF0B20}.Release|Win32.ActiveCfg = Release|Win32
+		{48ADCE9F-9539-4D3A-BCFA-C2ABABAF0B20}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

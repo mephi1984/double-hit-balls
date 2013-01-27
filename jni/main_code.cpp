@@ -68,11 +68,12 @@ void TAndroidApplication::InnerInit()
     srand (static_cast<cardinal>(time(NULL)));
 	GameState = CONST_GAMESTATE_PRELOADING;
 	StateTimer = 0.f;
+
 	
-	ResourceManager->ShaderManager.AddShader("TestShader", "shader1vertex.txt", "shader1fragment.txt");
+	ResourceManager->ShaderManager.AddShader("DefaultShader", "shader1vertex.txt", "shader1fragment.txt");
 	ResourceManager->ShaderManager.AddShader("FrameShader", "frameshader_vertex.txt", "frameshader_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("BrickShader", "brickshader_vertex.txt", "brickshader_fragment.txt");
-	Renderer->PushShader("TestShader");
+	Renderer->PushShader("DefaultShader");
 	
 	ResourceManager->TexList.AddTexture(CONST_LOADING_TEXTURE + ".png", CONST_LOADING_TEXTURE);
 	ResourceManager->TexList.AddTexture(CONST_LOGO_SMALL_TEXTURE + ".png", CONST_LOGO_SMALL_TEXTURE);
@@ -84,9 +85,12 @@ void TAndroidApplication::InnerInit()
 	OnDrawSignal.connect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
 	Inited = true;
 
-#ifndef TARGET_IOS
-	Renderer->SwitchToScreen();
-#endif
+	Renderer->SetOrthoProjection();
+
+	Renderer->SetFullScreenViewport();
+
+	
+	
 }
 
 void TAndroidApplication::InnerDeinit()
@@ -319,8 +323,13 @@ void TAndroidApplication::TrySaveGame()
 	
 void TAndroidApplication::InnerDraw()
 {
+	
+	glDisable(GL_DEPTH_TEST);
+
 
     OnDrawSignal();
+
+
 }
 
 

@@ -110,6 +110,26 @@ public class GL2JNIActivity extends Activity
 			return true;
 		}
 		
+		/*
+		if (event.getAction() == MotionEvent.ACTION_MOVE)
+		{
+			float x = event.getX();
+    		float y = (float)mView.getHeight()-event.getY();
+    		
+    		
+    		
+    		float shiftX = x - event.getHistoricalX(0, event.getHistorySize()-2);
+			
+			if(IsScrolling) 
+			{	
+				IsScrolling  = false;
+            }
+			
+			JniWrapper.OnScroll(x, y, event.getEventTime());
+			
+		}*/
+	
+		
 		if (event.getAction() == MotionEvent.ACTION_UP)
 		{
 			float x = event.getX();

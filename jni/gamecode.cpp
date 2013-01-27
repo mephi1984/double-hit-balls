@@ -428,13 +428,7 @@ void TGameLevel::ReloadBlockInstansingList()
     
     std::pair<vec4, std::string> tempPair;
     BlockInstansingList.ColorBlockList.clear();
-    /*
-    vec2 tex1 = vec2(0, 0);
-    vec2 tex2 = vec2(0, 1);
-    vec2 tex3 = vec2(1, 1);
-    vec2 tex4 = vec2(1, 0);
-    */
-    
+     
     for (int i=0; i<CONST_BRICKMATRIX_WIDTH; i++)
     {
         for (int j=0; j<CONST_BRICKMATRIX_HEIGHT; j++)
@@ -443,19 +437,14 @@ void TGameLevel::ReloadBlockInstansingList()
             {
                 tempPair.first = BlockMatrix[i][j].GetColor();
                 tempPair.second = ConstTextureBlockMap[BlockMatrix[i][j].GetLocked()];
-                /*
-                vec2 pos1 = BlockMatrix[i][j].GetPosFrom(i,j) + vec2(-0.5f*CONST_BRICK_WIDTH, -0.5f*CONST_BRICK_HEIGHT);
-                vec2 pos2 = BlockMatrix[i][j].GetPosFrom(i,j) + vec2(-0.5f*CONST_BRICK_WIDTH, +0.5f*CONST_BRICK_HEIGHT);
-                vec2 pos3 = BlockMatrix[i][j].GetPosFrom(i,j) + vec2(+0.5f*CONST_BRICK_WIDTH, +0.5f*CONST_BRICK_HEIGHT);
-                vec2 pos4 = BlockMatrix[i][j].GetPosFrom(i,j) + vec2(+0.5f*CONST_BRICK_WIDTH, -0.5f*CONST_BRICK_HEIGHT);
-            */
+               
                 std::list<std::pair<PairColorTexture, TTriangleList>>::iterator itr = BlockInstansingList.ColorBlockList.end();
                 
-                for (auto i = BlockInstansingList.ColorBlockList.begin(); i != BlockInstansingList.ColorBlockList.end(); ++i)
+                for (auto b = BlockInstansingList.ColorBlockList.begin(); b != BlockInstansingList.ColorBlockList.end(); ++b)
                 {
-                    if (i->first == tempPair)
+                    if (b->first == tempPair)
                     {
-                        itr = i;
+                        itr = b;
                     }
                 }
                 
@@ -472,23 +461,6 @@ void TGameLevel::ReloadBlockInstansingList()
                 
                 itr->second.Data += MakeDataTriangleList(posFrom, posTo);
                 
-                /*
-                itr->second.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(vec3(pos1, 0));
-                itr->second.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(vec3(pos2, 0));
-                itr->second.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(vec3(pos3, 0));
-            
-                itr->second.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(vec3(pos3, 0));
-                itr->second.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(vec3(pos4, 0));
-                itr->second.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(vec3(pos1, 0));
-            
-                itr->second.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(tex1);
-                itr->second.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(tex2);
-                itr->second.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(tex3);
-            
-                itr->second.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(tex3);
-                itr->second.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(tex4);
-                itr->second.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(tex1);
-            */
             }
         }
     }
@@ -834,6 +806,7 @@ void TGameLevel::Draw()
          //ololo
 		//See also above (same method)
         Renderer->SwitchToScreen();
+		Renderer->SetFullScreenViewport();
         
         Renderer->PushMatrix();
 		//Renderer->LoadIdentity();
