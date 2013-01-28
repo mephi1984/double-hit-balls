@@ -9,6 +9,9 @@
 #import "ViewController.h"
 #import "ios_api.h"
 
+extern GLKView* defaultView; //Find this in IosApi.h/mm in Engine
+
+
 @interface ViewController () {
 }
 
@@ -38,7 +41,8 @@
     GLKView *view = (GLKView *)self.view;
     view.context = self.context;
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-    
+
+    defaultView = (GLKView *)self.view;
     
     [self setupGL];
 }
@@ -77,7 +81,10 @@
     [EAGLContext setCurrentContext:self.context];
     
     AppInit();
-    }
+    
+    GLKView *view = (GLKView *)self.view;
+    
+}
 
 - (void)tearDownGL
 {

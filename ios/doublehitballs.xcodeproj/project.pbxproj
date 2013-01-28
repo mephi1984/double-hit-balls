@@ -30,29 +30,29 @@
 		4C7AD44C15B1D77700A599F6 /* ios_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7AD44B15B1D77700A599F6 /* ios_api.cpp */; };
 		4C7FBF53165C1CDF008C1538 /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C7FBF52165C1CDF008C1538 /* libboost.a */; };
 		4CCC0ECC15B30D6B005432FB /* CustomGLKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC0ECB15B30D6B005432FB /* CustomGLKView.m */; };
-		4CE6A9D015B2F879006A3965 /* libHalibut Engine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE6A9C515B2F774006A3965 /* libHalibut Engine.a */; };
 		4CE6A9D215B2F979006A3965 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 4CE6A9D115B2F979006A3965 /* assets */; };
 		4CE6A9DE15B2F99F006A3965 /* creditscode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6A9D315B2F99F006A3965 /* creditscode.cpp */; };
 		4CE6A9DF15B2F99F006A3965 /* gamecode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6A9D615B2F99F006A3965 /* gamecode.cpp */; };
 		4CE6A9E015B2F99F006A3965 /* loadingcode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6A9D815B2F99F006A3965 /* loadingcode.cpp */; };
 		4CE6A9E115B2F99F006A3965 /* main_code.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6A9DA15B2F99F006A3965 /* main_code.cpp */; };
 		4CE6A9E215B2F99F006A3965 /* menucode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6A9DC15B2F99F006A3965 /* menucode.cpp */; };
+		4CF8746E16B64E00009B1214 /* libSalmon Engine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF8746D16B64DF4009B1214 /* libSalmon Engine.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4CE6A9C415B2F774006A3965 /* PBXContainerItemProxy */ = {
+		4CF8746C16B64DF4009B1214 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4CE6A9BD15B2F773006A3965 /* Halibut Engine.xcodeproj */;
+			containerPortal = 4CF8746516B64DF3009B1214 /* Salmon Engine.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4C8CE90215B0A0F400078175;
-			remoteInfo = "Halibut Engine";
+			remoteInfo = "Salmon Engine";
 		};
-		4CE6A9CE15B2F7EE006A3965 /* PBXContainerItemProxy */ = {
+		4CF8746F16B64E07009B1214 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4CE6A9BD15B2F773006A3965 /* Halibut Engine.xcodeproj */;
+			containerPortal = 4CF8746516B64DF3009B1214 /* Salmon Engine.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4C8CE90115B0A0F400078175;
-			remoteInfo = "Halibut Engine";
+			remoteInfo = "Salmon Engine";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -88,7 +88,6 @@
 		4CCC0ECA15B30D6A005432FB /* CustomGLKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomGLKView.h; sourceTree = "<group>"; };
 		4CCC0ECB15B30D6B005432FB /* CustomGLKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomGLKView.m; sourceTree = "<group>"; };
 		4CCC0ECD15B310FB005432FB /* ios_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ios_api.h; sourceTree = "<group>"; };
-		4CE6A9BD15B2F773006A3965 /* Halibut Engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Halibut Engine.xcodeproj"; path = "../../Engine/iOS/Halibut Engine/Halibut Engine.xcodeproj"; sourceTree = "<group>"; };
 		4CE6A9D115B2F979006A3965 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
 		4CE6A9D315B2F99F006A3965 /* creditscode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = creditscode.cpp; path = ../../jni/creditscode.cpp; sourceTree = "<group>"; };
 		4CE6A9D415B2F99F006A3965 /* creditscode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = creditscode.h; path = ../../jni/creditscode.h; sourceTree = "<group>"; };
@@ -101,6 +100,7 @@
 		4CE6A9DB15B2F99F006A3965 /* main_code.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main_code.h; path = ../../jni/main_code.h; sourceTree = "<group>"; };
 		4CE6A9DC15B2F99F006A3965 /* menucode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = menucode.cpp; path = ../../jni/menucode.cpp; sourceTree = "<group>"; };
 		4CE6A9DD15B2F99F006A3965 /* menucode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = menucode.h; path = ../../jni/menucode.h; sourceTree = "<group>"; };
+		4CF8746516B64DF3009B1214 /* Salmon Engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Salmon Engine.xcodeproj"; path = "../../Engine/iOS/Salmon Engine/Salmon Engine.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,9 +108,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CF8746E16B64E00009B1214 /* libSalmon Engine.a in Frameworks */,
 				4C77831815BABE26003D5142 /* AudioToolbox.framework in Frameworks */,
 				4C77831915BABE26003D5142 /* OpenAL.framework in Frameworks */,
-				4CE6A9D015B2F879006A3965 /* libHalibut Engine.a in Frameworks */,
 				4C49B2BE15B0991B003512CD /* UIKit.framework in Frameworks */,
 				4C49B2C015B0991B003512CD /* Foundation.framework in Frameworks */,
 				4C49B2C215B0991B003512CD /* CoreGraphics.framework in Frameworks */,
@@ -130,9 +130,9 @@
 		4C49B2AE15B0991B003512CD = {
 			isa = PBXGroup;
 			children = (
+				4CF8746516B64DF3009B1214 /* Salmon Engine.xcodeproj */,
 				4C7FBF52165C1CDF008C1538 /* libboost.a */,
 				4C7B819515C40F770024D61A /* libs */,
-				4CE6A9BD15B2F773006A3965 /* Halibut Engine.xcodeproj */,
 				4CC1FC3415B200130025C6F7 /* Resources */,
 				4C49B2C715B0991B003512CD /* doublehitballs */,
 				4C49B2BC15B0991B003512CD /* Frameworks */,
@@ -215,14 +215,6 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		4CE6A9BE15B2F773006A3965 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4CE6A9C515B2F774006A3965 /* libHalibut Engine.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		4CE6A9E315B2F9A4006A3965 /* DoubleHitBalls */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,6 +233,14 @@
 			name = DoubleHitBalls;
 			sourceTree = "<group>";
 		};
+		4CF8746616B64DF3009B1214 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4CF8746D16B64DF4009B1214 /* libSalmon Engine.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -255,7 +255,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				4CE6A9CF15B2F7EE006A3965 /* PBXTargetDependency */,
+				4CF8747016B64E07009B1214 /* PBXTargetDependency */,
 			);
 			name = doublehitballs;
 			productName = doublehitballs;
@@ -282,8 +282,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 4CE6A9BE15B2F773006A3965 /* Products */;
-					ProjectRef = 4CE6A9BD15B2F773006A3965 /* Halibut Engine.xcodeproj */;
+					ProductGroup = 4CF8746616B64DF3009B1214 /* Products */;
+					ProjectRef = 4CF8746516B64DF3009B1214 /* Salmon Engine.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -294,11 +294,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		4CE6A9C515B2F774006A3965 /* libHalibut Engine.a */ = {
+		4CF8746D16B64DF4009B1214 /* libSalmon Engine.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libHalibut Engine.a";
-			remoteRef = 4CE6A9C415B2F774006A3965 /* PBXContainerItemProxy */;
+			path = "libSalmon Engine.a";
+			remoteRef = 4CF8746C16B64DF4009B1214 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -341,10 +341,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4CE6A9CF15B2F7EE006A3965 /* PBXTargetDependency */ = {
+		4CF8747016B64E07009B1214 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Halibut Engine";
-			targetProxy = 4CE6A9CE15B2F7EE006A3965 /* PBXContainerItemProxy */;
+			name = "Salmon Engine";
+			targetProxy = 4CF8746F16B64E07009B1214 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -433,7 +433,7 @@
 				GCC_PREFIX_HEADER = "doublehitballs/doublehitballs-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TARGET_IOS,
-					TARGET_HALIBUT,
+					TARGET_SALMON,
 					DEBUG,
 					"$(inherited)",
 					BOOST_NO_CXX11_NUMERIC_LIMITS,
@@ -487,7 +487,7 @@
 				GCC_PREFIX_HEADER = "doublehitballs/doublehitballs-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TARGET_IOS,
-					TARGET_HALIBUT,
+					TARGET_SALMON,
 					BOOST_NO_CXX11_NUMERIC_LIMITS,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
