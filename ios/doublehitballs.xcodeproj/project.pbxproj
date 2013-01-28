@@ -433,7 +433,6 @@
 				GCC_PREFIX_HEADER = "doublehitballs/doublehitballs-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TARGET_IOS,
-					TARGET_SALMON,
 					DEBUG,
 					"$(inherited)",
 					BOOST_NO_CXX11_NUMERIC_LIMITS,
@@ -487,7 +486,6 @@
 				GCC_PREFIX_HEADER = "doublehitballs/doublehitballs-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TARGET_IOS,
-					TARGET_SALMON,
 					BOOST_NO_CXX11_NUMERIC_LIMITS,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
