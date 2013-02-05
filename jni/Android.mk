@@ -33,7 +33,7 @@ ZIP_PATH = $(LibsPathCygwin)/julienr-libzip-android/jni
 
 #====== ENGINE AND LIBS =====================
 
-include $(ENGINE_PATH)/Android_Engine.mk
+include $(ENGINE_PATH)/Android_Salmon_Engine.mk
 
 #================= THE GAME =======================
 
@@ -42,12 +42,13 @@ LOCAL_PATH:= $(LPATH)
 
 include $(CLEAR_VARS)
 
-LOCAL_CFLAGS := -DTARGET_ANDROID -DTARGET_HALIBUT -std=gnu++11
+LOCAL_CFLAGS := -DTARGET_ANDROID -std=gnu++11 --std=c++11
 LOCAL_STATIC_LIBRARIES := boost
 LOCAL_STATIC_LIBRARIES += squirrel
 LOCAL_STATIC_LIBRARIES += png_lib
 LOCAL_STATIC_LIBRARIES += zip
-LOCAL_SHARED_LIBRARIES := HalibutEngine
+LOCAL_SHARED_LIBRARIES := SalmonEngine
+LOCAL_SHARED_LIBRARIES += gnustl_shared
 LOCAL_C_INCLUDES := $(ENGINE_PATH)
 LOCAL_C_INCLUDES += $(BOOST_PATH)
 LOCAL_C_INCLUDES += $(VORBIS_PATH)/include

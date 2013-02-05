@@ -1,21 +1,24 @@
 #include "include/Engine.h"
 #include "main_code.h"
 
-TAndroidApplication* App = NULL;
+TMyApplication* App;
 
 
 extern "C" void AppInit()
 {
-    App = new TAndroidApplication;
-    //App->OuterInit(320, 480, 320, 480);
+    CreateEngine();
+    App = new TMyApplication;
     App->OuterInit(480, 320, 480, 320);
+    
 }
-
 
 extern "C" void AppDeinit()
 {
+    
     App->OuterDeinit();
     delete App;
+    DestroyEngine();
+
 }
 
 
@@ -41,9 +44,12 @@ extern "C" void AppOnTapUp(int posx, int posy)
     App->OuterOnTapUp(vec2(posx, posy));
 }
 
+extern "C" void AppOnTapUpAfterScroll(int posx, int posy)
+{
+    App->OuterOnTapUpAfterShift(vec2(posx, posy));
+}
+
 extern "C" void AppOnScroll(int shiftx, int shifty)
 {
     App->OuterOnMove(vec2(shiftx, shifty));
 }
-
-
