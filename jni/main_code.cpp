@@ -46,9 +46,13 @@ const std::string CONST_CREDITS_TEXTURE = "credits";
 
 const float CONST_CREDITS_SHOW_TIME = 150.f;
 
+TAndroidApplication* Application;
+
 void TAndroidApplication::InnerInit()
 {
 
+    Application = this;
+    
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
 	ResourceManager->PathToResources = "resources/";

@@ -890,7 +890,7 @@ void TGameLevel::SetPause()
     RenderBufferReady = false;
     LevelState = CONST_LEVELSTATE_GO_TO_PAUSE;
     StateTimer = CONST_PAUSE_APPEAR_TIME;
-    App->MarkSetGameLevelPause();
+    Application->MarkSetGameLevelPause();
 }
 
 void TGameLevel::ReleasePause()
@@ -906,7 +906,7 @@ void TGameLevel::ReleasePause()
     {
         LevelState = CONST_LEVELSTATE_PLAYING;
     }
-    App->MarkReleaseGameLevelPause();
+    Application->MarkReleaseGameLevelPause();
 }
 
 bool TGameLevel::IsPaused()
@@ -1085,8 +1085,8 @@ void TGameLevel::Update(cardinal dt)
     
     if (noMoreBlocks && LevelState != CONST_LEVELSTATE_FINISH_FREEZE)
     {
-        App->OpenNextLevel();
-        App->MarkSetGameLevelPause();
+        Application->OpenNextLevel();
+        Application->MarkSetGameLevelPause();
         SetFinishFreeze();
         CheckGlError();
         
@@ -1538,11 +1538,9 @@ void TGameLevel::OnScroll(vec2 shift)
     else if (LevelState == CONST_LEVELSTATE_PAUSE)
     {
         
-#ifdef TARGET_WIN32
+
 		OutScale += shift.v[1]/320.f;
-#else
-		OutScale -= shift.v[1]/320.f;
-#endif
+
         TryGoToMenu();
     }
 }
@@ -1553,7 +1551,7 @@ void TGameLevel::TryGoToMenu()
     {
         OutScale = 0.5f;
         LevelState = CONST_LEVELSTATE_NODRAW;
-        App->GoFromGameToMenu();
+        Application->GoFromGameToMenu();
     }
     if (OutScale > 1.f)
     {

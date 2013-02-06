@@ -65,7 +65,7 @@ void TGameCredits::Update(cardinal dt)
 
 void TGameCredits::OnTapDown(vec2 p)
 {
-    App->GoFromCreditsToMenu();
+    Application->GoFromCreditsToMenu();
 }
 
 void TGameCredits::StartAppear()

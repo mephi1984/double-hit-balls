@@ -32,15 +32,9 @@
 using namespace SE;
 
 
-#ifdef TARGET_WIN32
 class TAndroidApplication;
-extern TAndroidApplication* App;
-#endif
+extern TAndroidApplication* Application;
 
-#ifdef TARGET_IOS
-class TAndroidApplication;
-extern TAndroidApplication* App;
-#endif
 
 extern boost::signal<void (vec2)> OnTapUpSignal;
 extern boost::signal<void (vec2)> OnTapDownSignal;
@@ -145,26 +139,14 @@ public:
 	
 	void LoadResources();
 	
-#ifdef TARGET_WIN32
+	virtual void InnerOnTapDown(vec2 p);
+	
+	virtual void InnerOnTapUp(vec2 p);
+	
+	virtual void InnerOnMove(vec2 shift);
+	
+	virtual void OnFling(vec2 v);
 
-	virtual void InnerOnTapDown(vec2 p);
-	
-	virtual void InnerOnTapUp(vec2 p);
-	
-	virtual void InnerOnMove(vec2 shift);
-	
-	virtual void OnFling(vec2 v);
-#endif
-#ifdef TARGET_IOS
-    
-	virtual void InnerOnTapDown(vec2 p);
-	
-	virtual void InnerOnTapUp(vec2 p);
-	
-	virtual void InnerOnMove(vec2 shift);
-	
-	virtual void OnFling(vec2 v);
-#endif
 };
 
 

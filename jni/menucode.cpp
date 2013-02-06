@@ -135,7 +135,7 @@ void TGameMenu::OnTapDown(vec2 pos)
 
     if (pos.v[1]<64.f && pos.v[0]>=265.f-128.f && pos.v[0]<=265.f+128.f)
     {
-        App->GoFromMenuToCredits();
+        Application->GoFromMenuToCredits();
         return;
     }
   
@@ -171,7 +171,7 @@ void TGameMenu::OnTapUp(vec2 pos)
 	if (SelectedGame != -1)
 	{
         MenuPos = -CONST_MENU_WINDOW_DISTANCE*SelectedGame-40.f;
-        App->GoFromMenuToGame(SelectedGame);
+        Application->GoFromMenuToGame(SelectedGame);
         SelectedGame = -1;
     }
 }
