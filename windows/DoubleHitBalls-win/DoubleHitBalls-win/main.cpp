@@ -1,4 +1,5 @@
 #include "main.h"
+
 #include "main_code.h"
 
 TAndroidApplication* App = NULL;
@@ -6,14 +7,28 @@ TAndroidApplication* App = NULL;
 int APIENTRY WinMain(HINSTANCE hCurrentInst, HINSTANCE hPreviousInst,
 	LPSTR lpszCmdLine, int nCmdShow)
 {
-	//Create application
-	
-	TAndroidApplication Application;
-	Application.Width = 480;
-	Application.Height = 320;
 
-	App = &Application;
+	int width = 480;
+	int height = 320;
 
-	//Start application
-	return MainLoop(Application);
+	if (CreateEngine(width, height))
+	{
+		
+		
+		App = new TAndroidApplication;
+
+		App->OuterInit(width, height, width, height);
+
+		MainLoop(App);
+			
+		App->OuterDeinit();
+		
+		delete App;
+
+		App = NULL;
+
+		DestroyEngine();
+	}
+
+	return 0;
 }
