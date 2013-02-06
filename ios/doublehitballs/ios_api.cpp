@@ -1,13 +1,13 @@
 #include "include/Engine.h"
 #include "main_code.h"
 
-TMyApplication* App;
+TAndroidApplication* App;
 
 
 extern "C" void AppInit()
 {
     CreateEngine();
-    App = new TMyApplication;
+    App = new TAndroidApplication;
     App->OuterInit(480, 320, 480, 320);
     
 }
