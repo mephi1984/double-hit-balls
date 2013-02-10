@@ -1,6 +1,6 @@
 package fishrungames.doublehitballs;
 
-import fishrungames.engine.FileWrapper;
+import fishrungames.engine.EngineWrapper;
 
 //Deprecated
 //import fishrungames.doublehitballs.R;
@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 
@@ -23,40 +24,15 @@ public class GL2JNIActivity extends Activity
 	
 	GLView mView;
 	
-	boolean IsScrolling = false;
-	
-	private GestureDetector gestureDetector;
-	
 	@Override
 	protected void onCreate(Bundle icicle)
 	{
 		
 		super.onCreate(icicle);
 		
-		gestureDetector = new GestureDetector(new MyGestureListener());
-		
-		FileWrapper.LoadHalibutEngineLibrary();
-		FileWrapper.SetActivityInstance(this);
-		FileWrapper.SetupEnviroment();
-		/*
-		 * Deprecated		
-		 try
-		 
-		{
-			for (Field f : R.raw.class.getFields())
-			{
-				FileWrapper.AddToFileMap(f.getName(), f.getInt(null));
-			}
-		
-		} catch (IllegalArgumentException e)
-		{
-			FileWrapper.ConsoleOut("IllegalArgumentException\n");
-			onStop();
-		} catch (IllegalAccessException e)
-		{
-			FileWrapper.ConsoleOut("IllegalAccessException\n");
-			onStop();
-		}*/
+		EngineWrapper.LoadSalmonEngineLibrary();
+		EngineWrapper.SetActivityInstance(this);
+		EngineWrapper.SetupEnviroment();
 		
 		String apkFilePath = null;
 		ApplicationInfo appInfo = null;
@@ -66,23 +42,25 @@ public class GL2JNIActivity extends Activity
 		    } catch (NameNotFoundException e) {
 		 
 		 e.printStackTrace();
+	
 		throw new RuntimeException("Unable to locate assets, aborting...");
 		    }
 		apkFilePath = appInfo.sourceDir;
 		
-		FileWrapper.SetupApkFilePath(apkFilePath);
+		EngineWrapper.SetupApkFilePath(apkFilePath);
 		
 		mView = new GLView(getApplication());
 		
 		setContentView(mView);
+		
+		EngineWrapper.SetView(mView);
 		
 	}
 	
 	@Override
 	protected void onPause()
 	{
-		FileWrapper.ConsoleOut("OnPause\n");
-		JniWrapper.StopSounds();
+		EngineWrapper.CallDestroy();
 		super.onPause();
 		mView.onPause();
 	}
@@ -97,82 +75,18 @@ public class GL2JNIActivity extends Activity
 	@Override
 	protected void onStop()
 	{
-		
-		//FileWrapper.ConsoleOut("OnStop\n");
-		//StopSounds();
 		super.onStop();
 	}
 	
 	public boolean onTouchEvent (MotionEvent event)
 	{
-		if (gestureDetector.onTouchEvent(event))
-		{
-			return true;
-		}
-		
-		/*
-		if (event.getAction() == MotionEvent.ACTION_MOVE)
-		{
-			float x = event.getX();
-    		float y = (float)mView.getHeight()-event.getY();
-    		
-    		
-    		
-    		float shiftX = x - event.getHistoricalX(0, event.getHistorySize()-2);
-			
-			if(IsScrolling) 
-			{	
-				IsScrolling  = false;
-            }
-			
-			JniWrapper.OnScroll(x, y, event.getEventTime());
-			
-		}*/
-	
-		
-		if (event.getAction() == MotionEvent.ACTION_UP)
-		{
-			float x = event.getX();
-    		float y = (float)mView.getHeight()-event.getY();
-			
-			if(IsScrolling) 
-			{	
-				IsScrolling  = false;
-            }
-			
-			JniWrapper.OnTapUp(x, y, event.getEventTime());
-			
-		}
+		EngineWrapper.ProcessTouchEvent(event);
 		return true;
     }
 
-	class MyGestureListener extends SimpleOnGestureListener 
+	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
-        {
-        	JniWrapper.OnFling(velocityX, velocityY, e2.getEventTime());
-            return true;
-        }
-        
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-        {
-        	JniWrapper.OnScroll(distanceX, distanceY, e2.getEventTime());
-        	IsScrolling = true;
-        	return true;
-        }
-             
-        public boolean onDown(MotionEvent event)
-        {
-        	
-        	float x = event.getX();
-    		float y = (float)mView.getHeight()-event.getY();
-    		
-    		JniWrapper.OnTapDown(x, y, event.getEventTime());
-    		
-    		return true;
-        }
-      
+		EngineWrapper.ProcessKeyDown(keyCode, event);
+		return super.onKeyDown(keyCode, event);
 	}
-
 }

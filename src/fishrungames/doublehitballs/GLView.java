@@ -11,6 +11,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import fishrungames.engine.GLViewAncestor;
 
+import fishrungames.engine.EngineWrapper;
+
 class GLView extends GLViewAncestor
 {
 	static long lastTimeStamp;
@@ -49,7 +51,7 @@ class GLView extends GLViewAncestor
 
 				long currentTimeStamp = c.getTimeInMillis();
 		
-				JniWrapper.Update(currentTimeStamp - lastTimeStamp);
+				EngineWrapper.Update(currentTimeStamp - lastTimeStamp);
 			
 				lastTimeStamp = currentTimeStamp;
 			}
@@ -57,13 +59,9 @@ class GLView extends GLViewAncestor
 
 		public void onSurfaceChanged(GL10 gl, int width, int height)
 		{
-			if (JniWrapper.IsInited() == 1)
-			{
-				JniWrapper.Destroy();
-			}
 			JniWrapper.Init(width,height);
 		}
-
+		
 		public void onSurfaceCreated(GL10 gl, EGLConfig config)
 		{
 			//Do nothing.

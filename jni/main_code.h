@@ -1,5 +1,5 @@
-#ifndef GL_CODE_H_INCLUDED
-#define GL_CODE_H_INCLUDED
+#ifndef MAIN_CODE_H_INCLUDED
+#define MAIN_CODE_H_INCLUDED
 
 #ifdef TARGET_ANDROID
 #include "android_api.h"
@@ -30,10 +30,6 @@
 #include "loadingcode.h"
 
 using namespace SE;
-
-
-class TAndroidApplication;
-extern TAndroidApplication* Application;
 
 
 extern boost::signal<void (vec2)> OnTapUpSignal;
@@ -148,6 +144,9 @@ public:
 	virtual void OnFling(vec2 v);
 
 };
+
+
+extern TAndroidApplication* Application;
 
 
 

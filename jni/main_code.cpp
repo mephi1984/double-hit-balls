@@ -127,8 +127,6 @@ void TAndroidApplication::InnerDeinit()
 
 }
 
-#ifdef TARGET_WIN32
-
 void TAndroidApplication::InnerOnTapDown(vec2 p) 
 { 
 	OnTapDownSignal(vec2(p.v[0], p.v[1])); 
@@ -148,30 +146,6 @@ void TAndroidApplication::OnFling(vec2 v)
 {
 }
 
-#endif
-
-#ifdef TARGET_IOS
-
-void TAndroidApplication::InnerOnTapDown(vec2 p) 
-{ 
-	OnTapDownSignal(vec2(p.v[0], p.v[1])); 
-}
-
-void TAndroidApplication::InnerOnTapUp(vec2 p) 
-{ 
-	OnTapUpSignal(vec2(p.v[0], p.v[1])); 
-}
-
-void TAndroidApplication::InnerOnMove(vec2 shift) 
-{
-	OnScrollSignal(shift);
-}
-
-void TAndroidApplication::OnFling(vec2 v) 
-{
-}
-
-#endif
 
 void TAndroidApplication::ApplySignalsToMenu()
 {
