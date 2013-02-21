@@ -1,111 +1,112 @@
-2013-Feb-06 08:34:56: Log started
-2013-Feb-06 08:35:23: Script manager ready
-2013-Feb-06 08:35:30: Render::OpenGL glVersion = 4.0.10318 Compatibility Profile Context
-2013-Feb-06 08:35:30: Render::OpenGL glVersion above 2.0 ok
-2013-Feb-06 08:35:30: Render::OpenGL GL_ARB_framebuffer_object supported ok
-2013-Feb-06 08:35:30: Render::OpenGL GL_ARB_uniform_buffer_object supported ok
-2013-Feb-06 08:35:30: Bind basic functions
-2013-Feb-06 08:35:30: APP INIT
+2013-Feb-21 18:11:37: Log started
+2013-Feb-21 18:11:44: Script manager ready
+2013-Feb-21 18:11:45: Render::OpenGL glVersion = 4.0.10318 Compatibility Profile Context
+2013-Feb-21 18:11:45: Render::OpenGL glVersion above 2.0 ok
+2013-Feb-21 18:11:45: Render::OpenGL GL_ARB_framebuffer_object supported ok
+2013-Feb-21 18:11:45: Render::OpenGL GL_ARB_uniform_buffer_object supported ok
+2013-Feb-21 18:11:45: Bind basic functions
+2013-Feb-21 18:11:45: APP INIT
 
-2013-Feb-06 08:35:30: Prepare to add shader DefaultShader
-2013-Feb-06 08:35:36: ResourceManager::ShaderManager::Shader Vertex shader was successfully compiled to run on hardware.
+2013-Feb-21 18:11:45: Prepare to add shader DefaultShader
+2013-Feb-21 18:11:45: ResourceManager::ShaderManager::Shader Vertex shader was successfully compiled to run on hardware.
  
-2013-Feb-06 08:35:37: ResourceManager::ShaderManager::Shader Fragment shader was successfully compiled to run on hardware.
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager::Shader Fragment shader was successfully compiled to run on hardware.
  WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
 
-2013-Feb-06 08:35:37: Shader program is - 3
-2013-Feb-06 08:35:38: ResourceManager::ShaderManager::Shader Fragment shader(s) linked, vertex shader(s) linked. 
+2013-Feb-21 18:11:46: Shader program is - 3
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager::Shader Fragment shader(s) linked, vertex shader(s) linked. 
 WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
 WARNING: warning(#276) Symbol 'texCoord' usage doesn't match between two stages
 WARNING: warning(#276) Symbol 'texCoord' usage do
-2013-Feb-06 08:35:38: ResourceManager::ShaderManager shader loaded: DefaultShader
-2013-Feb-06 08:35:38: Prepare to add shader FrameShader
-2013-Feb-06 08:35:38: ResourceManager::ShaderManager::Shader Vertex shader was successfully compiled to run on hardware.
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager shader loaded: DefaultShader
+2013-Feb-21 18:11:46: Prepare to add shader FrameShader
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager::Shader Vertex shader was successfully compiled to run on hardware.
  
-2013-Feb-06 08:35:38: ResourceManager::ShaderManager::Shader Fragment shader was successfully compiled to run on hardware.
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager::Shader Fragment shader was successfully compiled to run on hardware.
  WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
 
-2013-Feb-06 08:35:38: Shader program is - 6
-2013-Feb-06 08:35:38: ResourceManager::ShaderManager::Shader Fragment shader(s) linked, vertex shader(s) linked. 
+2013-Feb-21 18:11:46: Shader program is - 6
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager::Shader Fragment shader(s) linked, vertex shader(s) linked. 
 WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
 WARNING: warning(#276) Symbol 'texCoord' usage doesn't match between two stages
 WARNING: warning(#276) Symbol 'texCoord' usage do
-2013-Feb-06 08:35:38: ResourceManager::ShaderManager shader loaded: FrameShader
-2013-Feb-06 08:35:38: Prepare to add shader BrickShader
-2013-Feb-06 08:35:38: ResourceManager::ShaderManager::Shader Vertex shader was successfully compiled to run on hardware.
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager shader loaded: FrameShader
+2013-Feb-21 18:11:46: Prepare to add shader BrickShader
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager::Shader Vertex shader was successfully compiled to run on hardware.
  
-2013-Feb-06 08:35:39: ResourceManager::ShaderManager::Shader Fragment shader was successfully compiled to run on hardware.
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager::Shader Fragment shader was successfully compiled to run on hardware.
  WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
 
-2013-Feb-06 08:35:39: Shader program is - 9
-2013-Feb-06 08:35:39: ResourceManager::ShaderManager::Shader Fragment shader(s) linked, vertex shader(s) linked. 
+2013-Feb-21 18:11:46: Shader program is - 9
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager::Shader Fragment shader(s) linked, vertex shader(s) linked. 
 WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
 WARNING: warning(#276) Symbol 'texCoord' usage doesn't match between two stages
 WARNING: warning(#276) Symbol 'texCoord' usage do
-2013-Feb-06 08:35:39: ResourceManager::ShaderManager shader loaded: BrickShader
-2013-Feb-06 08:35:40: ResourceManager::TexList Texture added: loading with id = 1
-2013-Feb-06 08:35:40: ResourceManager::TexList Texture added: logo_small with id = 2
-2013-Feb-06 08:35:40: ResourceManager::TexList Texture added: console_bkg.bmp with id = 3
-2013-Feb-06 08:35:40: FrameManager:: frame buffer added: LevelBuffer
-2013-Feb-06 08:35:43: ResourceManager::TexList Texture added: droid_sans14_font_bitmap.png with id = 5
-2013-Feb-06 08:35:44: ResourceManager::TexList Texture added: main_menu_bkg_left with id = 6
-2013-Feb-06 08:35:44: ResourceManager::TexList Texture added: main_menu_bkg_right with id = 7
-2013-Feb-06 08:35:44: ResourceManager::TexList Texture added: select_level with id = 8
-2013-Feb-06 08:35:45: ResourceManager::TexList Texture added: shutterstock1 with id = 9
-2013-Feb-06 08:35:45: ResourceManager::TexList Texture added: shutterstock2 with id = 10
-2013-Feb-06 08:35:46: ResourceManager::TexList Texture added: shutterstock3 with id = 11
-2013-Feb-06 08:35:49: ResourceManager::TexList Texture added: shutterstock4 with id = 12
-2013-Feb-06 08:35:50: ResourceManager::TexList Texture added: shutterstock5 with id = 13
-2013-Feb-06 08:35:52: ResourceManager::TexList Texture added: shutterstock6 with id = 14
-2013-Feb-06 08:35:53: ResourceManager::TexList Texture added: shutterstock7 with id = 15
-2013-Feb-06 08:35:54: ResourceManager::TexList Texture added: shutterstock8 with id = 16
-2013-Feb-06 08:35:55: ResourceManager::TexList Texture added: shutterstock9 with id = 17
-2013-Feb-06 08:35:56: ResourceManager::TexList Texture added: shutterstock10 with id = 18
-2013-Feb-06 08:35:56: ResourceManager::TexList Texture added: shutterstock11 with id = 19
-2013-Feb-06 08:35:57: ResourceManager::TexList Texture added: shutterstock12 with id = 20
-2013-Feb-06 08:35:57: ResourceManager::TexList Texture added: levelshot1 with id = 21
-2013-Feb-06 08:35:57: ResourceManager::TexList Texture added: levelshot2 with id = 22
-2013-Feb-06 08:35:58: ResourceManager::TexList Texture added: levelshot3 with id = 23
-2013-Feb-06 08:35:58: ResourceManager::TexList Texture added: levelshot4 with id = 24
-2013-Feb-06 08:35:58: ResourceManager::TexList Texture added: levelshot5 with id = 25
-2013-Feb-06 08:35:58: ResourceManager::TexList Texture added: levelshot6 with id = 26
-2013-Feb-06 08:35:58: ResourceManager::TexList Texture added: levelshot7 with id = 27
-2013-Feb-06 08:35:59: ResourceManager::TexList Texture added: levelshot8 with id = 28
-2013-Feb-06 08:35:59: ResourceManager::TexList Texture added: levelshot9 with id = 29
-2013-Feb-06 08:35:59: ResourceManager::TexList Texture added: levelshot10 with id = 30
-2013-Feb-06 08:35:59: ResourceManager::TexList Texture added: levelshot11 with id = 31
-2013-Feb-06 08:35:59: ResourceManager::TexList Texture added: levelshot12 with id = 32
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: game_end with id = 33
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: block1 with id = 34
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: block2 with id = 35
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: block3 with id = 36
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: bonus_gothrough with id = 37
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: bonus_multiplier with id = 38
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: bonus_floor with id = 39
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: ball with id = 40
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: ball_glow with id = 41
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: wall_left with id = 42
-2013-Feb-06 08:36:00: ResourceManager::TexList Texture added: wall_right with id = 43
-2013-Feb-06 08:36:01: ResourceManager::TexList Texture added: wall_up with id = 44
-2013-Feb-06 08:36:01: ResourceManager::TexList Texture added: wall_bonus with id = 45
-2013-Feb-06 08:36:01: ResourceManager::TexList Texture added: reflector with id = 46
-2013-Feb-06 08:36:01: ResourceManager::TexList Texture added: back_btn with id = 47
-2013-Feb-06 08:36:01: ResourceManager::TexList Texture added: slide_up_btn with id = 48
-2013-Feb-06 08:36:01: ResourceManager::TexList Texture added: tap_to_continue_btn with id = 49
-2013-Feb-06 08:36:01: ResourceManager::TexList Texture added: credits with id = 50
-2013-Feb-06 08:36:48: APP DEINIT
+2013-Feb-21 18:11:46: ResourceManager::ShaderManager shader loaded: BrickShader
+2013-Feb-21 18:11:47: ResourceManager::TexList Texture added: loading with id = 1
+2013-Feb-21 18:11:47: ResourceManager::TexList Texture added: logo_small with id = 2
+2013-Feb-21 18:11:47: ResourceManager::TexList Texture added: console_bkg.bmp with id = 3
+2013-Feb-21 18:11:47: FrameManager:: frame buffer added: LevelBuffer
+2013-Feb-21 18:11:49: ResourceManager::TexList Texture added: droid_sans14_font_bitmap.png with id = 5
+2013-Feb-21 18:11:50: ResourceManager::TexList Texture added: main_menu_bkg_left with id = 6
+2013-Feb-21 18:11:50: ResourceManager::TexList Texture added: main_menu_bkg_right with id = 7
+2013-Feb-21 18:11:50: ResourceManager::TexList Texture added: select_level with id = 8
+2013-Feb-21 18:11:51: ResourceManager::TexList Texture added: shutterstock1 with id = 9
+2013-Feb-21 18:11:52: ResourceManager::TexList Texture added: shutterstock2 with id = 10
+2013-Feb-21 18:11:52: ResourceManager::TexList Texture added: shutterstock3 with id = 11
+2013-Feb-21 18:11:53: ResourceManager::TexList Texture added: shutterstock4 with id = 12
+2013-Feb-21 18:11:53: ResourceManager::TexList Texture added: shutterstock5 with id = 13
+2013-Feb-21 18:11:54: ResourceManager::TexList Texture added: shutterstock6 with id = 14
+2013-Feb-21 18:11:54: ResourceManager::TexList Texture added: shutterstock7 with id = 15
+2013-Feb-21 18:11:55: ResourceManager::TexList Texture added: shutterstock8 with id = 16
+2013-Feb-21 18:11:55: ResourceManager::TexList Texture added: shutterstock9 with id = 17
+2013-Feb-21 18:11:55: ResourceManager::TexList Texture added: shutterstock10 with id = 18
+2013-Feb-21 18:11:56: ResourceManager::TexList Texture added: shutterstock11 with id = 19
+2013-Feb-21 18:11:56: ResourceManager::TexList Texture added: shutterstock12 with id = 20
+2013-Feb-21 18:11:57: ResourceManager::TexList Texture added: levelshot1 with id = 21
+2013-Feb-21 18:11:57: ResourceManager::TexList Texture added: levelshot2 with id = 22
+2013-Feb-21 18:11:57: ResourceManager::TexList Texture added: levelshot3 with id = 23
+2013-Feb-21 18:11:58: ResourceManager::TexList Texture added: levelshot4 with id = 24
+2013-Feb-21 18:11:58: ResourceManager::TexList Texture added: levelshot5 with id = 25
+2013-Feb-21 18:11:58: ResourceManager::TexList Texture added: levelshot6 with id = 26
+2013-Feb-21 18:11:58: ResourceManager::TexList Texture added: levelshot7 with id = 27
+2013-Feb-21 18:11:58: ResourceManager::TexList Texture added: levelshot8 with id = 28
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: levelshot9 with id = 29
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: levelshot10 with id = 30
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: levelshot11 with id = 31
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: levelshot12 with id = 32
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: game_end with id = 33
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: block1 with id = 34
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: block2 with id = 35
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: block3 with id = 36
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: bonus_gothrough with id = 37
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: bonus_multiplier with id = 38
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: bonus_floor with id = 39
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: ball with id = 40
+2013-Feb-21 18:11:59: ResourceManager::TexList Texture added: ball_glow with id = 41
+2013-Feb-21 18:12:00: ResourceManager::TexList Texture added: wall_left with id = 42
+2013-Feb-21 18:12:00: ResourceManager::TexList Texture added: wall_right with id = 43
+2013-Feb-21 18:12:00: ResourceManager::TexList Texture added: wall_up with id = 44
+2013-Feb-21 18:12:00: ResourceManager::TexList Texture added: wall_bonus with id = 45
+2013-Feb-21 18:12:00: ResourceManager::TexList Texture added: reflector with id = 46
+2013-Feb-21 18:12:00: ResourceManager::TexList Texture added: back_btn with id = 47
+2013-Feb-21 18:12:00: ResourceManager::TexList Texture added: slide_up_btn with id = 48
+2013-Feb-21 18:12:00: ResourceManager::TexList Texture added: tap_to_continue_btn with id = 49
+2013-Feb-21 18:12:00: ResourceManager::TexList Texture added: credits with id = 50
+2013-Feb-21 18:12:10: Outer Deinit
+2013-Feb-21 18:12:10: APP DEINIT
 
-2013-Feb-06 08:36:48: Program prepares to quit
-2013-Feb-06 08:36:48: HalibutAnimationManager deleting...
-2013-Feb-06 08:36:48: GUI Manager deleting...
-2013-Feb-06 08:36:48: TFontManager deleting...
-2013-Feb-06 08:36:48: Script manager shutdown
-2013-Feb-06 08:36:48: ResourceManager::FrameManager deleting
-2013-Feb-06 08:36:48: ResourceManager::ShaderManager::Shader deleting
-2013-Feb-06 08:36:48: ResourceManager::ShaderManager::Shader deleting
-2013-Feb-06 08:36:48: ResourceManager::ShaderManager::Shader deleting
-2013-Feb-06 08:36:48: ResourceManager::ShaderManager cleared
-2013-Feb-06 08:36:48: ResourceManager::ShaderManager deleting
-2013-Feb-06 08:36:48: ResourceManager::ModelManager deleting
-2013-Feb-06 08:36:48: ResourceManager::TexList cleared
-2013-Feb-06 08:36:48: ResourceManager::TexList deleting
+2013-Feb-21 18:12:10: Program prepares to quit
+2013-Feb-21 18:12:10: HalibutAnimationManager deleting...
+2013-Feb-21 18:12:10: GUI Manager deleting...
+2013-Feb-21 18:12:10: TFontManager deleting...
+2013-Feb-21 18:12:10: Script manager shutdown
+2013-Feb-21 18:12:10: ResourceManager::FrameManager deleting
+2013-Feb-21 18:12:10: ResourceManager::ShaderManager::Shader deleting
+2013-Feb-21 18:12:10: ResourceManager::ShaderManager::Shader deleting
+2013-Feb-21 18:12:10: ResourceManager::ShaderManager::Shader deleting
+2013-Feb-21 18:12:10: ResourceManager::ShaderManager cleared
+2013-Feb-21 18:12:10: ResourceManager::ShaderManager deleting
+2013-Feb-21 18:12:10: ResourceManager::ModelManager deleting
+2013-Feb-21 18:12:10: ResourceManager::TexList cleared
+2013-Feb-21 18:12:10: ResourceManager::TexList deleting

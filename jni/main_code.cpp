@@ -55,14 +55,14 @@ void TAndroidApplication::InnerInit()
     
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
-	ResourceManager->PathToResources = "resources/";
+	ST::PathToResources = "resources/";
 #else
-	ResourceManager->PathToResources = "../../../assets/";
+	ST::PathToResources = "../../../assets/";
 #endif
 #endif
     
 #ifdef TARGET_IOS
-    ResourceManager->PathToResources = "assets/";
+    ST::PathToResources = "assets/";
 #endif
 
     if (Console != NULL)
@@ -406,7 +406,7 @@ void TAndroidApplication::GoFromMenuToGame(int level)
 	ResourceManager->SoundManager.PlayMusicLooped("level1ogg.ogg");
     
 //#endif
-    GameLevel.FillWithFile(ResourceManager->PathToResources + "level"+tostr(level+1)+".txt");
+    GameLevel.FillWithFile(ST::PathToResources + "level"+tostr(level+1)+".txt");
     GameLevel.SetLoading("shutterstock" + tostr(level+1), "levelshot"+tostr(level+1));    
     GameState = CONST_GAMESTATE_FROM_MENU_TO_LEVEL;
     OnDrawSignal.connect(1, boost::bind(&TGameLevel::Draw, boost::ref(GameLevel)));
