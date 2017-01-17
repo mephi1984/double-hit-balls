@@ -1,0 +1,44 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "2AD24AAE48399F8E22FBC73AD5FD8C74EE16365D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "BE9D9983110387292D5CB4F272304D6C83D04C6D" : 9223372036854775807,
+    "1A5242F72A7D6830805208F1DACB2505CEF9E8BC" : 9223372036854775807,
+    "2AD24AAE48399F8E22FBC73AD5FD8C74EE16365D" : 9223372036854775807,
+    "06912967E8913965CA039D95E67B099E227979E9" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "79288CE0-9822-4247-B002-4DC7C712C2A0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "BE9D9983110387292D5CB4F272304D6C83D04C6D" : "libs\/",
+    "1A5242F72A7D6830805208F1DACB2505CEF9E8BC" : "engine\/",
+    "2AD24AAE48399F8E22FBC73AD5FD8C74EE16365D" : "double-hit-balls\/",
+    "06912967E8913965CA039D95E67B099E227979E9" : "SalmonEngineTemplate\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "salmontemplate",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "proj.ios\/salmontemplate.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.fishrungames.com:salmon-engine-core\/SalmonEngineTemplate.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "06912967E8913965CA039D95E67B099E227979E9"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.fishrungames.com:salmon-engine-core\/engine.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1A5242F72A7D6830805208F1DACB2505CEF9E8BC"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.fishrungames.com:salmon-engine-projects\/double-hit-balls.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2AD24AAE48399F8E22FBC73AD5FD8C74EE16365D"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.fishrungames.com:salmon-engine-core\/libs.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BE9D9983110387292D5CB4F272304D6C83D04C6D"
+    }
+  ]
+}

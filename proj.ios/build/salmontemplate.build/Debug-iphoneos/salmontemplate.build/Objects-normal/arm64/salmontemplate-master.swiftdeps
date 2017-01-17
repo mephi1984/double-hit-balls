@@ -1,0 +1,7 @@
+version: "Apple Swift version 3.0.2 (swiftlang-800.0.63 clang-800.0.42.1)"
+options: "009837d82cbd7bb7a81d3b8b007bc2ae"
+build_time: [537964633, 907876000]
+inputs:
+  "/Users/robertkhayreev/ios_workspace/double-hit-balls/proj.ios/AppDelegate.swift": [537893392, 0]
+  "/Users/robertkhayreev/ios_workspace/double-hit-balls/proj.ios/CustomGLKView.swift": [537957087, 0]
+  "/Users/robertkhayreev/ios_workspace/double-hit-balls/proj.ios/ViewController.swift": [537957087, 0]
