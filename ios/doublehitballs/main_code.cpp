@@ -249,11 +249,11 @@ void TAndroidApplication::LoadResources()
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_TAP_TO_CONTINUE_BTN_TEXTURE + ".png", CONST_TAP_TO_CONTINUE_BTN_TEXTURE));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_CREDITS_TEXTURE + ".png", CONST_CREDITS_TEXTURE));
     
-/*#ifdef TARGET_IOS
+#ifdef TARGET_IOS
     ResourceManager->SoundManager.LoadMusicLooped("level1ogg.ogg");
 #else
 	ResourceManager->SoundManager.LoadMusic("level1ogg.ogg");
-#endif*/
+#endif
 
 	ResourceManager->FontManager.AddFont("droid_sans14", "droid_sans14_font_bitmap.png", "droid_sans14_font_charmap.txt");
 	ResourceManager->FontManager.PushFont("droid_sans14");
@@ -403,7 +403,7 @@ void TAndroidApplication::InnerUpdate(cardinal dt)
 void TAndroidApplication::GoFromMenuToGame(int level)
 {
     //#ifndef TARGET_IOS
-	//ResourceManager->SoundManager.PlayMusicLooped("level1ogg.ogg");
+	ResourceManager->SoundManager.PlayMusicLooped("level1ogg.ogg");
     
 //#endif
     GameLevel.FillWithFile(ST::PathToResources + "level"+tostr(level+1)+".txt");
@@ -418,7 +418,7 @@ void TAndroidApplication::GoFromMenuToGame(int level)
 void TAndroidApplication::GoFromGameToMenu()
 {
     //#ifndef TARGET_IOS
-	//ResourceManager->SoundManager.StopMusic("level1ogg.ogg");
+	ResourceManager->SoundManager.StopMusic("level1ogg.ogg");
 //#endif
     TrySaveGame();
     DisapplySignalsToGame();
