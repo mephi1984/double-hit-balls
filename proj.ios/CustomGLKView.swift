@@ -10,15 +10,16 @@ import Foundation
 import GLKit
 
 struct TTouchHashData {
-    var first: CGPoint!
-    var second: Bool!
-    var number: Int!
+    var first: CGPoint?
+    var second: Bool?
+    var number: Int?
 }
-
-
 
 class GLKViewTemplate: GLKView {
     
+    let xCoef: CGFloat = 480 / UIScreen.main.bounds.size.width
+    let yCoef: CGFloat = 320 / UIScreen.main.bounds.size.height
+
     var touchDict: [UITouch: TTouchHashData] = [:]
     
     override init(frame: CGRect) {
@@ -59,28 +60,53 @@ class GLKViewTemplate: GLKView {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
-            let location = touch.location(in: self)
-            let prevLocation = touch.previousLocation(in: self)
+            let location = CGPoint(x: touch.location(in: self).x * xCoef, y: touch.location(in: self).y * yCoef)
+            addTouchToHash(touch: touch)
             
-            if abs(touchDict[touch]!.first!.x - location.x) > 10 || abs(touchDict[touch]!.first!.y - location.y) > 10 {
+            guard let n = touchDict[touch]?.number else {
+                return
+            }
+            
+            let number = Int32(n)
+            print(bounds.size.height * yCoef - location.y)
+            SE_AppOnTapDown(Int32(location.x), Int32(bounds.size.height * yCoef - location.y), number)
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let location = CGPoint(x: touch.location(in: self).x * xCoef, y: touch.location(in: self).y * yCoef)
+            let prevLocation = CGPoint(x: touch.previousLocation(in: self).x * xCoef, y: touch.previousLocation(in: self).y * yCoef)
+            
+            guard let x = touchDict[touch]?.first?.x, let y = touchDict[touch]?.first?.y, let n = touchDict[touch]?.number else {
+                return
+            }
+            if abs(x - location.x) > 10 || abs(y - location.y) > 10 {
                 touchDict[touch]?.second = true
             }
             
-            let number = Int32(touchDict[touch]!.number)
+            let number = Int32(n)
             
             SE_AppOnScroll(Int32(Float(prevLocation.x) - Float(location.x)), -Int32(Float(prevLocation.y) - Float(location.y)), number)
+            print("location is:\(location)!!!!")
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
-            let location = touch.location(in: self)
-            let number = Int32(touchDict[touch]!.number)
+            let location = CGPoint(x: touch.location(in: self).x * xCoef, y: touch.location(in: self).y * yCoef)
+            print("location is:\(location)!!!!")
+            
+            guard let n = touchDict[touch]?.number else {
+                return
+            }
+            
+            let number = Int32(n)
             
             if touchDict[touch]!.second == true {
-                SE_AppOnTapUpAfterMove(Int32(location.x), Int32(bounds.size.height - location.y), number)
+                SE_AppOnTapUpAfterMove(Int32(location.x), Int32(bounds.size.height * yCoef - location.y), number)
             } else {
-                SE_AppOnTapUp(Int32(location.x), Int32(bounds.size.height - location.y), number)
+                SE_AppOnTapUp(Int32(location.x), Int32(bounds.size.height * yCoef - location.y), number)
             }
             touchDict.removeValue(forKey: touch)
         }
@@ -92,4 +118,10 @@ class GLKViewTemplate: GLKView {
         }
     }
     
+}
+
+class CustomGLKView: GLKViewTemplate {
+    required init?(coder aDecoder: NSCoder) {
+        super.init(frame: UIScreen.main.bounds)
+    }
 }

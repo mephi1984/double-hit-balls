@@ -21,7 +21,6 @@
 		4C77831815BABE26003D5142 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C77831415BABD8B003D5142 /* AudioToolbox.framework */; };
 		4C77831915BABE26003D5142 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C77831515BABD8B003D5142 /* OpenAL.framework */; };
 		4C7AD44C15B1D77700A599F6 /* ios_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7AD44B15B1D77700A599F6 /* ios_api.cpp */; };
-		4CCC0ECC15B30D6B005432FB /* CustomGLKView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC0ECB15B30D6B005432FB /* CustomGLKView.mm */; };
 		4CE6A9D215B2F979006A3965 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 4CE6A9D115B2F979006A3965 /* assets */; };
 		74AC9EBD1E2CE407003C9749 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AC9EBC1E2CE407003C9749 /* ViewController.swift */; };
 		74AC9EC11E2CF533003C9749 /* SENamespaceWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74AC9EBF1E2CF533003C9749 /* SENamespaceWrapper.cpp */; };
@@ -29,6 +28,7 @@
 		74C3AE2F1E2E2A40003C07F2 /* gamecode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74C3AE281E2E2A40003C07F2 /* gamecode.cpp */; };
 		74C3AE301E2E2A40003C07F2 /* loadingcode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74C3AE2A1E2E2A40003C07F2 /* loadingcode.cpp */; };
 		74C3AE311E2E2A40003C07F2 /* menucode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74C3AE2C1E2E2A40003C07F2 /* menucode.cpp */; };
+		74C3AE4D1E2E4194003C07F2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74C3AE4C1E2E4194003C07F2 /* LaunchScreen.storyboard */; };
 		74EEBAEF1E2D13A6004C6C65 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EEBAEE1E2D13A6004C6C65 /* AppDelegate.swift */; };
 		74EEBAF11E2D1C7C004C6C65 /* CustomGLKView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EEBAF01E2D1C7C004C6C65 /* CustomGLKView.swift */; };
 		84D0FEBE1E274DDD00EC3FE5 /* libSalmon Engine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C902A7815C5735700FBC901 /* libSalmon Engine.a */; };
@@ -86,8 +86,6 @@
 		4C77831515BABD8B003D5142 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		4C7AD44B15B1D77700A599F6 /* ios_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ios_api.cpp; sourceTree = "<group>"; };
 		4C902A7015C5735500FBC901 /* Salmon Engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Salmon Engine.xcodeproj"; path = "../../Engine/iOS/Salmon Engine/Salmon Engine.xcodeproj"; sourceTree = "<group>"; };
-		4CCC0ECA15B30D6A005432FB /* CustomGLKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomGLKView.h; sourceTree = "<group>"; };
-		4CCC0ECB15B30D6B005432FB /* CustomGLKView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomGLKView.mm; sourceTree = "<group>"; };
 		4CCC0ECD15B310FB005432FB /* ios_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ios_api.h; sourceTree = "<group>"; };
 		4CE6A9D115B2F979006A3965 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
 		74AC9EBB1E2CE407003C9749 /* salmontemplate-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "salmontemplate-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -103,6 +101,7 @@
 		74C3AE2B1E2E2A40003C07F2 /* loadingcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = loadingcode.h; path = ../game/loadingcode.h; sourceTree = "<group>"; };
 		74C3AE2C1E2E2A40003C07F2 /* menucode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = menucode.cpp; path = ../game/menucode.cpp; sourceTree = "<group>"; };
 		74C3AE2D1E2E2A40003C07F2 /* menucode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = menucode.h; path = ../game/menucode.h; sourceTree = "<group>"; };
+		74C3AE4C1E2E4194003C07F2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		74EEBAEE1E2D13A6004C6C65 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74EEBAF01E2D1C7C004C6C65 /* CustomGLKView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGLKView.swift; sourceTree = "<group>"; };
 		84D0FEC11E274E3700EC3FE5 /* vorbis-tremor-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "vorbis-tremor-ios.xcodeproj"; path = "../../libs/vorbis-tremor-ios/vorbis-tremor-ios.xcodeproj"; sourceTree = "<group>"; };
@@ -176,9 +175,8 @@
 				74EEBAF01E2D1C7C004C6C65 /* CustomGLKView.swift */,
 				4C49B2DA15B0991B003512CD /* ViewController_iPhone.xib */,
 				4C49B2DD15B0991B003512CD /* ViewController_iPad.xib */,
+				74C3AE4C1E2E4194003C07F2 /* LaunchScreen.storyboard */,
 				4C49B2C815B0991B003512CD /* Supporting Files */,
-				4CCC0ECA15B30D6A005432FB /* CustomGLKView.h */,
-				4CCC0ECB15B30D6B005432FB /* CustomGLKView.mm */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -334,6 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C49B2CC15B0991B003512CD /* InfoPlist.strings in Resources */,
+				74C3AE4D1E2E4194003C07F2 /* LaunchScreen.storyboard in Resources */,
 				4C49B2DC15B0991B003512CD /* ViewController_iPhone.xib in Resources */,
 				4C49B2DF15B0991B003512CD /* ViewController_iPad.xib in Resources */,
 				4CE6A9D215B2F979006A3965 /* assets in Resources */,
@@ -360,7 +359,6 @@
 				74AC9EC11E2CF533003C9749 /* SENamespaceWrapper.cpp in Sources */,
 				74C3AE311E2E2A40003C07F2 /* menucode.cpp in Sources */,
 				4C7AD44C15B1D77700A599F6 /* ios_api.cpp in Sources */,
-				4CCC0ECC15B30D6B005432FB /* CustomGLKView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

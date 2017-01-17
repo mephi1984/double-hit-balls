@@ -28,6 +28,8 @@
 	<true/>
 	<key>UILaunchImageFile</key>
 	<string>Splash-landscape.png</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
