@@ -523,7 +523,7 @@
 				);
 				INFOPLIST_FILE = "template-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = fishrungames.template;
+				PRODUCT_BUNDLE_IDENTIFIER = fishrungames.doublehitballs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "salmontemplate-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -565,7 +565,7 @@
 				);
 				INFOPLIST_FILE = "template-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = fishrungames.template;
+				PRODUCT_BUNDLE_IDENTIFIER = fishrungames.doublehitballs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "salmontemplate-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
