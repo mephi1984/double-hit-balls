@@ -20,6 +20,7 @@ DerivedData/
 xcuserdata/
 xcshareddata/
 xcworkspace/
+project.xcworkspace/
 ## Other
 *.moved-aside
 *.xcuserstate
