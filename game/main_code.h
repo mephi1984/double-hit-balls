@@ -22,7 +22,7 @@
 
 #include "include/Engine.h"
 
-#include "boost/signal.hpp"//Signal must be included after asio
+#include "boost/signals2.hpp"//Signal must be included after asio
 
 #include "gamecode.h"
 #include "menucode.h"
@@ -32,12 +32,14 @@
 using namespace SE;
 
 
-extern boost::signal<void (vec2)> OnTapUpSignal;
-extern boost::signal<void (vec2)> OnTapDownSignal;
-extern boost::signal<void (vec2)> OnFlingSignal;
-extern boost::signal<void (vec2)> OnScrollSignal;
+extern boost::signals2::signal<void (vec2)> OnTapUpSignal;
+extern boost::signals2::signal<void (vec2)> OnTapUpAfterMoveSignal;
 
-extern boost::signal<void ()> OnDrawSignal;
+extern boost::signals2::signal<void (vec2)> OnTapDownSignal;
+extern boost::signals2::signal<void (vec2)> OnFlingSignal;
+extern boost::signals2::signal<void (vec2)> OnScrollSignal;
+
+extern boost::signals2::signal<void ()> OnDrawSignal;
 
 extern const std::string CONST_BLOCK_TEXTURE1;
 extern const std::string CONST_BLOCK_TEXTURE2;
@@ -138,6 +140,8 @@ public:
 	virtual void InnerOnTapDown(vec2 p);
 	
 	virtual void InnerOnTapUp(vec2 p);
+    
+    virtual void InnerOnTapUpAfterMove(vec2 p);
 	
 	virtual void InnerOnMove(vec2 shift);
 	

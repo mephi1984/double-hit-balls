@@ -133,6 +133,8 @@ void TGameMenu::Update(cardinal dt)
 void TGameMenu::OnTapDown(vec2 pos)
 {
 
+    HoldToTap = true;
+    
     if (pos.v[1]<64.f && pos.v[0]>=265.f-128.f && pos.v[0]<=265.f+128.f)
     {
         Application->GoFromMenuToCredits();
@@ -174,6 +176,11 @@ void TGameMenu::OnTapUp(vec2 pos)
         Application->GoFromMenuToGame(SelectedGame);
         SelectedGame = -1;
     }
+}
+
+void TGameMenu::OnTapUpAfterMove(vec2 pos)
+{
+    HoldToTap = false;
 }
 
 

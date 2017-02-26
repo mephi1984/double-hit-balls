@@ -9,6 +9,9 @@
 import UIKit
 import GLKit
 
+
+var defaultView: GLKView? = nil
+
 class ViewControllerTemplate: GLKViewController, UITextFieldDelegate {
 
     public var hiddenTextField: UITextField?
@@ -28,7 +31,12 @@ class ViewControllerTemplate: GLKViewController, UITextFieldDelegate {
         view.context = self.context!
         view.drawableDepthFormat = .format24
         
-        //defaultView = view
+        self.preferredFramesPerSecond = 60
+        
+        defaultView = view
+        SE_SetBindDrawableFunc({ 
+            defaultView?.bindDrawable()
+        });
         
         setupGL()
     

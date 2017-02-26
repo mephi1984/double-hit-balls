@@ -11,12 +11,13 @@
 
 #include "main_code.h"
 
-boost::signal<void (vec2)> OnTapUpSignal;
-boost::signal<void (vec2)> OnTapDownSignal;
-boost::signal<void (vec2)> OnFlingSignal;
-boost::signal<void (vec2)> OnScrollSignal;
+boost::signals2::signal<void (vec2)> OnTapUpSignal;
+boost::signals2::signal<void (vec2)> OnTapUpAfterMoveSignal;
+boost::signals2::signal<void (vec2)> OnTapDownSignal;
+boost::signals2::signal<void (vec2)> OnFlingSignal;
+boost::signals2::signal<void (vec2)> OnScrollSignal;
 
-boost::signal<void ()> OnDrawSignal;
+boost::signals2::signal<void ()> OnDrawSignal;
 
 
 const std::string CONST_BLOCK_TEXTURE1 = "block1";
@@ -109,6 +110,9 @@ void TAndroidApplication::InnerDeinit()
     OnTapUpSignal.disconnect(boost::bind(&TGameLevel::OnTapUp, boost::ref(GameLevel), _1));
     OnTapUpSignal.disconnect(boost::bind(&TGameMenu::OnTapUp, boost::ref(Menu), _1));
     
+    OnTapUpAfterMoveSignal.disconnect(boost::bind(&TGameMenu::OnTapUpAfterMove, boost::ref(Menu), _1));
+    
+    
     OnFlingSignal.disconnect(boost::bind(&TGameLevel::OnFling, boost::ref(GameLevel), _1));
     OnFlingSignal.disconnect(boost::bind(&TGameMenu::OnFling, boost::ref(Menu), _1));
     
@@ -136,6 +140,11 @@ void TAndroidApplication::InnerOnTapUp(vec2 p)
 { 
 	OnTapUpSignal(vec2(p.v[0], p.v[1])); 
 }
+
+void TAndroidApplication::InnerOnTapUpAfterMove(vec2 p)
+{
+    OnTapUpAfterMoveSignal(vec2(p.v[0], p.v[1]));
+}
 	
 void TAndroidApplication::InnerOnMove(vec2 shift) 
 {
@@ -151,6 +160,7 @@ void TAndroidApplication::ApplySignalsToMenu()
 {
 
     OnTapUpSignal.connect(boost::bind(&TGameMenu::OnTapUp, boost::ref(Menu), _1));
+    OnTapUpAfterMoveSignal.connect(boost::bind(&TGameMenu::OnTapUpAfterMove, boost::ref(Menu), _1));
     OnFlingSignal.connect(boost::bind(&TGameMenu::OnFling, boost::ref(Menu), _1));
     OnScrollSignal.connect(boost::bind(&TGameMenu::OnScroll, boost::ref(Menu), _1));
     OnTapDownSignal.connect(boost::bind(&TGameMenu::OnTapDown, boost::ref(Menu), _1));
@@ -161,6 +171,7 @@ void TAndroidApplication::ApplySignalsToMenu()
 void TAndroidApplication::DisapplySignalsToMenu()
 {
     OnTapUpSignal.disconnect(boost::bind(&TGameMenu::OnTapUp, boost::ref(Menu), _1));
+    OnTapUpAfterMoveSignal.disconnect(boost::bind(&TGameMenu::OnTapUpAfterMove, boost::ref(Menu), _1));
     OnFlingSignal.disconnect(boost::bind(&TGameMenu::OnFling, boost::ref(Menu), _1));
     OnScrollSignal.disconnect(boost::bind(&TGameMenu::OnScroll, boost::ref(Menu), _1));
     OnTapDownSignal.disconnect(boost::bind(&TGameMenu::OnTapDown, boost::ref(Menu), _1));

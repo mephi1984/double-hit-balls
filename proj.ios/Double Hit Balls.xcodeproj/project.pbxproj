@@ -68,7 +68,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4C49B2B915B0991B003512CD /* salmontemplate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = salmontemplate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C49B2B915B0991B003512CD /* Double Hit Balls.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Double Hit Balls.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C49B2BD15B0991B003512CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4C49B2BF15B0991B003512CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4C49B2C115B0991B003512CD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -145,7 +145,7 @@
 		4C49B2BA15B0991B003512CD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4C49B2B915B0991B003512CD /* salmontemplate.app */,
+				4C49B2B915B0991B003512CD /* Double Hit Balls.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -249,9 +249,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4C49B2B815B0991B003512CD /* salmontemplate */ = {
+		4C49B2B815B0991B003512CD /* Double Hit Balls */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4C49B2E215B0991B003512CD /* Build configuration list for PBXNativeTarget "salmontemplate" */;
+			buildConfigurationList = 4C49B2E215B0991B003512CD /* Build configuration list for PBXNativeTarget "Double Hit Balls" */;
 			buildPhases = (
 				4C49B2B515B0991B003512CD /* Sources */,
 				4C49B2B715B0991B003512CD /* Resources */,
@@ -263,9 +263,9 @@
 				84D0FEC81E274E3F00EC3FE5 /* PBXTargetDependency */,
 				84D0FEC01E274DF700EC3FE5 /* PBXTargetDependency */,
 			);
-			name = salmontemplate;
+			name = "Double Hit Balls";
 			productName = doublehitballs;
-			productReference = 4C49B2B915B0991B003512CD /* salmontemplate.app */;
+			productReference = 4C49B2B915B0991B003512CD /* Double Hit Balls.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -277,12 +277,13 @@
 				LastUpgradeCheck = 0800;
 				TargetAttributes = {
 					4C49B2B815B0991B003512CD = {
-						DevelopmentTeam = R89DR83966;
+						DevelopmentTeam = ALBGHC3Q4Z;
 						LastSwiftMigration = 0820;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
-			buildConfigurationList = 4C49B2B315B0991B003512CD /* Build configuration list for PBXProject "salmontemplate" */;
+			buildConfigurationList = 4C49B2B315B0991B003512CD /* Build configuration list for PBXProject "Double Hit Balls" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -304,7 +305,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				4C49B2B815B0991B003512CD /* salmontemplate */,
+				4C49B2B815B0991B003512CD /* Double Hit Balls */,
 			);
 		};
 /* End PBXProject section */
@@ -496,7 +497,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = R89DR83966;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = ALBGHC3Q4Z;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "template-Prefix.pch";
@@ -522,13 +524,16 @@
 				INFOPLIST_FILE = "template-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = fishrungames.doublehitballs;
+				PRODUCT_MODULE_NAME = doublehitballs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "050564d3-7073-4ca0-a471-06a062ff337c";
+				PROVISIONING_PROFILE_SPECIFIER = "Double Hit Balls Development Profile 2017-02-26";
 				SWIFT_OBJC_BRIDGING_HEADER = "salmontemplate-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				SYMROOT = build;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -539,7 +544,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = R89DR83966;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "template-Prefix.pch";
@@ -564,11 +570,13 @@
 				INFOPLIST_FILE = "template-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = fishrungames.doublehitballs;
+				PRODUCT_MODULE_NAME = doublehitballs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "salmontemplate-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -576,7 +584,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4C49B2B315B0991B003512CD /* Build configuration list for PBXProject "salmontemplate" */ = {
+		4C49B2B315B0991B003512CD /* Build configuration list for PBXProject "Double Hit Balls" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4C49B2E015B0991B003512CD /* Debug */,
@@ -585,7 +593,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4C49B2E215B0991B003512CD /* Build configuration list for PBXNativeTarget "salmontemplate" */ = {
+		4C49B2E215B0991B003512CD /* Build configuration list for PBXNativeTarget "Double Hit Balls" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4C49B2E315B0991B003512CD /* Debug */,

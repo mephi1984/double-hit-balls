@@ -9,12 +9,14 @@
 #ifndef SENamespace_h
 #define SENamespace_h
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
     //void SE_CreateEngine();
     //void SE_DestroyEngine();
     //TApplication *app = NULL;
+    void SE_SetBindDrawableFunc(void(*funcPtr)());
     void SE_AppDeinit();
     void SE_AppUpdate(int dt);
     void SE_AppDraw();

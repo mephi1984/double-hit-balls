@@ -18,6 +18,11 @@ namespace SE {
     void OnKeyboardHide();
 }
 
+void SE_SetBindDrawableFunc(void(*funcPtr)())
+{
+    SE::SetBindDrawableFunc(funcPtr);
+}
+
     //TApplication *app = NULL;
 void SE_AppDeinit() {
     SE::AppDeinit();

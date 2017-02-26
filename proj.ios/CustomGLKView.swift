@@ -88,14 +88,14 @@ class GLKViewTemplate: GLKView {
             let number = Int32(n)
             
             SE_AppOnScroll(Int32(Float(prevLocation.x) - Float(location.x)), -Int32(Float(prevLocation.y) - Float(location.y)), number)
-            print("location is:\(location)!!!!")
+            //print("location is:\(location)!!!!")
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = CGPoint(x: touch.location(in: self).x * xCoef, y: touch.location(in: self).y * yCoef)
-            print("location is:\(location)!!!!")
+            //print("location is:\(location)!!!!")
             
             guard let n = touchDict[touch]?.number else {
                 return

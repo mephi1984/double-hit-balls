@@ -12,6 +12,8 @@ public:
     virtual void Draw() { }
     virtual void Update(cardinal) { }
     virtual void OnTapUp(vec2) { }
+    virtual void OnTapUpAfterMove(vec2) { }
+    
     virtual void OnTapDown(vec2) { }
     virtual void OnFling(vec2) { }
 	virtual void OnScroll(vec2) { }

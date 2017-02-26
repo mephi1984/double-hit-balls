@@ -26,6 +26,7 @@ public:
 	virtual void Update(cardinal dt);
 	virtual void OnTapDown(vec2 pos);
 	virtual void OnTapUp(vec2 pos);
+    virtual void OnTapUpAfterMove(vec2 pos);
 	virtual void OnFling(vec2 slideSpeed);
 	virtual void OnScroll(vec2 shift);
 	
