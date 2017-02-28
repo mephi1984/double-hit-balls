@@ -17,7 +17,6 @@
 		4C49B2DF15B0991B003512CD /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C49B2DD15B0991B003512CD /* ViewController_iPad.xib */; };
 		4C74848615C5AD6E0056EC44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C74848315C5AD6E0056EC44 /* Icon.png */; };
 		4C74848715C5AD6E0056EC44 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 4C74848415C5AD6E0056EC44 /* iTunesArtwork */; };
-		4C74848815C5AD6E0056EC44 /* Splash-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C74848515C5AD6E0056EC44 /* Splash-landscape.png */; };
 		4C77831815BABE26003D5142 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C77831415BABD8B003D5142 /* AudioToolbox.framework */; };
 		4C77831915BABE26003D5142 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C77831515BABD8B003D5142 /* OpenAL.framework */; };
 		4C7AD44C15B1D77700A599F6 /* ios_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7AD44B15B1D77700A599F6 /* ios_api.cpp */; };
@@ -28,10 +27,10 @@
 		74C3AE2F1E2E2A40003C07F2 /* gamecode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74C3AE281E2E2A40003C07F2 /* gamecode.cpp */; };
 		74C3AE301E2E2A40003C07F2 /* loadingcode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74C3AE2A1E2E2A40003C07F2 /* loadingcode.cpp */; };
 		74C3AE311E2E2A40003C07F2 /* menucode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74C3AE2C1E2E2A40003C07F2 /* menucode.cpp */; };
-		74C3AE4D1E2E4194003C07F2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74C3AE4C1E2E4194003C07F2 /* LaunchScreen.storyboard */; };
 		74EEBAEF1E2D13A6004C6C65 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EEBAEE1E2D13A6004C6C65 /* AppDelegate.swift */; };
 		74EEBAF11E2D1C7C004C6C65 /* CustomGLKView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EEBAF01E2D1C7C004C6C65 /* CustomGLKView.swift */; };
 		841270C91E639C2F00776DAE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 841270C81E639C2F00776DAE /* Images.xcassets */; };
+		841D49651E65981600C85722 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841D49641E65981600C85722 /* LaunchScreen.storyboard */; };
 		84D0FEBE1E274DDD00EC3FE5 /* libSalmon Engine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C902A7815C5735700FBC901 /* libSalmon Engine.a */; };
 		84D0FEC91E274E4A00EC3FE5 /* libvorbis-tremor-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D0FEC61E274E3700EC3FE5 /* libvorbis-tremor-ios.a */; };
 		84D0FECC1E274EBC00EC3FE5 /* main_code.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84D0FECA1E274EBC00EC3FE5 /* main_code.cpp */; };
@@ -82,7 +81,6 @@
 		4C49B2DE15B0991B003512CD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
 		4C74848315C5AD6E0056EC44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = res/Icon.png; sourceTree = "<group>"; };
 		4C74848415C5AD6E0056EC44 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = res/iTunesArtwork; sourceTree = "<group>"; };
-		4C74848515C5AD6E0056EC44 /* Splash-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Splash-landscape.png"; path = "res/Splash-landscape.png"; sourceTree = "<group>"; };
 		4C77831415BABD8B003D5142 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		4C77831515BABD8B003D5142 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		4C7AD44B15B1D77700A599F6 /* ios_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ios_api.cpp; sourceTree = "<group>"; };
@@ -102,10 +100,10 @@
 		74C3AE2B1E2E2A40003C07F2 /* loadingcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = loadingcode.h; path = ../game/loadingcode.h; sourceTree = "<group>"; };
 		74C3AE2C1E2E2A40003C07F2 /* menucode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = menucode.cpp; path = ../game/menucode.cpp; sourceTree = "<group>"; };
 		74C3AE2D1E2E2A40003C07F2 /* menucode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = menucode.h; path = ../game/menucode.h; sourceTree = "<group>"; };
-		74C3AE4C1E2E4194003C07F2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		74EEBAEE1E2D13A6004C6C65 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74EEBAF01E2D1C7C004C6C65 /* CustomGLKView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGLKView.swift; sourceTree = "<group>"; };
 		841270C81E639C2F00776DAE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Double Hit Balls/Images.xcassets"; sourceTree = "<group>"; };
+		841D49641E65981600C85722 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84D0FEC11E274E3700EC3FE5 /* vorbis-tremor-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "vorbis-tremor-ios.xcodeproj"; path = "../../libs/vorbis-tremor-ios/vorbis-tremor-ios.xcodeproj"; sourceTree = "<group>"; };
 		84D0FECA1E274EBC00EC3FE5 /* main_code.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main_code.cpp; path = ../game/main_code.cpp; sourceTree = "<group>"; };
 		84D0FECB1E274EBC00EC3FE5 /* main_code.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main_code.h; path = ../game/main_code.h; sourceTree = "<group>"; };
@@ -177,8 +175,8 @@
 				74EEBAF01E2D1C7C004C6C65 /* CustomGLKView.swift */,
 				4C49B2DA15B0991B003512CD /* ViewController_iPhone.xib */,
 				4C49B2DD15B0991B003512CD /* ViewController_iPad.xib */,
-				74C3AE4C1E2E4194003C07F2 /* LaunchScreen.storyboard */,
 				4C49B2C815B0991B003512CD /* Supporting Files */,
+				841D49641E65981600C85722 /* LaunchScreen.storyboard */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -217,7 +215,6 @@
 				841270C81E639C2F00776DAE /* Images.xcassets */,
 				4C74848315C5AD6E0056EC44 /* Icon.png */,
 				4C74848415C5AD6E0056EC44 /* iTunesArtwork */,
-				4C74848515C5AD6E0056EC44 /* Splash-landscape.png */,
 				4CE6A9D115B2F979006A3965 /* assets */,
 			);
 			name = Resources;
@@ -336,14 +333,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				841270C91E639C2F00776DAE /* Images.xcassets in Resources */,
+				841D49651E65981600C85722 /* LaunchScreen.storyboard in Resources */,
 				4C49B2CC15B0991B003512CD /* InfoPlist.strings in Resources */,
-				74C3AE4D1E2E4194003C07F2 /* LaunchScreen.storyboard in Resources */,
 				4C49B2DC15B0991B003512CD /* ViewController_iPhone.xib in Resources */,
 				4C49B2DF15B0991B003512CD /* ViewController_iPad.xib in Resources */,
 				4CE6A9D215B2F979006A3965 /* assets in Resources */,
 				4C74848615C5AD6E0056EC44 /* Icon.png in Resources */,
 				4C74848715C5AD6E0056EC44 /* iTunesArtwork in Resources */,
-				4C74848815C5AD6E0056EC44 /* Splash-landscape.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,7 +495,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -548,12 +543,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ALBGHC3Q4Z;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "template-Prefix.pch";
@@ -580,7 +574,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fishrungames.doublehitballs;
 				PRODUCT_MODULE_NAME = doublehitballs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1bc81f5e-d020-4cbd-9679-655621ae93eb";
+				PROVISIONING_PROFILE_SPECIFIER = "Double Hit Balls Development Profile 2017-02-26";
 				SWIFT_OBJC_BRIDGING_HEADER = "salmontemplate-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
