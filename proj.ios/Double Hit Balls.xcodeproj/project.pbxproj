@@ -15,8 +15,6 @@
 		4C49B2CC15B0991B003512CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4C49B2CA15B0991B003512CD /* InfoPlist.strings */; };
 		4C49B2DC15B0991B003512CD /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C49B2DA15B0991B003512CD /* ViewController_iPhone.xib */; };
 		4C49B2DF15B0991B003512CD /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C49B2DD15B0991B003512CD /* ViewController_iPad.xib */; };
-		4C74848615C5AD6E0056EC44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C74848315C5AD6E0056EC44 /* Icon.png */; };
-		4C74848715C5AD6E0056EC44 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 4C74848415C5AD6E0056EC44 /* iTunesArtwork */; };
 		4C77831815BABE26003D5142 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C77831415BABD8B003D5142 /* AudioToolbox.framework */; };
 		4C77831915BABE26003D5142 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C77831515BABD8B003D5142 /* OpenAL.framework */; };
 		4C7AD44C15B1D77700A599F6 /* ios_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7AD44B15B1D77700A599F6 /* ios_api.cpp */; };
@@ -79,8 +77,6 @@
 		4C49B2CF15B0991B003512CD /* template-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "template-Prefix.pch"; sourceTree = "<group>"; };
 		4C49B2DB15B0991B003512CD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		4C49B2DE15B0991B003512CD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
-		4C74848315C5AD6E0056EC44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = res/Icon.png; sourceTree = "<group>"; };
-		4C74848415C5AD6E0056EC44 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = res/iTunesArtwork; sourceTree = "<group>"; };
 		4C77831415BABD8B003D5142 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		4C77831515BABD8B003D5142 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		4C7AD44B15B1D77700A599F6 /* ios_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ios_api.cpp; sourceTree = "<group>"; };
@@ -213,8 +209,6 @@
 			isa = PBXGroup;
 			children = (
 				841270C81E639C2F00776DAE /* Images.xcassets */,
-				4C74848315C5AD6E0056EC44 /* Icon.png */,
-				4C74848415C5AD6E0056EC44 /* iTunesArtwork */,
 				4CE6A9D115B2F979006A3965 /* assets */,
 			);
 			name = Resources;
@@ -338,8 +332,6 @@
 				4C49B2DC15B0991B003512CD /* ViewController_iPhone.xib in Resources */,
 				4C49B2DF15B0991B003512CD /* ViewController_iPad.xib in Resources */,
 				4CE6A9D215B2F979006A3965 /* assets in Resources */,
-				4C74848615C5AD6E0056EC44 /* Icon.png in Resources */,
-				4C74848715C5AD6E0056EC44 /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
