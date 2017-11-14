@@ -11,11 +11,11 @@
 
 #include "main_code.h"
 
-boost::signals2::signal<void (vec2)> OnTapUpSignal;
-boost::signals2::signal<void (vec2)> OnTapUpAfterMoveSignal;
-boost::signals2::signal<void (vec2)> OnTapDownSignal;
-boost::signals2::signal<void (vec2)> OnFlingSignal;
-boost::signals2::signal<void (vec2)> OnScrollSignal;
+boost::signals2::signal<void (Vector2f)> OnTapUpSignal;
+boost::signals2::signal<void (Vector2f)> OnTapUpAfterMoveSignal;
+boost::signals2::signal<void (Vector2f)> OnTapDownSignal;
+boost::signals2::signal<void (Vector2f)> OnFlingSignal;
+boost::signals2::signal<void (Vector2f)> OnScrollSignal;
 
 boost::signals2::signal<void ()> OnDrawSignal;
 
@@ -43,13 +43,15 @@ const std::string CONST_SLIDE_UP_BTN_TEXTURE = "slide_up_btn";
 const std::string CONST_TAP_TO_CONTINUE_BTN_TEXTURE = "tap_to_continue_btn";
 const std::string CONST_LOADING_TEXTURE = "loading";
 const std::string CONST_LOGO_SMALL_TEXTURE = "logo_small";
+const std::string CONST_LOADING_BACKGROUND_BLACK = "loading_background_black";
 const std::string CONST_CREDITS_TEXTURE = "credits";
 
 const float CONST_CREDITS_SHOW_TIME = 150.f;
 
-TAndroidApplication* Application;
+TMyApplication* Application;
 
-void TAndroidApplication::InnerInit()
+
+void TMyApplication::InnerInit()
 {
 
     Application = this;
@@ -70,35 +72,34 @@ void TAndroidApplication::InnerInit()
     {
         *Console<<"APP INIT\n";
     }
-    srand (static_cast<cardinal>(time(NULL)));
+    srand (static_cast<size_t>(time(NULL)));
 	GameState = CONST_GAMESTATE_PRELOADING;
 	StateTimer = 0.f;
 
-	
+
 	ResourceManager->ShaderManager.AddShader("DefaultShader", "shader1vertex.txt", "shader1fragment.txt");
 	ResourceManager->ShaderManager.AddShader("FrameShader", "frameshader_vertex.txt", "frameshader_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("BrickShader", "brickshader_vertex.txt", "brickshader_fragment.txt");
 	Renderer->PushShader("DefaultShader");
-	
+
+	ResourceManager->TexList.AddTexture(CONST_LOADING_BACKGROUND_BLACK + ".png", CONST_LOADING_BACKGROUND_BLACK);
 	ResourceManager->TexList.AddTexture(CONST_LOADING_TEXTURE + ".png", CONST_LOADING_TEXTURE);
 	ResourceManager->TexList.AddTexture(CONST_LOGO_SMALL_TEXTURE + ".png", CONST_LOGO_SMALL_TEXTURE);
 
 	ResourceManager->TexList.AddTexture("console_bkg.bmp");
-	
+
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
-	
+
 	OnDrawSignal.connect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
 	Inited = true;
 
 	Renderer->SetOrthoProjection();
 
 	Renderer->SetFullScreenViewport();
-
-	
 	
 }
 
-void TAndroidApplication::InnerDeinit()
+void TMyApplication::InnerDeinit()
 {
     Inited = false;
     Loaded = false;
@@ -131,32 +132,33 @@ void TAndroidApplication::InnerDeinit()
 
 }
 
-void TAndroidApplication::InnerOnTapDown(vec2 p) 
-{ 
-	OnTapDownSignal(vec2(p.v[0], p.v[1])); 
-}
-	
-void TAndroidApplication::InnerOnTapUp(vec2 p) 
-{ 
-	OnTapUpSignal(vec2(p.v[0], p.v[1])); 
+void TMyApplication::InnerOnTapDown(Vector2f p)
+{
+	//-OnTapDownSignal(Vector2f(p.v[0], p.v[1]));
+	OnTapDownSignal(Vector2f(p(0), p(1)));
 }
 
-void TAndroidApplication::InnerOnTapUpAfterMove(vec2 p)
+void TMyApplication::InnerOnTapUp(Vector2f p)
 {
-    OnTapUpAfterMoveSignal(vec2(p.v[0], p.v[1]));
+	OnTapUpSignal(Vector2f(p(0), p(1)));
+}
+
+void TMyApplication::InnerOnTapUpAfterMove(Vector2f p)
+{
+	OnTapUpAfterMoveSignal(Vector2f(p(0), p(1)));
+}
+
+void TMyApplication::InnerOnMove(Vector2f p, Vector2f shift)
+{
+	OnScrollSignal(Vector2f(shift(0), shift(1)));
 }
 	
-void TAndroidApplication::InnerOnMove(vec2 shift) 
-{
-	OnScrollSignal(shift);
-}
-	
-void TAndroidApplication::OnFling(vec2 v) 
+void TMyApplication::OnFling(Vector2f v) 
 {
 }
 
 
-void TAndroidApplication::ApplySignalsToMenu()
+void TMyApplication::ApplySignalsToMenu()
 {
 
     OnTapUpSignal.connect(boost::bind(&TGameMenu::OnTapUp, boost::ref(Menu), _1));
@@ -168,7 +170,7 @@ void TAndroidApplication::ApplySignalsToMenu()
 }
 
 
-void TAndroidApplication::DisapplySignalsToMenu()
+void TMyApplication::DisapplySignalsToMenu()
 {
     OnTapUpSignal.disconnect(boost::bind(&TGameMenu::OnTapUp, boost::ref(Menu), _1));
     OnTapUpAfterMoveSignal.disconnect(boost::bind(&TGameMenu::OnTapUpAfterMove, boost::ref(Menu), _1));
@@ -177,17 +179,16 @@ void TAndroidApplication::DisapplySignalsToMenu()
     OnTapDownSignal.disconnect(boost::bind(&TGameMenu::OnTapDown, boost::ref(Menu), _1));
 }
 
-void TAndroidApplication::ApplySignalsToGame()
+void TMyApplication::ApplySignalsToGame()
 {
-    
     OnTapUpSignal.connect(boost::bind(&TGameLevel::OnTapUp, boost::ref(GameLevel), _1));
     OnFlingSignal.connect(boost::bind(&TGameLevel::OnFling, boost::ref(GameLevel), _1));
-    OnScrollSignal.connect(boost::bind(&TGameLevel::OnScroll, boost::ref(GameLevel), _1));
+	OnScrollSignal.connect(boost::bind(&TGameLevel::OnScroll, boost::ref(GameLevel), _1));
     OnTapDownSignal.connect(boost::bind(&TGameLevel::OnTapDown, boost::ref(GameLevel), _1));
     
 }
 
-void TAndroidApplication::DisapplySignalsToGame()
+void TMyApplication::DisapplySignalsToGame()
 {
     OnTapUpSignal.disconnect(boost::bind(&TGameLevel::OnTapUp, boost::ref(GameLevel), _1));
     OnFlingSignal.disconnect(boost::bind(&TGameLevel::OnFling, boost::ref(GameLevel), _1));
@@ -196,18 +197,18 @@ void TAndroidApplication::DisapplySignalsToGame()
     
 }
 
-void TAndroidApplication::ApplySignalsToCredits()
+void TMyApplication::ApplySignalsToCredits()
 {
     OnTapDownSignal.connect(boost::bind(&TGameCredits::OnTapDown, boost::ref(GameCredits), _1));
 }
 
 
-void TAndroidApplication::DisapplySignalsToCredits()
+void TMyApplication::DisapplySignalsToCredits()
 {
     OnTapDownSignal.disconnect(boost::bind(&TGameCredits::OnTapDown, boost::ref(GameCredits), _1));
 }
 
-void TAndroidApplication::LoadResources()
+void TMyApplication::LoadResources()
 {
 
     TextureNamesToLoad.clear();
@@ -273,7 +274,7 @@ void TAndroidApplication::LoadResources()
 
 }
 
-void TAndroidApplication::TryLoadSavedGame()
+void TMyApplication::TryLoadSavedGame()
 {
 
     std::string fileName = GetFilePathUserData("progress.txt");
@@ -292,7 +293,7 @@ void TAndroidApplication::TryLoadSavedGame()
 	}
 }
 
-void TAndroidApplication::TrySaveGame()
+void TMyApplication::TrySaveGame()
 {
 
     std::string fileName = GetFilePathUserData("progress.txt");
@@ -310,23 +311,22 @@ void TAndroidApplication::TrySaveGame()
 
 
 	
-void TAndroidApplication::InnerDraw()
+void TMyApplication::InnerDraw()
 {
-	
 	glDisable(GL_DEPTH_TEST);
 
 
     OnDrawSignal();
 
-
 }
 
 
-void TAndroidApplication::InnerUpdate(cardinal dt)
+void TMyApplication::InnerUpdate(size_t dt)
 {
 
     if (GameState == CONST_GAMESTATE_PRELOADING)
     {
+		*SE::Console << "1CONST_GAMESTATE_PRELOADING";
         StateTimer += dt/1000.f;
         if (StateTimer >= 1.f)
         {
@@ -337,6 +337,7 @@ void TAndroidApplication::InnerUpdate(cardinal dt)
     }
     else if (GameState == CONST_GAMESTATE_LOADING)
 	{
+		*SE::Console << "2CONST_GAMESTATE_LOADING";
         StateTimer += dt/1000.f;
         if (StateTimer >= 1.f)
         {
@@ -360,17 +361,21 @@ void TAndroidApplication::InnerUpdate(cardinal dt)
     }
     else if (GameState == CONST_GAMESTATE_LEVEL)
 	{
+		*SE::Console << "3CONST_GAMESTATE_LEVEL";
         GameLevel.Update(dt);
     }
     else if (GameState == CONST_GAMESTATE_MENU)
 	{
+		//*SE::Console << "4CONST_GAMESTATE_MENU";
         Menu.Update(dt);
     }
     else if (GameState == CONST_GAMESTATE_FROM_MENU_TO_LEVEL)
-    {
+	{
+		*SE::Console << "5CONST_GAMESTATE_FROM_MENU_TO_LEVEL";
         GameLevel.Update(dt);
         if (GameLevel.IsLoaded())
         {
+			//*SE::Console << "5CONST_GAMESTATE_FROM_MENU_TO_LEVEL";
             GameState = CONST_GAMESTATE_LEVEL;
             OnDrawSignal.disconnect(boost::bind(&TGameMenu::Draw, boost::ref(Menu)));
             //CONNECT SLOT
@@ -379,7 +384,8 @@ void TAndroidApplication::InnerUpdate(cardinal dt)
         }
     }
     else if (GameState == CONST_GAMESTATE_FROM_MENU_TO_CREDITS)
-    {
+	{
+		*SE::Console << "6CONST_GAMESTATE_FROM_MENU_TO_CREDITS";
         Menu.Update(dt);
         GameCredits.Update(dt);
         StateTimer -= dt;
@@ -392,7 +398,8 @@ void TAndroidApplication::InnerUpdate(cardinal dt)
         }
     }
     else if (GameState == CONST_GAMESTATE_CREDITS)
-    {
+	{
+		//*SE::Console << "7CONST_GAMESTATE_CREDITS";
         GameCredits.Update(dt);
     }
     else if (GameState == CONST_GAMESTATE_FROM_CREDITS_TO_MENU)
@@ -411,12 +418,12 @@ void TAndroidApplication::InnerUpdate(cardinal dt)
 }
 
 
-void TAndroidApplication::GoFromMenuToGame(int level)
+void TMyApplication::GoFromMenuToGame(int level)
 {
-    //#ifndef TARGET_IOS
-	ResourceManager->SoundManager.PlayMusicLooped("level1ogg.ogg");
-    
+//#ifndef TARGET_IOS
+//	ResourceManager->SoundManager.PlayMusicLooped("level1ogg.ogg");
 //#endif
+
     GameLevel.FillWithFile(ST::PathToResources + "level"+tostr(level+1)+".txt");
     GameLevel.SetLoading("shutterstock" + tostr(level+1), "levelshot"+tostr(level+1));    
     GameState = CONST_GAMESTATE_FROM_MENU_TO_LEVEL;
@@ -426,10 +433,10 @@ void TAndroidApplication::GoFromMenuToGame(int level)
  
 }
 
-void TAndroidApplication::GoFromGameToMenu()
+void TMyApplication::GoFromGameToMenu()
 {
     //#ifndef TARGET_IOS
-	ResourceManager->SoundManager.StopMusic("level1ogg.ogg");
+//	ResourceManager->SoundManager.StopMusic("level1ogg.ogg");
 //#endif
     TrySaveGame();
     DisapplySignalsToGame();
@@ -438,7 +445,7 @@ void TAndroidApplication::GoFromGameToMenu()
     OnDrawSignal.disconnect(boost::bind(&TGameLevel::Draw, boost::ref(GameLevel)));
 }
 
-void TAndroidApplication::GoFromMenuToCredits()
+void TMyApplication::GoFromMenuToCredits()
 {
     GameState = CONST_GAMESTATE_FROM_MENU_TO_CREDITS;
     StateTimer = CONST_CREDITS_SHOW_TIME;
@@ -448,7 +455,7 @@ void TAndroidApplication::GoFromMenuToCredits()
 
 }
 
-void TAndroidApplication::GoFromCreditsToMenu()
+void TMyApplication::GoFromCreditsToMenu()
 {
     
     GameState = CONST_GAMESTATE_FROM_CREDITS_TO_MENU;
@@ -459,28 +466,28 @@ void TAndroidApplication::GoFromCreditsToMenu()
     DisapplySignalsToCredits();
 }
 
-void TAndroidApplication::MarkSetGameLevelPause()
+void TMyApplication::MarkSetGameLevelPause()
 {
     OnDrawSignal.connect(0, boost::bind(&TGameMenu::Draw, boost::ref(Menu)));
 }
 
-void TAndroidApplication::MarkReleaseGameLevelPause()
+void TMyApplication::MarkReleaseGameLevelPause()
 {
     OnDrawSignal.disconnect(boost::bind(&TGameMenu::Draw, boost::ref(Menu)));
 }
 	
 
-void TAndroidApplication::OpenNextLevel()
+void TMyApplication::OpenNextLevel()
 {
     Menu.OpenNextLevel();
 }
 
-bool TAndroidApplication::IsLoaded()
+bool TMyApplication::IsLoaded()
 {
     return Loaded;
 }
 
-bool TAndroidApplication::IsInited()
+bool TMyApplication::IsInited()
 {
     return Inited;
 }

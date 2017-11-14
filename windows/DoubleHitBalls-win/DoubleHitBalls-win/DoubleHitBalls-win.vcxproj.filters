@@ -18,19 +18,19 @@
     <ClCompile Include="main.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\jni\creditscode.cpp">
+    <ClCompile Include="..\..\..\game\main_code.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\jni\gamecode.cpp">
+    <ClCompile Include="..\..\..\game\menucode.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\jni\loadingcode.cpp">
+    <ClCompile Include="..\..\..\game\creditscode.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\jni\main_code.cpp">
+    <ClCompile Include="..\..\..\game\gamecode.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\jni\menucode.cpp">
+    <ClCompile Include="..\..\..\game\loadingcode.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,22 +38,22 @@
     <ClInclude Include="main.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\jni\loadingcode.h">
+    <ClInclude Include="..\..\..\game\main_code.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\jni\main_code.h">
+    <ClInclude Include="..\..\..\game\menucode.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\jni\menucode.h">
+    <ClInclude Include="..\..\..\game\creditscode.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\jni\creditscode.h">
+    <ClInclude Include="..\..\..\game\game_area_interface.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\jni\game_area_interface.h">
+    <ClInclude Include="..\..\..\game\gamecode.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\jni\gamecode.h">
+    <ClInclude Include="..\..\..\game\loadingcode.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

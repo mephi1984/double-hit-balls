@@ -1,121 +1,81 @@
-Log started
-OpenGL Window created
-Sound thread finally over. Let's go!
-Render::OpenGL glVersion = 4.0.10318 Compatibility Profile Context
-Render::OpenGL glVersion above 2.0 ok
-Render::OpenGL GL_ARB_framebuffer_object supported ok
-Render::OpenGL GL_ARB_uniform_buffer_object supported ok
-APP INIT
-Prepare to add shader TestShader
-ResourceManager::ShaderManager::Shader deleting
-ResourceManager::ShaderManager::Shader deleting
-Buffer thread go!
-Sound thread go!
-No more music and no sounds. Lock sound thread!
-ResourceManager::ShaderManager::Shader Vertex shader was successfully compiled to run on hardware.
- 
-ResourceManager::ShaderManager::Shader Fragment shader was successfully compiled to run on hardware.
- WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
-
-ResourceManager::ShaderManager::Shader Fragment shader(s) linked, vertex shader(s) linked. 
-WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
-WARNING: warning(#276) Symbol 'texCoord' usage doesn't match between two stages
-WARNING: warning(#276) Symbol 'texCoord' usage do
-ResourceManager::ShaderManager shader loaded: TestShader
-Prepare to add shader FrameShader
-ResourceManager::ShaderManager::Shader deleting
-ResourceManager::ShaderManager::Shader deleting
-ResourceManager::ShaderManager::Shader Vertex shader was successfully compiled to run on hardware.
- 
-ResourceManager::ShaderManager::Shader Fragment shader was successfully compiled to run on hardware.
- WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
-
-ResourceManager::ShaderManager::Shader Fragment shader(s) linked, vertex shader(s) linked. 
-WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
-WARNING: warning(#276) Symbol 'texCoord' usage doesn't match between two stages
-WARNING: warning(#276) Symbol 'texCoord' usage do
-ResourceManager::ShaderManager shader loaded: FrameShader
-Prepare to add shader BrickShader
-ResourceManager::ShaderManager::Shader deleting
-ResourceManager::ShaderManager::Shader deleting
-ResourceManager::ShaderManager::Shader Vertex shader was successfully compiled to run on hardware.
- 
-ResourceManager::ShaderManager::Shader Fragment shader was successfully compiled to run on hardware.
- WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
-
-ResourceManager::ShaderManager::Shader Fragment shader(s) linked, vertex shader(s) linked. 
-WARNING: 0:1: warning(#260) Keyword 'precision' is supported in GLSL 1.3
-WARNING: warning(#276) Symbol 'texCoord' usage doesn't match between two stages
-WARNING: warning(#276) Symbol 'texCoord' usage do
-ResourceManager::ShaderManager shader loaded: BrickShader
-ResourceManager::TexList Texture added: loading.bmp with id = 1
-ResourceManager::TexList Texture added: logo_small.bmp32 with id = 2
-FrameManager:: frame buffer added: LevelBuffer
-OggStream created successfully
-ResourceManager::TexList Texture added: main_menu_bkg_left.bmp with id = 4
-ResourceManager::TexList Texture added: main_menu_bkg_right.bmp with id = 5
-ResourceManager::TexList Texture added: select_level.bmp32 with id = 6
-ResourceManager::TexList Texture added: shutterstock1.bmp with id = 7
-ResourceManager::TexList Texture added: shutterstock2.bmp with id = 8
-ResourceManager::TexList Texture added: shutterstock3.bmp with id = 9
-ResourceManager::TexList Texture added: shutterstock4.bmp with id = 10
-ResourceManager::TexList Texture added: shutterstock5.bmp with id = 11
-ResourceManager::TexList Texture added: shutterstock6.bmp with id = 12
-ResourceManager::TexList Texture added: shutterstock7.bmp with id = 13
-ResourceManager::TexList Texture added: shutterstock8.bmp with id = 14
-ResourceManager::TexList Texture added: shutterstock9.bmp with id = 15
-ResourceManager::TexList Texture added: shutterstock10.bmp with id = 16
-ResourceManager::TexList Texture added: shutterstock11.bmp with id = 17
-ResourceManager::TexList Texture added: shutterstock12.bmp with id = 18
-ResourceManager::TexList Texture added: levelshot1.bmp with id = 19
-ResourceManager::TexList Texture added: levelshot2.bmp with id = 20
-ResourceManager::TexList Texture added: levelshot3.bmp with id = 21
-ResourceManager::TexList Texture added: levelshot4.bmp with id = 22
-ResourceManager::TexList Texture added: levelshot5.bmp with id = 23
-ResourceManager::TexList Texture added: levelshot6.bmp with id = 24
-ResourceManager::TexList Texture added: levelshot7.bmp with id = 25
-ResourceManager::TexList Texture added: levelshot8.bmp with id = 26
-ResourceManager::TexList Texture added: levelshot9.bmp with id = 27
-ResourceManager::TexList Texture added: levelshot10.bmp with id = 28
-ResourceManager::TexList Texture added: levelshot11.bmp with id = 29
-ResourceManager::TexList Texture added: levelshot12.bmp with id = 30
-ResourceManager::TexList Texture added: game_end.bmp32 with id = 31
-ResourceManager::TexList Texture added: block1.bmp32 with id = 32
-ResourceManager::TexList Texture added: block2.bmp32 with id = 33
-ResourceManager::TexList Texture added: block3.bmp32 with id = 34
-ResourceManager::TexList Texture added: bonus_gothrough.bmp32 with id = 35
-ResourceManager::TexList Texture added: bonus_multiplier.bmp32 with id = 36
-ResourceManager::TexList Texture added: bonus_floor.bmp32 with id = 37
-ResourceManager::TexList Texture added: ball.bmp32 with id = 38
-ResourceManager::TexList Texture added: ball_glow.bmp32 with id = 39
-ResourceManager::TexList Texture added: wall_left.bmp32 with id = 40
-ResourceManager::TexList Texture added: wall_right.bmp32 with id = 41
-ResourceManager::TexList Texture added: wall_up.bmp32 with id = 42
-ResourceManager::TexList Texture added: wall_bonus.bmp32 with id = 43
-ResourceManager::TexList Texture added: reflector.bmp32 with id = 44
-ResourceManager::TexList Texture added: back_btn.bmp32 with id = 45
-ResourceManager::TexList Texture added: slide_up_btn.bmp32 with id = 46
-ResourceManager::TexList Texture added: tap_to_continue_btn.bmp32 with id = 47
-ResourceManager::TexList Texture added: credits.bmp32 with id = 48
-Projection:
- 0.00416667 0 0 0 0 0.00625 0 0 0 0 -1 0 -1 -1 0 1 
-Modelview:
- 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 
-ProjectonModelview:
- 0.00416667 0 0 0 0 0.00625 0 0 0 0 -1 0 -1 -1 0 1 
-Program prepares to quit
-APP DEINIT
-Deinit Sound Manager!
-Buffer thread over!
-Unlock processSoundListMutex to destroy buffering thread!
-No more music and no sounds. Lock sound thread!
-Sound thread over!
-Unlock SoundThreadMutex to destroy sound thread!
-ResourceManager::FrameManager deleting
-ResourceManager::ShaderManager::Shader deleting
-ResourceManager::ShaderManager::Shader deleting
-ResourceManager::ShaderManager::Shader deleting
-ResourceManager::ShaderManager deleting
-ResourceManager::TexList cleared
-ResourceManager::TexList deleting
-HalibutRender::deleting
+2017-Nov-13 16:11:17: Log started
+2017-Nov-13 16:11:17: Script manager ready
+2017-Nov-13 16:11:17: Render::OpenGL glVersion = 4.4.0 - Build 20.19.15.4483
+2017-Nov-13 16:11:17: Render::OpenGL glVersion above 2.0 ok
+2017-Nov-13 16:11:17: Render::OpenGL GL_ARB_framebuffer_object supported ok
+2017-Nov-13 16:11:17: Render::OpenGL GL_ARB_uniform_buffer_object supported ok
+2017-Nov-13 16:11:17: Bind basic functions
+2017-Nov-13 16:11:17: APP INIT
+
+2017-Nov-13 16:11:17: Prepare to add shader DefaultShader
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager::Shader WARNING: 0:2: '' :  #version directive missing
+
+
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager::Shader WARNING: 0:1: 'precision' : symbol not available in current GLSL version 
+WARNING: 0:1: 'mediump' : symbol not available in current GLSL version 
+WARNING: 0:2: '' :  #version directive missing
+
+
+2017-Nov-13 16:11:17: Shader program is - 3
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager::Shader 
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager shader loaded: DefaultShader
+2017-Nov-13 16:11:17: Prepare to add shader FrameShader
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager::Shader WARNING: 0:2: '' :  #version directive missing
+
+
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager::Shader WARNING: 0:1: 'precision' : symbol not available in current GLSL version 
+WARNING: 0:1: 'mediump' : symbol not available in current GLSL version 
+WARNING: 0:2: '' :  #version directive missing
+
+
+2017-Nov-13 16:11:17: Shader program is - 6
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager::Shader 
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager shader loaded: FrameShader
+2017-Nov-13 16:11:17: Prepare to add shader BrickShader
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager::Shader WARNING: 0:2: '' :  #version directive missing
+
+
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager::Shader WARNING: 0:1: 'precision' : symbol not available in current GLSL version 
+WARNING: 0:1: 'mediump' : symbol not available in current GLSL version 
+WARNING: 0:2: '' :  #version directive missing
+
+
+2017-Nov-13 16:11:17: Shader program is - 9
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager::Shader 
+2017-Nov-13 16:11:17: ResourceManager::ShaderManager shader loaded: BrickShader
+2017-Nov-13 16:11:17: ResourceManager::TexList Texture added: loading with id = 1
+2017-Nov-13 16:11:17: ResourceManager::TexList Texture added: logo_small with id = 2
+2017-Nov-13 16:11:17: ResourceManager::TexList Texture added: console_bkg.bmp with id = 3
+2017-Nov-13 16:11:17: FrameManager:: frame buffer added: LevelBuffer
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: droid_sans14_font_bitmap.png with id = 5
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: main_menu_bkg_left with id = 6
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: main_menu_bkg_right with id = 7
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: select_level with id = 8
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: shutterstock1 with id = 9
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: shutterstock2 with id = 10
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: shutterstock3 with id = 11
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: shutterstock4 with id = 12
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: shutterstock5 with id = 13
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: shutterstock6 with id = 14
+2017-Nov-13 16:11:18: ResourceManager::TexList Texture added: shutterstock7 with id = 15
+2017-Nov-13 16:11:19: ResourceManager::TexList Texture added: shutterstock8 with id = 16
+2017-Nov-13 16:11:19: ResourceManager::TexList Texture added: shutterstock9 with id = 17
+2017-Nov-13 16:11:19: ResourceManager::TexList Texture added: shutterstock10 with id = 18
+2017-Nov-13 16:11:19: ResourceManager::TexList Texture added: shutterstock11 with id = 19
+2017-Nov-13 16:11:19: Outer Deinit
+2017-Nov-13 16:11:19: APP DEINIT
+
+2017-Nov-13 16:11:19: Program prepares to quit
+2017-Nov-13 16:11:19: HalibutAnimationManager deleting...
+2017-Nov-13 16:11:19: GUI Manager deleting...
+2017-Nov-13 16:11:19: TFontManager deleting...
+2017-Nov-13 16:11:19: Script manager shutdown
+2017-Nov-13 16:11:19: ResourceManager::FrameManager deleting
+2017-Nov-13 16:11:19: ResourceManager::ShaderManager::Shader deleting
+2017-Nov-13 16:11:19: ResourceManager::ShaderManager::Shader deleting
+2017-Nov-13 16:11:19: ResourceManager::ShaderManager::Shader deleting
+2017-Nov-13 16:11:19: ResourceManager::ShaderManager cleared
+2017-Nov-13 16:11:19: ResourceManager::ShaderManager deleting
+2017-Nov-13 16:11:19: ResourceManager::ModelManager deleting
+2017-Nov-13 16:11:19: ResourceManager::TexList cleared
+2017-Nov-13 16:11:19: ResourceManager::TexList deleting

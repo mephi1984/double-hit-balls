@@ -45,16 +45,16 @@ protected:
     int Locked; //0, 1 or 2
     int State;
     float StateTimer;
-    vec4 Color;
+    Vector4f Color;
 public:
     TBrick();
-    void SetVisible(vec4 color, int locked);
+    void SetVisible(Vector4f color, int locked);
     void SetInvisible();
     void TryDrawAppear(int ipos, int jpos);
-    void Update(cardinal dt);
-    vec2 GetPosFrom(int ipos, int jpos);
-    vec4 GetColor();
-    void Appear(vec4 color, int locked);
+    void Update(size_t dt);
+    Vector2f GetPosFrom(int ipos, int jpos);
+    Vector4f GetColor();
+    void Appear(Vector4f color, int locked);
     void Appear();
     void Hit();
     void Disappear();
@@ -66,30 +66,30 @@ class TBonusFalling
 {
 protected:
    float Lifetime;
-   vec2 Pos;
+   Vector2f Pos;
    std::string TexName;
    int BonusType; //0 - multiplier,  1 - Go-through, 2 - floor
 public:
-    TBonusFalling(vec2 pos);
-    vec2 GetPos();
+    TBonusFalling(Vector2f pos);
+    Vector2f GetPos();
     int GetType();
     void Draw();
-    void Update(cardinal dt);           
+    void Update(size_t dt);           
 };
 
 struct TBall
 {
-    vec2 Pos;
-    vec2 Velocity;
-    vec4 Color;
-    std::list<vec2> TalePos;
+    Vector2f Pos;
+    Vector2f Velocity;
+    Vector4f Color;
+    std::list<Vector2f> TalePos;
     
-    vec2 BallInBlock;
-    vec2 PrevBallInBlock;
+    Vector2f BallInBlock;
+    Vector2f PrevBallInBlock;
     
-    TBall(vec2 pos, vec2 velocity, vec4 color);
-    vec2 GetPos();
-    vec2 GetVelocityVector();
+    TBall(Vector2f pos, Vector2f velocity, Vector4f color);
+    Vector2f GetPos();
+    Vector2f GetVelocityVector();
     
     void Go();
     
@@ -98,12 +98,12 @@ struct TBall
     void ReflectToUp();
     void ReflectToDown();
     
-    void TryReflectOnReflector(vec2 refPos);
+    void TryReflectOnReflector(Vector2f refPos);
    
-    void Update(cardinal dt);    
+    void Update(size_t dt);    
 };
 
-typedef std::pair<vec4, std::string> PairColorTexture;
+typedef std::pair<Vector4f, std::string> PairColorTexture;
 
 struct TBlockInstansingList
 {
@@ -124,7 +124,7 @@ protected:
     std::string LevelScreenTexture;
     std::string LevelFileName;
     
-    vec2 ReflectorPos;
+    Vector2f ReflectorPos;
     
     int LevelState;
     bool PrevLevelStateIsStandby;
@@ -133,7 +133,7 @@ protected:
     TBrick BlockMatrix[CONST_BRICKMATRIX_WIDTH][CONST_BRICKMATRIX_HEIGHT];
     TBlockInstansingList BlockInstansingList;
     
-    bool TapInBackBtnArea(const vec2& pos);
+    bool TapInBackBtnArea(const Vector2f& pos);
     
     void ReloadBlockInstansingList();
     void SetFinished();
@@ -158,23 +158,23 @@ protected:
     
     TBallInstancingList BallInstancingList;
     
-    vec4 BallColor;
+    Vector4f BallColor;
     
     void ReloadBallInstancingList();
     void RefreshBallInstancingList();
     
     
-    void UpdateBallList(cardinal dt);
-    void MultiplyBalls(vec2 pos, vec2 velocity);
+    void UpdateBallList(size_t dt);
+    void MultiplyBalls(Vector2f pos, Vector2f velocity);
     
-    vec2 GetBlock(const vec2& pos);
+    Vector2f GetBlock(const Vector2f& pos);
     void InitLevel();
     
     float BonusGothroughTimer;
     float BonusFloorTimer;
     float BonusFloorPosY;
     
-    vec4 ParseColor(const std::string& s);
+    Vector4f ParseColor(const std::string& s);
     void ReloadLevel();
     
 public:
@@ -193,11 +193,11 @@ public:
 	bool IsPaused();
 	void ReleasePause();
 	
-	virtual void Update(cardinal dt);
-	virtual void OnTapDown(vec2 pos);
-	virtual void OnTapUp(vec2 pos);
-	virtual void OnFling(vec2 slideSpeed);
-	virtual void OnScroll(vec2 shift);
+	virtual void Update(size_t dt);
+	virtual void OnTapDown(Vector2f pos);
+	virtual void OnTapUp(Vector2f pos);
+	virtual void OnFling(Vector2f slideSpeed);
+	virtual void OnScroll(Vector2f shift);
 };
 
 

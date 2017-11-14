@@ -23,8 +23,8 @@ public:
     TGameCredits();
     
     virtual void Draw();
-    virtual void Update(cardinal dt);
-    virtual void OnTapDown(vec2 p);
+    virtual void Update(size_t dt);
+    virtual void OnTapDown(Vector2f p);
     
     void StartAppear();
     void StartDisappear();

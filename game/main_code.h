@@ -32,14 +32,14 @@
 using namespace SE;
 
 
-extern boost::signals2::signal<void (vec2)> OnTapUpSignal;
-extern boost::signals2::signal<void (vec2)> OnTapUpAfterMoveSignal;
+extern boost::signals2::signal<void(Vector2f)> OnTapUpSignal;
+extern boost::signals2::signal<void(Vector2f)> OnTapUpAfterMoveSignal;
 
-extern boost::signals2::signal<void (vec2)> OnTapDownSignal;
-extern boost::signals2::signal<void (vec2)> OnFlingSignal;
-extern boost::signals2::signal<void (vec2)> OnScrollSignal;
+extern boost::signals2::signal<void(Vector2f)> OnTapDownSignal;
+extern boost::signals2::signal<void(Vector2f)> OnFlingSignal;
+extern boost::signals2::signal<void(Vector2f)> OnScrollSignal;
 
-extern boost::signals2::signal<void ()> OnDrawSignal;
+extern boost::signals2::signal<void()> OnDrawSignal;
 
 extern const std::string CONST_BLOCK_TEXTURE1;
 extern const std::string CONST_BLOCK_TEXTURE2;
@@ -70,6 +70,7 @@ extern const std::string CONST_SLIDE_UP_BTN_TEXTURE;
 extern const std::string CONST_TAP_TO_CONTINUE_BTN_TEXTURE;
 extern const std::string CONST_LOADING_TEXTURE;
 extern const std::string CONST_LOGO_SMALL_TEXTURE;
+extern const std::string CONST_LOADING_BACKGROUND_BLACK;
 extern const std::string CONST_CREDITS_TEXTURE;
 
 
@@ -84,73 +85,73 @@ const int CONST_GAMESTATE_LOADING = 6;
 const int CONST_GAMESTATE_PRELOADING = 7;
 
 
-class TAndroidApplication : public TApplication
+class TMyApplication : public TApplication
 {
 protected:
 	TGameMenu Menu;
 	TGameLevel GameLevel;
 	TGameCredits GameCredits;
 	TGameLoading GameLoading;
-	
-	int GameState; 
+
+	int GameState;
 	float StateTimer;
-    
-    void TryLoadSavedGame();
-    void TrySaveGame();
-    
-    bool Inited;
-    
-    std::vector<std::pair<std::string, std::string> > TextureNamesToLoad;
-    
-    void ApplySignalsToMenu();
-    void DisapplySignalsToMenu();
-    void ApplySignalsToGame();
-    void DisapplySignalsToGame();
-    void ApplySignalsToCredits();
-    void DisapplySignalsToCredits();
+
+	void TryLoadSavedGame();
+	void TrySaveGame();
+
+	bool Inited;
+
+	std::vector<std::pair<std::string, std::string> > TextureNamesToLoad;
+
+	void ApplySignalsToMenu();
+	void DisapplySignalsToMenu();
+	void ApplySignalsToGame();
+	void DisapplySignalsToGame();
+	void ApplySignalsToCredits();
+	void DisapplySignalsToCredits();
 
 public:
-    bool Loaded;
-    
-	TAndroidApplication() : TApplication(), Loaded(false), Inited(false) { }
+	bool Loaded;
 
-    virtual void InnerInit();
-    
-    virtual void InnerDeinit();
-	
+	TMyApplication() : TApplication(), Loaded(false), Inited(false) { }
+
+	virtual void InnerInit();
+
+	virtual void InnerDeinit();
+
 	virtual void InnerDraw();
-	
-	virtual void InnerUpdate(cardinal dt);
-	
+
+	virtual void InnerUpdate(size_t dt);
+
 	void GoFromMenuToGame(int level);
 	void GoFromGameToMenu();
 	void GoFromMenuToCredits();
 	void GoFromCreditsToMenu();
 	void MarkSetGameLevelPause();
 	void MarkReleaseGameLevelPause();
-	
+
 	void OpenNextLevel();
-	
+
 	bool IsLoaded();
-	
+
 	bool IsInited();
-	
+
 	void LoadResources();
-	
-	virtual void InnerOnTapDown(vec2 p);
-	
-	virtual void InnerOnTapUp(vec2 p);
-    
-    virtual void InnerOnTapUpAfterMove(vec2 p);
-	
-	virtual void InnerOnMove(vec2 shift);
-	
-	virtual void OnFling(vec2 v);
+
+	virtual void InnerOnTapDown(Vector2f p);
+
+	virtual void InnerOnTapUp(Vector2f p);
+
+	virtual void InnerOnTapUpAfterMove(Vector2f p);
+
+	virtual void InnerOnMove(Vector2f p, Vector2f shift);
+
+	virtual void OnFling(Vector2f v);
 
 };
 
 
-extern TAndroidApplication* Application;
+extern TMyApplication* Application;
 
 
 

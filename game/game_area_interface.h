@@ -10,13 +10,13 @@ class TGameAreaAncestor
 {
 public:
     virtual void Draw() { }
-    virtual void Update(cardinal) { }
-    virtual void OnTapUp(vec2) { }
-    virtual void OnTapUpAfterMove(vec2) { }
+    virtual void Update(size_t) { }
+    virtual void OnTapUp(Vector2f) { }
+    virtual void OnTapUpAfterMove(Vector2f) { }
     
-    virtual void OnTapDown(vec2) { }
-    virtual void OnFling(vec2) { }
-	virtual void OnScroll(vec2) { }
+    virtual void OnTapDown(Vector2f) { }
+    virtual void OnFling(Vector2f) { }
+	virtual void OnScroll(Vector2f) { }
 	
 	virtual ~TGameAreaAncestor() { } //By default destructor is not virtual
 };

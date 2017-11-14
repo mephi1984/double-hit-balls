@@ -23,12 +23,12 @@ protected:
 public:
 	TGameMenu();
 	virtual void Draw();
-	virtual void Update(cardinal dt);
-	virtual void OnTapDown(vec2 pos);
-	virtual void OnTapUp(vec2 pos);
-    virtual void OnTapUpAfterMove(vec2 pos);
-	virtual void OnFling(vec2 slideSpeed);
-	virtual void OnScroll(vec2 shift);
+	virtual void Update(size_t dt);
+	virtual void OnTapDown(Vector2f pos);
+	virtual void OnTapUp(Vector2f pos);
+    virtual void OnTapUpAfterMove(Vector2f pos);
+	virtual void OnFling(Vector2f slideSpeed);
+	virtual void OnScroll(Vector2f shift);
 	
 	void OpenNextLevel();
 	int GetMenuItemCount();

@@ -21,14 +21,15 @@ TGameMenu::TGameMenu()
 
 void TGameMenu::Draw()
 {
+//	*SE::Console << "TGameMenu::Draw";
     CheckGlError("Draw TGameMenu");
     RenderUniform1i("sel", 0);
     RenderUniform1f("Transparency", 1.f);
     float bkgShift = MenuPos*0.1f - 100.f;
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["main_menu_bkg_left"]);	
-	Renderer->DrawRect(vec2(bkgShift,0.f), vec2(480.f+bkgShift,320.f));
+	Renderer->DrawRect(Vector2f(bkgShift,0.f), Vector2f(480.f+bkgShift,320.f));
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["main_menu_bkg_right"]);
-	Renderer->DrawRect(vec2(480.f+bkgShift,0.f), vec2(960.f+bkgShift,320.f));
+	Renderer->DrawRect(Vector2f(480.f+bkgShift,0.f), Vector2f(960.f+bkgShift,320.f));
 
 
 	if (SelectedGame == 0)
@@ -43,38 +44,38 @@ void TGameMenu::Draw()
     for (int i=0; i<MenuItemCount; i++)
     {
         glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["levelshot"+tostr(i+1)]);
-        Renderer->DrawRect(vec2(160.f+MenuPos+CONST_MENU_WINDOW_DISTANCE*i,80.f), vec2(160.f+240.f+MenuPos+CONST_MENU_WINDOW_DISTANCE*i, 240.f));
+        Renderer->DrawRect(Vector2f(160.f+MenuPos+CONST_MENU_WINDOW_DISTANCE*i,80.f), Vector2f(160.f+240.f+MenuPos+CONST_MENU_WINDOW_DISTANCE*i, 240.f));
     }
     
     if (MenuItemCount == 12)
     {
         glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["game_end"]);
-        Renderer->DrawRect(vec2(160.f+MenuPos+CONST_MENU_WINDOW_DISTANCE*12,160.f - 64.f), vec2(160.f+256.f+MenuPos+CONST_MENU_WINDOW_DISTANCE*12, 160.f + 64.f));
+        Renderer->DrawRect(Vector2f(160.f+MenuPos+CONST_MENU_WINDOW_DISTANCE*12,160.f - 64.f), Vector2f(160.f+256.f+MenuPos+CONST_MENU_WINDOW_DISTANCE*12, 160.f + 64.f));
     
     }
     
     
     
     glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["select_level"]);
-    Renderer->DrawRect(vec2(240.f-128.f, 241.f), vec2(240.f+128.f, 305.f));
+    Renderer->DrawRect(Vector2f(240.f-128.f, 241.f), Vector2f(240.f+128.f, 305.f));
     
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["logo_small"]);
-    Renderer->DrawRect(vec2(240.f-128.f+15.f, 0.f), vec2(240.f+128.f+15.f, 64.f));
+    Renderer->DrawRect(Vector2f(240.f-128.f+15.f, 0.f), Vector2f(240.f+128.f+15.f, 64.f));
 
     CheckGlError("Draw TGameMenu 2");
 
 	
 }
 
-void TGameMenu::Update(cardinal dt)
+void TGameMenu::Update(size_t dt)
 {
 	if (HoldToTap)
 		return;
-	
+	// если кнопка не нажата
 	float k;
 	
 	MenuPos = MenuPos + MenuSpeed*dt/1000.f;
-    
+
     int menuItemToShowCount;
     
     if (MenuItemCount == 12)
@@ -130,22 +131,22 @@ void TGameMenu::Update(cardinal dt)
     
 }
 
-void TGameMenu::OnTapDown(vec2 pos)
+void TGameMenu::OnTapDown(Vector2f pos)
 {
-
+	*SE::Console << "TGameMenu::OnTapDown";
     HoldToTap = true;
-    
-    if (pos.v[1]<64.f && pos.v[0]>=265.f-128.f && pos.v[0]<=265.f+128.f)
+	
+    if (pos(1)<64.f && pos(0)>=265.f-128.f && pos(0)<=265.f+128.f)
     {
         Application->GoFromMenuToCredits();
         return;
     }
-  
-    vec2 realPos = pos - vec2(MenuPos, 0);
+	
+    Vector2f realPos = pos - Vector2f(MenuPos, 0);
     
-    if (realPos.v[1] >= 80.f && realPos.v[1] <= 240.f)
+    if (realPos(1) >= 80.f && realPos(1) <= 240.f)
     {
-        float x = realPos.v[0] - 160.f;
+        float x = realPos(0) - 160.f;
         
         int p = 0;
         while (x >280.f)
@@ -166,8 +167,9 @@ void TGameMenu::OnTapDown(vec2 pos)
 
 }
 
-void TGameMenu::OnTapUp(vec2 pos)
+void TGameMenu::OnTapUp(Vector2f pos)
 {
+	*SE::Console << "TGameMenu::OnTapUp";
 	HoldToTap = false;
 	
 	if (SelectedGame != -1)
@@ -178,25 +180,27 @@ void TGameMenu::OnTapUp(vec2 pos)
     }
 }
 
-void TGameMenu::OnTapUpAfterMove(vec2 pos)
+void TGameMenu::OnTapUpAfterMove(Vector2f pos)
 {
     HoldToTap = false;
 }
 
 
-void TGameMenu::OnFling(vec2 slideSpeed)
+void TGameMenu::OnFling(Vector2f slideSpeed)
 {
+	*SE::Console << "TGameMenu::OnFling";
 	HoldToTap = false;
-	MenuSpeed = slideSpeed.v[0];
+	MenuSpeed = slideSpeed(0);
 }
 
-void TGameMenu::OnScroll(vec2 shift)
+void TGameMenu::OnScroll(Vector2f shift)
 {
-	MenuPos = MenuPos - shift.v[0];
+	MenuPos = MenuPos - shift(0);
 }
 
 void TGameMenu::OpenNextLevel()
 {
+	*SE::Console << "TGameMenu::OpenNextLevel";
     if (MenuItemCount < 12)
     {
         MenuItemCount++;
@@ -205,10 +209,12 @@ void TGameMenu::OpenNextLevel()
 
 int TGameMenu::GetMenuItemCount()
 {
+	*SE::Console << "TGameMenu::GetMenuItemCount";
     return MenuItemCount;
 }
 
 void TGameMenu::SetMenuItemCount(int menuItemCount)
 {
+	*SE::Console << "TGameMenu::SetMenuItemCount";
     MenuItemCount = menuItemCount;
 }
