@@ -63,3 +63,13 @@ fastlane/screenshots
 
 iOSInjectionProject/
 /proj.ios_mac/.idea
+/windows/DoubleHitBalls-win/x64
+/windows/DoubleHitBalls-win/Debug
+/windows/DoubleHitBalls-win/Release
+/windows/DoubleHitBalls-win/DoubleHitBalls-win/x64
+/windows/DoubleHitBalls-win/DoubleHitBalls-win/Debug
+/windows/DoubleHitBalls-win/DoubleHitBalls-win/Release
+/windows/DoubleHitBalls-win/.vs/
+/windows/DoubleHitBalls-win/DoubleHitBalls-win/log.txt
+*.db
+*.opendb
