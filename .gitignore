@@ -71,5 +71,7 @@ iOSInjectionProject/
 /windows/DoubleHitBalls-win/DoubleHitBalls-win/Release
 /windows/DoubleHitBalls-win/.vs/
 /windows/DoubleHitBalls-win/DoubleHitBalls-win/log.txt
+/windows/DoubleHitBalls-win/DoubleHitBalls-win/progress.txt
+/windows/DoubleHitBalls-win/DoubleHitBalls-win/resources
 *.db
 *.opendb
