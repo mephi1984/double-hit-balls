@@ -80,6 +80,8 @@ void TMyApplication::InnerInit()
 	ResourceManager->ShaderManager.AddShader("DefaultShader", "shader1vertex.txt", "shader1fragment.txt");
 	ResourceManager->ShaderManager.AddShader("FrameShader", "frameshader_vertex.txt", "frameshader_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("BrickShader", "brickshader_vertex.txt", "brickshader_fragment.txt");
+	ResourceManager->ShaderManager.AddShader("ColorShader", "color_vertex.txt", "color_fragment.txt");
+	ResourceManager->ShaderManager.AddShader("SSAA_4X", "SSAA_4X.vertex", "SSAA_4X.frag");
 	Renderer->PushShader("DefaultShader");
 
 	ResourceManager->TexList.AddTexture(CONST_LOADING_BACKGROUND_BLACK + ".png", CONST_LOADING_BACKGROUND_BLACK);
@@ -88,7 +90,7 @@ void TMyApplication::InnerInit()
 
 	ResourceManager->TexList.AddTexture("console_bkg.bmp");
 
-	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
+	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 480 * 2, 320 * 2);
 
 	OnDrawSignal.connect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
 	Inited = true;
@@ -96,7 +98,25 @@ void TMyApplication::InnerInit()
 	Renderer->SetOrthoProjection();
 
 	Renderer->SetFullScreenViewport();
-	
+
+	Renderer->PushShader("SSAA_4X");
+
+	const float cos30 = sqrt(3) / 2;
+	const float sin30 = 0.5f;
+	const float sampleRadiusX = 0.75 / 480;
+	const float sampleRadiusY = 0.75 / 320;
+
+	Vector2f offset;
+	offset = Vector2f(cos30 * sampleRadiusX, sin30 * sampleRadiusY);
+	RenderUniform2fv("samplesOffset[0]", &offset[0]);
+	offset = Vector2f(-sin30 * sampleRadiusX, cos30 * sampleRadiusY);
+	RenderUniform2fv("samplesOffset[1]", &offset[0]);
+	offset = Vector2f(-cos30 * sampleRadiusX, -sin30 * sampleRadiusY);
+	RenderUniform2fv("samplesOffset[2]", &offset[0]);
+	offset = Vector2f(sin30 * sampleRadiusX, -cos30 * sampleRadiusY);
+	RenderUniform2fv("samplesOffset[3]", &offset[0]);
+
+	Renderer->PopShader();
 }
 
 void TMyApplication::InnerDeinit()

@@ -426,6 +426,8 @@ void TBall::Update(size_t dt)
 //===========================================
 //===========================================
 
+TRenderPair pair;
+TRenderPair rect;
 
 TGameLevel::TGameLevel()
 {
@@ -446,6 +448,44 @@ TGameLevel::TGameLevel()
 
 	BonusFloorPosY = 0.f;
 
+	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 0, 0));
+	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 320, 0));
+	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(480, 320, 0));
+	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 0, 0));
+	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 320, 0));
+	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(480, 0, 0));
+
+	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(1, 0, 0, 1));
+	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(1, 0, 0, 1));
+	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(0, 1, 0, 1));
+	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(0, 0, 1, 1));
+	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(0, 0, 1, 1));
+	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(0, 1, 0, 1));
+
+	pair.first.ShaderName = "ColorShader";
+
+	pair.second.RefreshBuffer();
+
+
+
+
+	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 0, 0));
+	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 320, 0));
+	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(480, 320, 0));
+	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(480, 320, 0));
+	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(480, 0, 0));
+	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 0, 0));
+
+	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0));
+	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 1));
+	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(1, 1));
+	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(1, 1));
+	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(1, 0));
+	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0));
+
+	rect.first.ShaderName = "ColorShader";
+
+	rect.second.RefreshBuffer();
 }
 
 TGameLevel::~TGameLevel()
@@ -735,10 +775,9 @@ void TGameLevel::Draw()
     
     bool mustShowButtons = ((LevelState == CONST_LEVELSTATE_PAUSE) || (LevelState == CONST_LEVELSTATE_GO_TO_PAUSE));
     
-    bool pause = (mustShowButtons || (LevelState == CONST_LEVELSTATE_FINISHED));
-    
-    
     bool renderBufferReady = RenderBufferReady;
+
+	bool pause = true || (mustShowButtons || (LevelState == CONST_LEVELSTATE_FINISHED));
     
     if (pause && renderBufferReady)
     {
@@ -764,89 +803,96 @@ void TGameLevel::Draw()
        
         Renderer->SwitchToFrameBuffer("LevelBuffer");
         Renderer->SetProjectionMatrix(480.f, 320.f);
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
         glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         CheckGlError();
     }
     
-    glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[BkgTexture]);
-	Renderer->DrawRect(Vector2f(0, 0), Vector2f(480.f, 320.f));
-	
-	std::list<TBall>::iterator iBall;
-    
-	Renderer->PushShader("BrickShader");
-	
-	
-	for (int i=0; i<CONST_BRICKMATRIX_WIDTH; i++)
-    {
-        for (int j=0; j<CONST_BRICKMATRIX_HEIGHT; j++)
-        {
-            BlockMatrix[i][j].TryDrawAppear(i,j); //Draws only appearing/disappearing blocks
-        }
-    }
-    
-    RenderUniform1f("Transparency", 1.f);
+ //   glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[BkgTexture]);
+	//Renderer->DrawRect(Vector2f(0, 0), Vector2f(480.f, 320.f));
+	//
+	//std::list<TBall>::iterator iBall;
+ //   
+	//Renderer->PushShader("BrickShader");
+	//
+	//
+	//for (int i=0; i<CONST_BRICKMATRIX_WIDTH; i++)
+ //   {
+ //       for (int j=0; j<CONST_BRICKMATRIX_HEIGHT; j++)
+ //       {
+ //           BlockMatrix[i][j].TryDrawAppear(i,j); //Draws only appearing/disappearing blocks
+ //       }
+ //   }
+ //   
+ //   RenderUniform1f("Transparency", 1.f);
 
-    std::list<std::pair<PairColorTexture, TTriangleList>>::iterator colorBlockIterator;
-    for (colorBlockIterator = BlockInstansingList.ColorBlockList.begin(); colorBlockIterator != BlockInstansingList.ColorBlockList.end(); ++colorBlockIterator)
-    {
-        RenderUniform4fv("BrickColor", colorBlockIterator->first.first.data());
-        glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[colorBlockIterator->first.second]);
-        
-        Renderer->DrawTriangleList(colorBlockIterator->second);
-    }
-    
-    std::list<TBonusFalling>::iterator iBonus;
-    
-    for (iBonus = BonusFallingList.begin(); iBonus != BonusFallingList.end(); ++iBonus)
-    {
-        iBonus->Draw();
-    }
-    
-    DrawBallInstancingList();
-    
-    Renderer->PopShader();
-    
-	
-    glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_REFLECTOR_TEXTURE]);
-	Renderer->DrawRect(Vector2f(-128.f, -16.f)+ReflectorPos, Vector2f(128.f, 16.f)+ReflectorPos);
-	
-    
-    const Vector2f wallUpPos1(240.f-256.f, 320.f-64.f);
-    const Vector2f wallUpPos2(240.f+256.f, 320.f);
-	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_UP_TEXTURE]);
-	Renderer->DrawRect(wallUpPos1, wallUpPos2);
-	
-	const Vector2f wallLeftPos1(0.f, 320.f - 512.f);
-	const Vector2f wallLeftPos2(32.f, 320.f);
-	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_LEFT_TEXTURE]);
-	Renderer->DrawRect(wallLeftPos1, wallLeftPos2);
-	
-	const Vector2f wallRightPos1(480.f-32.f, 320.f - 512.f);
-	const Vector2f wallRightPos2(480.f, 320.f);
-	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_RIGHT_TEXTURE]);
-	Renderer->DrawRect(wallRightPos1, wallRightPos2);
-	
+ //   std::list<std::pair<PairColorTexture, TTriangleList>>::iterator colorBlockIterator;
+ //   for (colorBlockIterator = BlockInstansingList.ColorBlockList.begin(); colorBlockIterator != BlockInstansingList.ColorBlockList.end(); ++colorBlockIterator)
+ //   {
+ //       RenderUniform4fv("BrickColor", colorBlockIterator->first.first.data());
+ //       glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[colorBlockIterator->first.second]);
+ //       
+ //       Renderer->DrawTriangleList(colorBlockIterator->second);
+ //   }
+ //   
+ //   std::list<TBonusFalling>::iterator iBonus;
+ //   
+ //   for (iBonus = BonusFallingList.begin(); iBonus != BonusFallingList.end(); ++iBonus)
+ //   {
+ //       iBonus->Draw();
+ //   }
+ //   
+ //   DrawBallInstancingList();
+ //   
+ //   Renderer->PopShader();
+ //   
+	//
+ //   glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_REFLECTOR_TEXTURE]);
+	//Renderer->DrawRect(Vector2f(-128.f, -16.f)+ReflectorPos, Vector2f(128.f, 16.f)+ReflectorPos);
+	//
+ //   
+ //   const Vector2f wallUpPos1(240.f-256.f, 320.f-64.f);
+ //   const Vector2f wallUpPos2(240.f+256.f, 320.f);
+	//glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_UP_TEXTURE]);
+	//Renderer->DrawRect(wallUpPos1, wallUpPos2);
+	//
+	//const Vector2f wallLeftPos1(0.f, 320.f - 512.f);
+	//const Vector2f wallLeftPos2(32.f, 320.f);
+	//glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_LEFT_TEXTURE]);
+	//Renderer->DrawRect(wallLeftPos1, wallLeftPos2);
+	//
+	//const Vector2f wallRightPos1(480.f-32.f, 320.f - 512.f);
+	//const Vector2f wallRightPos2(480.f, 320.f);
+	//glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_RIGHT_TEXTURE]);
+	//Renderer->DrawRect(wallRightPos1, wallRightPos2);
+	//
 
-	if (BonusFloorTimer>0.f)
+	//if (BonusFloorTimer>0.f)
+	//{
+ //       
+ //       const Vector2f wallDownPos(240.f, BonusFloorPosY);
+ //       
+	//    glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_BONUS_TEXTURE]);
+	//    
+	//    Renderer->DrawRect(Vector2f(-256.f, -16.f)+wallDownPos, Vector2f(256.f, 16.f)+wallDownPos);
+ //   }
+	//
+ //   
+ //   if (!pause)
+ //   {
+ //       RenderUniform1f("Transparency", 1.f);
+ //       glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_BACK_BTN_TEXTURE]);
+ //       const Vector2f BackBtnPos(240.f, 320.f - 32.f - 20.f);
+ //       Renderer->DrawRect(Vector2f(-128.f, -32.f)+BackBtnPos, Vector2f(128.f, 32.f)+BackBtnPos);
+ //   }
+
 	{
-        
-        const Vector2f wallDownPos(240.f, BonusFloorPosY);
-        
-	    glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_BONUS_TEXTURE]);
-	    
-	    Renderer->DrawRect(Vector2f(-256.f, -16.f)+wallDownPos, Vector2f(256.f, 16.f)+wallDownPos);
-    }
-	
-    
-    if (!pause)
-    {
-        RenderUniform1f("Transparency", 1.f);
-        glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_BACK_BTN_TEXTURE]);
-        const Vector2f BackBtnPos(240.f, 320.f - 32.f - 20.f);
-        Renderer->DrawRect(Vector2f(-128.f, -32.f)+BackBtnPos, Vector2f(128.f, 32.f)+BackBtnPos);
-    }
-	
+		TRenderParamsSetter params(pair.first);
+		Renderer->DrawTriangleList(pair.second);
+	}
+
+	CheckGlError();
+
 	if (pause && !renderBufferReady)
     {
         
@@ -905,29 +951,37 @@ void TGameLevel::DrawBallInstancingList()
 void TGameLevel::DrawBuffer()
 {
 	*SE::Console << "TGameLevel::DrawBuffer";
-    Renderer->PushShader("FrameShader");
-    float brightness;
-    if (CONST_LEVELSTATE_GO_TO_PAUSE)
-    {
-        brightness = 0.3f + 0.7f * StateTimer / CONST_PAUSE_APPEAR_TIME;
-    }
-    else
-    {
-        brightness = 0.3f;
-    }
-    
-    RenderUniform1f("Brightness", brightness);
-    glBindTexture(GL_TEXTURE_2D,ResourceManager->FrameManager.GetFrameTexture("LevelBuffer"));
-    
-	//Matrix switched to identity
-    //Vector2f RectPos = Vector2f(-1, -1);
-    //Vector2f RectSize = Vector2f(2, 2);
-	Vector2f RectPos = Vector2f(240.f, 160.f);
-	Vector2f RectSize = Vector2f(240.f, 160.f);
+ //   Renderer->PushShader("FrameShader");
+ //   float brightness;
+ //   if (CONST_LEVELSTATE_GO_TO_PAUSE)
+ //   {
+ //       brightness = 0.3f + 0.7f * StateTimer / CONST_PAUSE_APPEAR_TIME;
+ //   }
+ //   else
+ //   {
+ //       brightness = 0.3f;
+ //   }
+ //   
+ //   RenderUniform1f("Brightness", brightness);
+ //   glBindTexture(GL_TEXTURE_2D, ResourceManager->FrameManager.GetFrameTexture("LevelBuffer"));
+ //   
+	////Matrix switched to identity
+ //   //Vector2f RectPos = Vector2f(-1, -1);
+ //   //Vector2f RectSize = Vector2f(2, 2);
+	//Vector2f RectPos = Vector2f(240.f, 160.f);
+	//Vector2f RectSize = Vector2f(240.f, 160.f);
 
-    Renderer->DrawRect(RectPos-RectSize, RectPos+RectSize);
+ //   Renderer->DrawRect(RectPos-RectSize, RectPos+RectSize);
 
-    Renderer->PopShader(); 
+ //   Renderer->PopShader(); 
+
+
+
+	{
+		TRenderParamsSetter params(rect.first);
+		glBindTexture(GL_TEXTURE_2D, ResourceManager->FrameManager.GetFrameTexture("LevelBuffer"));
+		Renderer->DrawTriangleList(rect.second);
+	}
     
     CheckGlError();
 }
