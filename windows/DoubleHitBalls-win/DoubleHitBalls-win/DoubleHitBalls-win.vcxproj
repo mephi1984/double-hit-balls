@@ -116,7 +116,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../../game;../../../../tes-engine;../../../../eigen;../../../../boost_1_63_0/;../../../../boost_1_63_0/bin.v2/libs/system/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/date_time/build/msvc-14.0/debug/address-model-64/link-static/threading-multi/;../../../../boost_1_63_0/bin.v2/libs/regex/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/thread/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/chrono/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/signals/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../libs/boost-gil-extension;../../../../libs/jpeg-9;../../../../libs/jpeg-9/vc10;../../../../libs/lpng1510;../x64/Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../game;../../../../tes-engine;../../../../eigen;../../../../boost_1_63_0/stage/x64/lib;../../../../boost_1_63_0/bin.v2/libs/system/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/date_time/build/msvc-14.0/debug/address-model-64/link-static/threading-multi/;../../../../boost_1_63_0/bin.v2/libs/regex/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/thread/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/chrono/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/signals/build/msvc-14.0/debug/address-model-64/link-static/threading-multi;../../../../libs/boost-gil-extension;../../../../libs/jpeg-9;../../../../libs/jpeg-9/vc10;../../../../libs/lpng1510;../x64/Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>libjpeg.lib;libpng.lib;Engine.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -158,25 +158,16 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../../game;../../../../tes-engine;../../../../eigen;../../../../boost_1_63_0/;../../../../boost_1_63_0/bin.v2/libs/system/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/date_time/build/msvc-14.0/release/address-model-64/link-static/threading-multi/;../../../../boost_1_63_0/bin.v2/libs/regex/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/thread/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/chrono/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/signals/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../libs/boost-gil-extension;../../../../libs/jpeg-9;../../../../libs/jpeg-9/vc10;../../../../libs/lpng1510;../x64/Release</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../game;../../../../tes-engine;../../../../eigen;../../../../boost_1_63_0/stage/x64/lib;../../../../boost_1_63_0/bin.v2/libs/system/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/date_time/build/msvc-14.0/release/address-model-64/link-static/threading-multi/;../../../../boost_1_63_0/bin.v2/libs/regex/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/thread/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/chrono/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../boost_1_63_0/bin.v2/libs/signals/build/msvc-14.0/release/address-model-64/link-static/threading-multi;../../../../libs/boost-gil-extension;../../../../libs/jpeg-9;../../../../libs/jpeg-9/vc10;../../../../libs/lpng1510;../x64/Release</AdditionalLibraryDirectories>
       <AdditionalDependencies>libjpeg.lib;libpng.lib;Engine.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\game\creditscode.cpp" />
-    <ClCompile Include="..\..\..\game\gamecode.cpp" />
-    <ClCompile Include="..\..\..\game\loadingcode.cpp" />
     <ClCompile Include="..\..\..\game\main_code.cpp" />
-    <ClCompile Include="..\..\..\game\menucode.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\game\creditscode.h" />
-    <ClInclude Include="..\..\..\game\gamecode.h" />
-    <ClInclude Include="..\..\..\game\game_area_interface.h" />
-    <ClInclude Include="..\..\..\game\loadingcode.h" />
     <ClInclude Include="..\..\..\game\main_code.h" />
-    <ClInclude Include="..\..\..\game\menucode.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
