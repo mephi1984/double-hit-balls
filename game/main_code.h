@@ -63,6 +63,14 @@ public:
 
 	virtual void OnFling(Vector2f v);
 
+	virtual void OnMouseWheel(short int delta);
+
+
+	float distance = 2000;
+
+	float alpha = 0;
+
+	float phi = pi / 6;
 };
 
 
