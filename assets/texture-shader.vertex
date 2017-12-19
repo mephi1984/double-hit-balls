@@ -1,12 +1,13 @@
 attribute vec3 vPosition;
 attribute vec2 vTexCoord;
+
 varying vec2 texCoord;
 
 uniform mat4 ProjectionMatrix;
+uniform mat4 ModelViewMatrix;
 
 void main() 
 {
-	//480x320
-	gl_Position = ProjectionMatrix * vec4(vPosition.xyz, 1.0);
+	gl_Position = ProjectionMatrix * ModelViewMatrix * vec4(vPosition.xyz, 1.0);
 	texCoord = vTexCoord;
 }

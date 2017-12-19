@@ -163,20 +163,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\game\creditscode.cpp" />
-    <ClCompile Include="..\..\..\game\gamecode.cpp" />
-    <ClCompile Include="..\..\..\game\loadingcode.cpp" />
     <ClCompile Include="..\..\..\game\main_code.cpp" />
-    <ClCompile Include="..\..\..\game\menucode.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\game\creditscode.h" />
-    <ClInclude Include="..\..\..\game\gamecode.h" />
-    <ClInclude Include="..\..\..\game\game_area_interface.h" />
-    <ClInclude Include="..\..\..\game\loadingcode.h" />
     <ClInclude Include="..\..\..\game\main_code.h" />
-    <ClInclude Include="..\..\..\game\menucode.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
