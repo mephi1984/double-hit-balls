@@ -39,6 +39,8 @@ extern boost::signals2::signal<void()> OnDrawSignal;
 class TMyApplication : public TApplication
 {
 protected:
+	ParticleEffect sparkler;
+
 public:
 	TMyApplication() : TApplication() { }
 
@@ -50,11 +52,7 @@ public:
 
 	virtual void InnerUpdate(size_t dt);
 
-	virtual void InnerOnTapDown(Vector2f p);
-
-	virtual void InnerOnTapUp(Vector2f p);
-
-	virtual void InnerOnTapUpAfterMove(Vector2f p);
+	virtual void InnerOnMouseDown(TMouseState& mouseState);
 
 	virtual void InnerOnMove(Vector2f p, Vector2f shift);
 
