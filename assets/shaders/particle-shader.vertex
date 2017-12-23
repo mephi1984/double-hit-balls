@@ -1,7 +1,9 @@
 attribute vec3 vPosition;
 attribute vec2 vTexCoord;
+attribute vec4 vColor;
 
-varying vec2 texCoord;
+out vec2 texCoord;
+flat out vec4 color;
 
 uniform mat4 ProjectionMatrix;
 
@@ -9,4 +11,5 @@ void main()
 {
 	gl_Position = ProjectionMatrix * vec4(vPosition.xyz, 1.0);
 	texCoord = vTexCoord;
+	color = vColor;
 }

@@ -1,0 +1,88 @@
+{
+	"name": "Sparkler - бенгальский огонь",
+	
+	"emitters":
+	[
+	{
+		"name": "Spark",
+	
+		"maxParticles": 300,
+		"preloading": 100,
+		"texturePath": "textures/magic-star.png",
+		
+		"hasInertion": "false",
+		"gravity": [0, 0, 0],
+		
+		"spawnRange_system": "PARTICLE_EFFECT",
+		
+		"spawnTotal":
+		{
+			"interpolation": "LINEAR_SPLINE",
+			"timeline":
+			[
+			{
+				"t": 0,
+				"value": 0
+			},
+			{
+				"t": 1,
+				"value": 1
+			}
+			]
+		},
+		
+		"spawnRange":
+		{
+			"value": [ 0, 45, 0, 45 ]
+		},
+		
+		"lifeTime":
+		{
+			"min": 1.5,
+			"max": 2.5
+		},
+		
+		"coords_system": "PARTICLE_BIRTH",
+		"coords_axis_system": "PARTICLE_BIRTH",
+		"rotation_system": "PARTICLE_BIRTH",
+		
+		"coords":
+		{
+			"interpolation": "LINEAR_SPLINE",
+			"timeline":
+			[
+			{
+				"t": 0.000,
+				"value": [ 0, 0, 0 ]
+			},
+			{
+				"t": 2.000,
+				"min": [ 400, 0, 0 ],
+				"max": [ 400, 0, 0 ]
+			}
+			]
+		},
+		
+		"rotation":
+		{
+			"value": [ 0, 0, 0 ]
+		},
+		
+		"scale":
+		{
+			"interpolation": "DISCRETE",
+			"timeline":
+			[
+			{
+				"value": [ 22.625, 12.5 ]
+			}
+			]
+		},
+		
+		"color":
+		{
+			"value": [ 1, 1, 1, 1 ]
+		}
+	}
+	]
+}

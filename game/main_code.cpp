@@ -19,7 +19,7 @@ void TMyApplication::InnerInit()
     
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
-	ST::PathToResources = "resources/";
+	ST::PathToResources = "../../../assets/";
 #else
 	ST::PathToResources = "../../../assets/";
 #endif
@@ -35,20 +35,25 @@ void TMyApplication::InnerInit()
     }
     srand (static_cast<size_t>(time(NULL)));
 
-	ResourceManager->ShaderManager.AddShader("DefaultShader", "texture-shader.vertex", "texture-shader.fragment");
-	ResourceManager->ShaderManager.AddShader("ColorShader", "color-shader.vertex", "color-shader.fragment");
-	ResourceManager->ShaderManager.AddShader(ParticleEffect::PARTICLE_SHADER, "particle-shader.vertex", "particle-shader.fragment");
+	ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/texture-shader.vertex", "shaders/texture-shader.fragment");
+	ResourceManager->ShaderManager.AddShader("ColorShader", "shaders/color-shader.vertex", "shaders/color-shader.fragment");
+	ResourceManager->ShaderManager.AddShader(ParticleEffect::PARTICLE_SHADER, "shaders/particle-shader.vertex", "shaders/particle-shader.fragment");
 	Renderer->PushShader("ColorShader");
 
 	float width = Renderer->GetScreenWidth();
 	float height = Renderer->GetScreenHeight();
 
 	Renderer->SetOrthoProjection();
-	Renderer->PushProjectionMatrix(width, height, -1, 1);
+	Renderer->PushProjectionMatrix(width, height, -500, 500);
 	//Renderer->SetFullScreenViewport();
 
 	boost::property_tree::ptree JSONsource;
-	boost::property_tree::json_parser::read_json(ST::PathToResources + "test.json", JSONsource);
+
+	boost::property_tree::json_parser::read_json(ST::PathToResources + "config.json", JSONsource);
+
+	std::string effectJSON = JSONsource.get<std::string>("effect");
+
+	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
 
 	sparkler.parse(JSONsource); // parse JSON
 
@@ -61,14 +66,20 @@ void TMyApplication::InnerDeinit()
 {
 }
 
+bool ignoreMove = false;
+
 void TMyApplication::InnerOnMouseDown(TMouseState& mouseState)
 {
+	ignoreMove = false;
+
 	if (mouseState.LeftButtonPressed)
 	{
-		sparkler.setCoords({ (float)mouseState.X, (float)mouseState.Y, 0 });
+		sparkler.setCoords({ (float)mouseState.X, Renderer->GetScreenHeight() - (float)mouseState.Y, 0 });
 	}
 	else if (mouseState.RightButtonPressed)
 	{
+		ignoreMove = true;
+
 		if (sparkler.isSpawning())
 		{
 			sparkler.stopSpawn();
@@ -82,6 +93,11 @@ void TMyApplication::InnerOnMouseDown(TMouseState& mouseState)
 
 void TMyApplication::InnerOnMove(Vector2f p, Vector2f shift)
 {
+	if (ignoreMove)
+	{
+		return;
+	}
+
 	sparkler.setCoords({ p[0], p[1], 0 });
 }
 	
