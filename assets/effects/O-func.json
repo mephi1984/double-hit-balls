@@ -41,7 +41,7 @@
 			"value": 2
 		},
 		
-		"coords_system": "PARTICLE_EFFECT",
+		"coords_system": "PARTICLE_BIRTH",
 		"coords_axis_system": "PARTICLE_BIRTH",
 		"rotation_system": "PARTICLE_EFFECT",
 		
@@ -52,23 +52,31 @@
 			[
 			{
 				"t": 0.000,
-				"value": [ 0, 0, 0]
+				"value": [ 100, 0, 0]
+			},
+			{
+				"t": 0.1,
+				"value": [ 95, 30, 0]
 			},
 			{
 				"t": 0.5,
-				"value": [ 50, 20, 0]
+				"value": [ 0, 100, 0]
 			},
 			{
 				"t": 1.0,
-				"value": [ 100, 100, 0]
+				"value": [ -100, 0, 0]
 			},
 			{
 				"t": 1.5,
-				"value": [ 150, 180, 0]
+				"value": [ 0, -100, 0]
+			},
+			{
+				"t": 1.9,
+				"value": [ 95, -30, 0]
 			},
 			{
 				"t": 2.000,
-				"value": [ 200, 200, 0]
+				"value": [ 100, 0, 0]
 			}
 			]
 		},

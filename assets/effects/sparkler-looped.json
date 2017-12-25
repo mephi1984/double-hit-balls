@@ -1,14 +1,14 @@
 {
-	"name": "Sparkler - бенгальский огонь",
+	"name": "Simple Sparkler",
 	
 	"emitters":
 	[
 	{
 		"name": "Spark",
 	
-		"maxParticles": 300,
-		"preloading": 100,
-		"texturePath": "textures/spark.png",
+		"maxParticles": 2000,
+		"preloading": 2000,
+		"texturePath": "textures/spark-white.png",
 		
 		"hasInertion": "false",
 		"gravity": [0, 0, 0],
@@ -17,58 +17,57 @@
 		
 		"spawnTotal":
 		{
-			"interpolation": "LINEAR_SPLINE",
+			"interpolation": "CUBIC_SPLINE",
+			"timelineType": "LOOPED",
 			"timeline":
 			[
 			{
-				"t": 0,
+				"t": 0.000,
 				"value": 0
 			},
 			{
-				"t": 1,
-				"value": 5
+				"t": 0.001,
+				"value": 0
+			},
+			{
+				"t": 9.999,
+				"value": 10000
+			},
+			{
+				"t": 10.000,
+				"value": 10000
 			}
 			]
 		},
 		
 		"spawnRange":
 		{
-			"value": [ 0, 0, 0, 0 ]
+			"value": [ 0, 0, 0, 360 ]
 		},
 		
 		"lifeTime":
 		{
-			"value": 2
+			"min": 0.1,
+			"max": 1
 		},
 		
-		"coords_system": "PARTICLE_EFFECT",
+		"coords_system": "PARTICLE_BIRTH",
 		"coords_axis_system": "PARTICLE_BIRTH",
 		"rotation_system": "PARTICLE_EFFECT",
 		
 		"coords":
 		{
-			"interpolation": "CUBIC_SPLINE",
+			"interpolation": "LINEAR_SPLINE",
 			"timeline":
 			[
 			{
 				"t": 0.000,
-				"value": [ 0, 0, 0]
+				"value": [ 0, 0, 0 ]
 			},
 			{
-				"t": 0.5,
-				"value": [ 50, 20, 0]
-			},
-			{
-				"t": 1.0,
-				"value": [ 100, 100, 0]
-			},
-			{
-				"t": 1.5,
-				"value": [ 150, 180, 0]
-			},
-			{
-				"t": 2.000,
-				"value": [ 200, 200, 0]
+				"t": 1,
+				"min": [ 300, 0, 0 ],
+				"max": [ 600, 0, 0 ]
 			}
 			]
 		},

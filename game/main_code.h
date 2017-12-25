@@ -54,7 +54,7 @@ public:
 
 	virtual void InnerOnMouseDown(TMouseState& mouseState);
 
-	virtual void InnerOnMove(Vector2f p, Vector2f shift);
+	virtual void InnerOnMouseMove(TMouseState& mouseState);
 
 };
 

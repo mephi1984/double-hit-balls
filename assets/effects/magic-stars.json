@@ -4,10 +4,9 @@
 	"emitters":
 	[
 	{
-		"name": "Spark",
+		"name": "Magic Star",
 	
-		"maxParticles": 300,
-		"preloading": 100,
+		"preloading": 20,
 		"texturePath": "textures/magic-star.png",
 		
 		"hasInertion": "false",
@@ -26,20 +25,20 @@
 			},
 			{
 				"t": 1,
-				"value": 1
+				"value": 2
 			}
 			]
 		},
 		
 		"spawnRange":
 		{
-			"value": [ 0, 45, 0, 45 ]
+			"value": [ 0, 30, 0, 45 ]
 		},
 		
 		"lifeTime":
 		{
 			"min": 1.5,
-			"max": 2.5
+			"max": 3
 		},
 		
 		"coords_system": "PARTICLE_BIRTH",
@@ -56,9 +55,9 @@
 				"value": [ 0, 0, 0 ]
 			},
 			{
-				"t": 2.000,
-				"min": [ 400, 0, 0 ],
-				"max": [ 400, 0, 0 ]
+				"t": 1.000,
+				"min": [ 300, 0, 0 ],
+				"max": [ 300, 0, 0 ]
 			}
 			]
 		},
@@ -82,7 +81,195 @@
 		"color":
 		{
 			"value": [ 1, 1, 1, 1 ]
+		},
+		
+		"emitters":
+		[
+		{
+			"name": "Spark",
+			
+			"matchDeathTime": "true",
+		
+			"maxParticles": 110,
+			"preloading": 110,
+			"texturePath": "textures/spark-white.png",
+			
+			"gravity": [0, -100, 0],
+			
+			"spawnRange_system": "PARTICLE_BIRTH",
+			
+			"spawnTotal":
+			{
+				"interpolation": "LINEAR_SPLINE",
+				"timeline":
+				[
+				{
+					"t": 0.000,
+					"value": 0
+				},
+				{
+					"t": 1,
+					"value": 50
+				}
+				]
+			},
+			
+			"spawnRange":
+			{
+				"value": [ 0, 0, 0, 360 ]
+			},
+			
+			"lifeTime":
+			{
+				"min": 1,
+				"max": 2
+			},
+			
+			"coords_system": "PARTICLE_BIRTH",
+			"coords_axis_system": "PARTICLE_BIRTH",
+			"rotation_system": "PARTICLE_BIRTH",
+			
+			"coords":
+			{
+				"interpolation": "LINEAR_SPLINE",
+				"timeline":
+				[
+				{
+					"t": 0.000,
+					"value": [ 0, 0, 0 ]
+				},
+				{
+					"t": 1.000,
+					"min": [ 0, 0, 0 ],
+					"max": [ 50, 0, 0 ]
+				}
+				]
+			},
+			
+			"rotation":
+			{
+				"value": [ 0, 0, 0 ]
+			},
+			
+			"scale":
+			{
+				"value": [ 10, 10 ]
+			},
+			
+			"color":
+			{
+				"interpolation": "LINEAR_SPLINE",
+				"timeline":
+				[
+				{
+					"t": 0.000,
+					"value": [ 0, 1, 1, 1 ]
+				},
+				{
+					"t": 1.000,
+					"value": [ 0, 0, 1, 1 ]
+				},
+				{
+					"t": 1.200,
+					"value": [ 0, 0, 1, 0 ]
+				}
+				]
+			}
+		},
+		{
+			"name": "Spark",
+			
+			"matchParentDeathTime": "true",
+			"matchDeathTime": "true",
+		
+			"maxParticles": 300,
+			"preloading": 300,
+			"texturePath": "textures/spark-white.png",
+			
+			"hasInertion": "true",
+			"gravity": [0, -100, 0],
+			
+			"spawnRange_system": "PARTICLE_BIRTH",
+			
+			"spawnTotal":
+			{
+				"interpolation": "DISCRETE",
+				"timeline":
+				[
+				{
+					"t": 0.000,
+					"value": 0
+				},
+				{
+					"t": 2.000,
+					"value": 300
+				}
+				]
+			},
+			
+			"spawnRange":
+			{
+				"value": [ 0, 0, 0, 360 ]
+			},
+			
+			"lifeTime":
+			{
+				"min": 1,
+				"max": 2
+			},
+			
+			"coords_system": "PARTICLE_BIRTH",
+			"coords_axis_system": "PARTICLE_BIRTH",
+			"rotation_system": "PARTICLE_BIRTH",
+			
+			"coords":
+			{
+				"interpolation": "LINEAR_SPLINE",
+				"timeline":
+				[
+				{
+					"t": 0.000,
+					"value": [ 0, 0, 0 ]
+				},
+				{
+					"t": 1.000,
+					"min": [ 25, 0, 0 ],
+					"max": [ 300, 0, 0 ]
+				}
+				]
+			},
+			
+			"rotation":
+			{
+				"value": [ 0, 0, 0 ]
+			},
+			
+			"scale":
+			{
+				"value": [ 10, 10 ]
+			},
+			
+			"color":
+			{
+				"interpolation": "LINEAR_SPLINE",
+				"timeline":
+				[
+				{
+					"t": 0.000,
+					"value": [ 1, 1, 0, 1 ]
+				},
+				{
+					"t": 1.000,
+					"value": [ 1, 0, 0, 1 ]
+				},
+				{
+					"t": 1.200,
+					"value": [ 1, 0, 0, 0 ]
+				}
+				]
+			}
 		}
+		]
 	}
 	]
 }

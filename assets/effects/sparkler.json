@@ -71,13 +71,7 @@
 		
 		"scale":
 		{
-			"interpolation": "DISCRETE",
-			"timeline":
-			[
-			{
-				"value": [ 10, 10 ]
-			}
-			]
+			"value": [ 10, 10 ]
 		},
 		
 		"color":

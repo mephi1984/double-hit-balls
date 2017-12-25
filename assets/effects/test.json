@@ -1,57 +1,37 @@
 {
-	"name": "Simple Sparkler",
+	"name": "Sparkler - бенгальский огонь",
 	
 	"emitters":
 	[
 	{
-		"name": "Spark",
+		"name": "Magic Star",
 	
-		"maxParticles": 1000,
+		"maxParticles": 10000,
 		"preloading": 1000,
-		"texturePath": "textures/spark-white.png",
 		
-		"hasInertion": "false",
-		"gravity": [0, 0, 0],
+		"texturePath": "textures/star-white.png",
+		
+		"gravity": [ 0, -100, 0 ],
 		
 		"spawnRange_system": "PARTICLE_EFFECT",
 		
 		"spawnTotal":
 		{
-			"interpolation": "CUBIC_SPLINE",
-			"timelineType": "LIMITED",
-			"timeline":
-			[
-			{
-				"t": 0.000,
-				"value": 0
-			},
-			{
-				"t": 0.010,
-				"value": 0
-			},
-			{
-				"t": 9.990,
-				"value": 2000
-			},
-			{
-				"t": 10.000,
-				"value": 2000
-			}
-			]
+			"value": 50
 		},
 		
 		"spawnRange":
 		{
-			"value": [ 0, 0, 0, 360 ]
+			"value": [ 0, 0, 360, 180 ]
 		},
 		
 		"lifeTime":
 		{
-			"min": 0.1,
-			"max": 1
+			"min": 10,
+			"max": 10
 		},
 		
-		"coords_system": "PARTICLE_BIRTH",
+		"coords_system": "PARTICLE_EFFECT",
 		"coords_axis_system": "PARTICLE_BIRTH",
 		"rotation_system": "PARTICLE_EFFECT",
 		
@@ -65,16 +45,33 @@
 				"value": [ 0, 0, 0 ]
 			},
 			{
-				"t": 1,
-				"min": [ 300, 0, 0 ],
-				"max": [ 600, 0, 0 ]
+				"t": 1.000,
+				"min": [ 150, 0, 0 ],
+				"max": [ 150, 0, 0 ]
 			}
 			]
 		},
 		
 		"rotation":
 		{
-			"value": [ 0, 0, 0 ]
+			"interpolation": "LINEAR_SPLINE",
+			"timeOffset":
+			{
+				"min": 0,
+				"max": 1
+			},
+			"timelineType": "LOOPED",
+			"timeline":
+			[
+			{
+				"t": 0.000,
+				"value": [ 0, 45, 0 ]
+			},
+			{
+				"t": 1.000,
+				"value": [ 360, 45, 0 ]
+			}
+			]
 		},
 		
 		"scale":
@@ -90,7 +87,181 @@
 		
 		"color":
 		{
-			"value": [ 1, 1, 0, 1 ]
+			"value": [ 0, 1, 0, 1 ]
+		}
+	},
+	{
+		"name": "Magic Star",
+	
+		"maxParticles": 10000,
+		"preloading": 1000,
+		
+		"texturePath": "textures/circle-white.png",
+		
+		"gravity": [ 0, -100, 0 ],
+		
+		"spawnRange_system": "PARTICLE_EFFECT",
+		
+		"spawnTotal":
+		{
+			"value": 50
+		},
+		
+		"spawnRange":
+		{
+			"value": [ 0, 0, 360, 180 ]
+		},
+		
+		"lifeTime":
+		{
+			"min": 10,
+			"max": 10
+		},
+		
+		"coords_system": "PARTICLE_EFFECT",
+		"coords_axis_system": "PARTICLE_BIRTH",
+		"rotation_system": "PARTICLE_EFFECT",
+		
+		"coords":
+		{
+			"interpolation": "LINEAR_SPLINE",
+			"timeline":
+			[
+			{
+				"t": 0.000,
+				"value": [ 0, 0, 0 ]
+			},
+			{
+				"t": 1.000,
+				"min": [ 150, 0, 0 ],
+				"max": [ 150, 0, 0 ]
+			}
+			]
+		},
+		
+		"rotation":
+		{
+			"interpolation": "LINEAR_SPLINE",
+			"timeOffset":
+			{
+				"min": 0,
+				"max": 1
+			},
+			"timelineType": "LOOPED",
+			"timeline":
+			[
+			{
+				"t": 0.000,
+				"value": [ 0, 45, 0 ]
+			},
+			{
+				"t": 1.000,
+				"value": [ 360, 45, 0 ]
+			}
+			]
+		},
+		
+		"scale":
+		{
+			"interpolation": "DISCRETE",
+			"timeline":
+			[
+			{
+				"value": [ 10, 10 ]
+			}
+			]
+		},
+		
+		"color":
+		{
+			"value": [ 1, 0, 0, 1 ]
+		}
+	},
+	{
+		"name": "Magic Star",
+	
+		"maxParticles": 10000,
+		"preloading": 1000,
+		
+		"texturePath": "textures/rect-white.png",
+		
+		"gravity": [ 0, -100, 0 ],
+		
+		"spawnRange_system": "PARTICLE_EFFECT",
+		
+		"spawnTotal":
+		{
+			"value": 50
+		},
+		
+		"spawnRange":
+		{
+			"value": [ 0, 0, 360, 180 ]
+		},
+		
+		"lifeTime":
+		{
+			"min": 10,
+			"max": 10
+		},
+		
+		"coords_system": "PARTICLE_EFFECT",
+		"coords_axis_system": "PARTICLE_BIRTH",
+		"rotation_system": "PARTICLE_EFFECT",
+		
+		"coords":
+		{
+			"interpolation": "LINEAR_SPLINE",
+			"timeline":
+			[
+			{
+				"t": 0.000,
+				"value": [ 0, 0, 0 ]
+			},
+			{
+				"t": 1.000,
+				"min": [ 150, 0, 0 ],
+				"max": [ 150, 0, 0 ]
+			}
+			]
+		},
+		
+		"rotation":
+		{
+			"interpolation": "LINEAR_SPLINE",
+			"timeOffset":
+			{
+				"min": 0,
+				"max": 1
+			},
+			"timelineType": "LOOPED",
+			"timeline":
+			[
+			{
+				"t": 0.000,
+				"value": [ 0, 45, 0 ]
+			},
+			{
+				"t": 1.000,
+				"value": [ 360, 45, 0 ]
+			}
+			]
+		},
+		
+		"scale":
+		{
+			"interpolation": "DISCRETE",
+			"timeline":
+			[
+			{
+				"value": [ 10, 10 ]
+			}
+			]
+		},
+		
+		"color":
+		{
+			"value": [ 0, 0, 1, 1 ]
 		}
 	}
 	]

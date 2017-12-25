@@ -38,8 +38,7 @@
 		
 		"lifeTime":
 		{
-			"min": 6,
-			"max": 6
+			"value": 6
 		},
 		
 		"coords_system": "PARTICLE_EFFECT",
@@ -97,13 +96,7 @@
 		
 		"scale":
 		{
-			"interpolation": "DISCRETE",
-			"timeline":
-			[
-			{
-				"value": [ 10, 10 ]
-			}
-			]
+			"value": [ 10, 10 ]
 		},
 		
 		"color":

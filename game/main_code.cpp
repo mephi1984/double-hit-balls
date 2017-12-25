@@ -66,20 +66,14 @@ void TMyApplication::InnerDeinit()
 {
 }
 
-bool ignoreMove = false;
-
 void TMyApplication::InnerOnMouseDown(TMouseState& mouseState)
 {
-	ignoreMove = false;
-
 	if (mouseState.LeftButtonPressed)
 	{
 		sparkler.setCoords({ (float)mouseState.X, Renderer->GetScreenHeight() - (float)mouseState.Y, 0 });
 	}
-	else if (mouseState.RightButtonPressed)
+	if (mouseState.RightButtonPressed)
 	{
-		ignoreMove = true;
-
 		if (sparkler.isSpawning())
 		{
 			sparkler.stopSpawn();
@@ -91,14 +85,12 @@ void TMyApplication::InnerOnMouseDown(TMouseState& mouseState)
 	}
 }
 
-void TMyApplication::InnerOnMove(Vector2f p, Vector2f shift)
+void TMyApplication::InnerOnMouseMove(TMouseState& mouseState)
 {
-	if (ignoreMove)
+	if (mouseState.LeftButtonPressed)
 	{
-		return;
+		sparkler.setCoords({ (float)mouseState.X, Renderer->GetScreenHeight() - (float)mouseState.Y, 0 });
 	}
-
-	sparkler.setCoords({ p[0], p[1], 0 });
 }
 	
 void TMyApplication::InnerDraw()
