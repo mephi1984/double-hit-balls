@@ -8,7 +8,9 @@
 	
 		"maxParticles": 300,
 		"preloading": 100,
+		
 		"texturePath": "textures/comet.png",
+		"textureSize": [ 20, 7.12 ],
 		
 		"hasInertion": "false",
 		"gravity": [0, 0, 0],
@@ -96,7 +98,7 @@
 		
 		"scale":
 		{
-			"value": [ 20, 7.12 ]
+			"value": 1
 		},
 		
 		"color":

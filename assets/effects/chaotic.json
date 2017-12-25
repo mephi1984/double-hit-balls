@@ -1,11 +1,7 @@
 {
-	"name": "Sparkler - бенгальский огонь",
-	
 	"emitters":
 	[
 	{
-		"name": "Spark",
-	
 		"maxParticles": 300,
 		"preloading": 100,
 		
@@ -35,15 +31,16 @@
 		
 		"spawnRange":
 		{
-			"value": [ 0, 0, 0, 0 ]
+			"value": [ 0, 0, 0, 360 ]
 		},
 		
 		"lifeTime":
 		{
-			"value": 2
+			"value": 3
 		},
 		
 		"coords_system": "PARTICLE_EFFECT",
+		"offset_axis_system": "PARTICLE_EFFECT",
 		"coords_axis_system": "PARTICLE_BIRTH",
 		"rotation_system": "PARTICLE_EFFECT",
 		
@@ -57,20 +54,45 @@
 				"value": [ 0, 0, 0]
 			},
 			{
+				"t": 3.000,
+				"value": [ 500, 0, 0]
+			}
+			]
+		},
+		
+		"offset":
+		{
+			"interpolation": "CUBIC_SPLINE",
+			"timelineType": "LOOPED",
+			"timeline":
+			[
+			{
+				"t": 0.000,
+				"value": [ 10, 0, 0]
+			},
+			{
+				"t": 0.025,
+				"value": [ 9.5, 3, 0]
+			},
+			{
+				"t": 0.125,
+				"value": [ 0, 10, 0]
+			},
+			{
+				"t": 0.25,
+				"value": [ -10, 0, 0]
+			},
+			{
+				"t": 0.375,
+				"value": [ 0, -10, 0]
+			},
+			{
+				"t": 0.475,
+				"value": [ 9.5, -3, 0]
+			},
+			{
 				"t": 0.5,
-				"value": [ 50, 20, 0]
-			},
-			{
-				"t": 1.0,
-				"value": [ 100, 100, 0]
-			},
-			{
-				"t": 1.5,
-				"value": [ 150, 180, 0]
-			},
-			{
-				"t": 2.000,
-				"value": [ 200, 200, 0]
+				"value": [ 10, 0, 0]
 			}
 			]
 		},

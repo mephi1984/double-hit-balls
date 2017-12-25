@@ -6,9 +6,11 @@
 	{
 		"name": "Spark",
 	
-		"maxParticles": 1000,
-		"preloading": 1000,
+		"maxParticles": 1100,
+		"preloading": 1100,
+		
 		"texturePath": "textures/spark-white.png",
+		"textureSize": [ 10, 10 ],
 		
 		"hasInertion": "false",
 		"gravity": [0, 0, 0],
@@ -27,7 +29,7 @@
 			},
 			{
 				"t": 1.000,
-				"value": 200
+				"value": 1000
 			}
 			]
 		},
@@ -71,7 +73,7 @@
 		
 		"scale":
 		{
-			"value": [ 10, 10 ]
+			"value": 1
 		},
 		
 		"color":

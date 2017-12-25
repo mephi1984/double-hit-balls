@@ -1,13 +1,11 @@
 {
-	"name": "Sparkler - бенгальский огонь",
-	
 	"emitters":
 	[
 	{
-		"name": "Magic Star",
-	
 		"preloading": 20,
+		
 		"texturePath": "textures/magic-star.png",
+		"textureSize": [ 22.625, 12.5 ],
 		
 		"hasInertion": "false",
 		"gravity": [0, 0, 0],
@@ -73,7 +71,7 @@
 			"timeline":
 			[
 			{
-				"value": [ 22.625, 12.5 ]
+				"value": 1
 			}
 			]
 		},
@@ -92,7 +90,9 @@
 		
 			"maxParticles": 110,
 			"preloading": 110,
+			
 			"texturePath": "textures/spark-white.png",
+			"textureSize": [ 10, 10 ],
 			
 			"gravity": [0, -100, 0],
 			
@@ -153,7 +153,7 @@
 			
 			"scale":
 			{
-				"value": [ 10, 10 ]
+				"value": 1
 			},
 			
 			"color":
@@ -184,7 +184,9 @@
 		
 			"maxParticles": 300,
 			"preloading": 300,
+			
 			"texturePath": "textures/spark-white.png",
+			"textureSize": [ 10, 10 ],
 			
 			"hasInertion": "true",
 			"gravity": [0, -100, 0],
@@ -246,7 +248,7 @@
 			
 			"scale":
 			{
-				"value": [ 10, 10 ]
+				"value": 1
 			},
 			
 			"color":

@@ -8,7 +8,9 @@
 	
 		"maxParticles": 300,
 		"preloading": 100,
+		
 		"texturePath": "textures/spark.png",
+		"textureSize": [ 10, 10 ],
 		
 		"hasInertion": "false",
 		"gravity": [0, 0, 0],
@@ -88,7 +90,7 @@
 		
 		"scale":
 		{
-			"value": [ 10, 10 ]
+			"value": 1
 		},
 		
 		"color":
