@@ -16,7 +16,7 @@
 
 		RelatedCoordinateSystem spawnRange_system; = { PARTICLE_EFFECT , PARTICLE_EMITTER }
 
-		RandomValueAtTimeline<UintWrapper, RandomUint> spawnTotal;
+		RandomValueAtTimeline<FloatWrapper, RandomFloat> spawnTotal;
 		RandomValueAtTimeline<Vector4fWrapper, RandomVector4f> spawnRange; // yaw + pitch + delta yaw + delta pitch
 		< / Emitter Description >
 

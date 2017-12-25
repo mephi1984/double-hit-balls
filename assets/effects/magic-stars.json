@@ -85,8 +85,6 @@
 		[
 		{
 			"name": "Spark",
-			
-			"matchDeathTime": "true",
 		
 			"maxParticles": 110,
 			"preloading": 110,
@@ -101,6 +99,7 @@
 			"spawnTotal":
 			{
 				"interpolation": "LINEAR_SPLINE",
+				"matchDeathTime": "true",
 				"timeline":
 				[
 				{
@@ -178,9 +177,6 @@
 		},
 		{
 			"name": "Spark",
-			
-			"matchParentDeathTime": "true",
-			"matchDeathTime": "true",
 		
 			"maxParticles": 300,
 			"preloading": 300,
@@ -196,6 +192,7 @@
 			"spawnTotal":
 			{
 				"interpolation": "DISCRETE",
+				"matchDeathTime": "true",
 				"timeline":
 				[
 				{
