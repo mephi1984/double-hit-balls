@@ -81,81 +81,98 @@ void TMyApplication::InnerInit()
 	ResourceManager->TexList.AddTexture("owl-green.jpg");
 	ResourceManager->TexList.AddTexture("owl-green-height.png");
 	ResourceManager->TexList.AddTexture("owl-green-normal.png");
-
 	ResourceManager->TexList.AddTexture("5f.jpg");
 	ResourceManager->TexList.AddTexture("6f.jpg");
 	ResourceManager->TexList.AddTexture("7f.jpg");
+	ResourceManager->TexList.AddTexture("fiber_texture.jpg");
 
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
 
-	/*
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(-511, -512, 0));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(-512, 512, 0));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(512, 512, 0));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(-512, -512, 0));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(512, 512, 0));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(512, -512, 0));
-	*/
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(-511, 0, -512));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(-512, 0, 512));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(512, 0, 512));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(-512, 0, -512));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(512, 0, 512));
-	pair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(512, 0, -512));
+	auto addRectInData = [this] (const Vector3f &a, const Vector3f &b, const Vector3f &c, const Vector3f &d) {
 
-	pair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0));
-	pair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 1));
-	pair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(1,1));
-	pair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0));
-	pair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(1,1));
-	pair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(1, 0));
+		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(a);
+		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(b);
+		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(c);
+
+		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(c);
+		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(d);
+		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(a);
+
+		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, 0));
+		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(1, 0));
+		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(1, 1));
+
+		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(1, 1));
+		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, 1));
+		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, 0));
 
 
+		//it is true that it does nothing? :thinking:
+		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
+		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(0, 1, 1, 1));
+		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 0, 1));
 
-	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(1, 0, 0, 1));
-	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(1, 0, 0, 1));
-	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(0, 1, 0, 1));
-	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(0, 0, 1, 1));
-	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(0, 0, 1, 1));
-	pair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(Vector4f(0, 1, 0, 1));
+		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 0, 1));
+		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(0, 0, 0, 1));
+		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
+		//end of :thinking:
+	};
 
-	pair.first.ShaderName = "ParallaxShader";
+	auto genRect = [] (Vector3f &a, Vector3f &b, float thick) {
+		Vector3f AB = b - a;
+		Vector3f ortho(AB[2], 0, -AB[0]);
+		ortho.normalize();
+		thick /= 2;
+		Vector3f r1 = a - ortho * thick;
+		Vector3f r2 = a + ortho * thick;
+		Vector3f r3 = b + ortho * thick;
+		Vector3f r4 = b - ortho * thick;
+		return std::make_tuple(r1, r2, r3, r4);
+	};
+
+	int const n = 1000;
+	float const stripeLength = 100;
+	float const stepOnAsix = 7;
+	float const thick = 5;
+
+
+	Vector3f stripeDirection = {0, 0, -1};
+	Vector3f asix = {1, 0, 0};
+	Vector3f p1 = {-512, 0, 0};
+
+	Vector3f a, b, c, d;
+
+	for (int i = 0; i < n; ++i) {
+
+		Vector3f p2 = p1 + stripeDirection * stripeLength;
+
+		std::tie(a, b, c, d) = genRect(p1, p2, thick);
+		addRectInData(a, b, c, d);
+
+		Vector3f p3 = p1 + stepOnAsix * asix;
+
+		std::tie(a, b, c, d) = genRect(p2, p3, thick);
+		addRectInData(a, b, c, d);
+
+		p1 = p3;
+	}
+
+
+	fabricRenderPair.first.ShaderName = "ParallaxShader";
 	
-	pair.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "owl-green.jpg";
-	pair.first.SamplerMap["HeightMap"] = "owl-green-height.png";
-	pair.first.SamplerMap["NormalMap"] = "owl-green-normal.png";
-	//pair.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "6f.jpg";
-	//pair.first.SamplerMap["HeightMap"] = "5f.jpg";
-	//pair.first.SamplerMap["NormalMap"] = "7f.jpg";
-
-	pair.second.RefreshBuffer();
-
-
-
 	/*
-	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 0, 0));
-	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 512, 0));
-	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(512, 512, 0));
-	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(512, 512, 0));
-	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(512, 0, 0));
-	rect.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(Vector3f(0, 0, 0));
+	 *	Line below should be in tes-engine/include/ShaderManager/ShaderManager.h
+	 */
+	std::string const CONST_STRING_HEIGHTMAP_UNIFORM = "HeightMap";
 
-	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0));
-	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 1));
-	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(1, 1));
-	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(1, 1));
-	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(1, 0));
-	rect.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0));
+	fabricRenderPair.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "fiber_texture.jpg";
+	//fabricRenderPair.first.SamplerMap[CONST_STRING_HEIGHTMAP_UNIFORM] = "owl-green-height.png";
+	//fabricRenderPair.first.SamplerMap[CONST_STRING_NORMALMAP_UNIFORM] = "owl-green-normal.png";
 
-
-	rect.second.RefreshBuffer();*/
-
+	fabricRenderPair.second.RefreshBuffer();
 
 
 	Inited = true;
-
-
-
 }
 
 void TMyApplication::InnerDeinit()
@@ -255,7 +272,7 @@ void TMyApplication::InnerDraw()
 
 
 	{
-		TRenderParamsSetter params(pair.first);
+		TRenderParamsSetter params(fabricRenderPair.first);
 
 		RenderUniform3fv("eye", eye.data());
 		RenderUniform3fv("lightPos", lightPos.data());
@@ -266,7 +283,7 @@ void TMyApplication::InnerDraw()
 		RenderUniformMatrix4fv("ModelViewMatrix", false, Renderer->GetModelviewMatrix().data());
 		RenderUniformMatrix3fv("ModelViewMatrix3x3", false, Renderer->GetModelviewMatrix().block<3,3>(0,0).data());
 
-		Renderer->DrawTriangleList(pair.second);
+		Renderer->DrawTriangleList(fabricRenderPair.second);
 	}
 
 	Renderer->PopMatrix();
