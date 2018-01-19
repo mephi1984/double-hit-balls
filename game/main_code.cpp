@@ -78,100 +78,124 @@ void TMyApplication::InnerInit()
 	Renderer->PushShader("DefaultShader");
 
 	ResourceManager->TexList.AddTexture("console_bkg.bmp");
-	ResourceManager->TexList.AddTexture("owl-green.jpg");
-	ResourceManager->TexList.AddTexture("owl-green-height.png");
-	ResourceManager->TexList.AddTexture("owl-green-normal.png");
-	ResourceManager->TexList.AddTexture("5f.jpg");
-	ResourceManager->TexList.AddTexture("6f.jpg");
-	ResourceManager->TexList.AddTexture("7f.jpg");
-	ResourceManager->TexList.AddTexture("fiber_texture.jpg");
+
+	ResourceManager->TexList.AddTexture("background.jpg");
+	ResourceManager->TexList.AddTexture("HeightMap.png");
+	ResourceManager->TexList.AddTexture("NormalMap.png");
+	ResourceManager->TexList.AddTexture("linesAll.png");
 
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
 
-	auto addRectInData = [this] (const Vector3f &a, const Vector3f &b, const Vector3f &c, const Vector3f &d) {
-
-		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(a);
-		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(b);
-		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(c);
-
-		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(c);
-		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(d);
-		fabricRenderPair.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(a);
-
-		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, 0));
-		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(1, 0));
-		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(1, 1));
-
-		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(1, 1));
-		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, 1));
-		fabricRenderPair.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, 0));
+	Vector2f const bottomLeft(-1000, -1000);
+	float const W = 2000;
+	float const H = 2000;
+	
+	{
+		//resolution of background image
+		float const imageW = 512;
+		float const imageH = 512;
 
 
-		//it is true that it does nothing? :thinking:
-		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
-		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(0, 1, 1, 1));
-		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 0, 1));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0], 0, bottomLeft[1]));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0], 0, bottomLeft[1] + H));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0] + W, 0, bottomLeft[1] + H));
+		
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0] + W, 0, bottomLeft[0] + H));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0] + W, 0, bottomLeft[0]));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0], 0, bottomLeft[0]));
 
-		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 0, 1));
-		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(0, 0, 0, 1));
-		fabricRenderPair.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
-		//end of :thinking:
-	};
+		float const tw = W / imageW;
+		float const th = H / imageH;
 
-	auto genRect = [] (Vector3f &a, Vector3f &b, float thick) {
-		Vector3f AB = b - a;
-		Vector3f ortho(AB[2], 0, -AB[0]);
-		ortho.normalize();
-		thick /= 2;
-		Vector3f r1 = a - ortho * thick;
-		Vector3f r2 = a + ortho * thick;
-		Vector3f r3 = b + ortho * thick;
-		Vector3f r4 = b - ortho * thick;
-		return std::make_tuple(r1, r2, r3, r4);
-	};
-
-	int const n = 1000;
-	float const stripeLength = 100;
-	float const stepOnAsix = 7;
-	float const thick = 5;
+		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, th));
+		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, 0));
+		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(tw, 0));
+		
+		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(tw, 0));
+		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(tw, th));
+		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, th));
 
 
-	Vector3f stripeDirection = {0, 0, -1};
-	Vector3f asix = {1, 0, 0};
-	Vector3f p1 = {-512, 0, 0};
+		background.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
+		background.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
+		background.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
 
-	Vector3f a, b, c, d;
-
-	for (int i = 0; i < n; ++i) {
-
-		Vector3f p2 = p1 + stripeDirection * stripeLength;
-
-		std::tie(a, b, c, d) = genRect(p1, p2, thick);
-		addRectInData(a, b, c, d);
-
-		Vector3f p3 = p1 + stepOnAsix * asix;
-
-		std::tie(a, b, c, d) = genRect(p2, p3, thick);
-		addRectInData(a, b, c, d);
-
-		p1 = p3;
+		background.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
+		background.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
+		background.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
+	
 	}
 
+	{
+		//resolution of linesAll.png
+		float const  texW = 900;
+		float const  texH = 900;
 
-	fabricRenderPair.first.ShaderName = "ParallaxShader";
+		float const  step = 12;
+		float const  thick = 10;
+
+		auto f = [this, texW, texH, thick, W, H] (const Vector3f &p1, const Vector3f &p2) {
+			auto pv = p2 - p1;
+			Vector3f ortho(pv[2], 0, pv[0]);
+			ortho.normalize();
+			auto p3 = p2 + ortho * thick;
+			auto p4 = p1 + ortho * thick;
+
+			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p1);
+			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p2);
+			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p3);
+																				
+			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p3);
+			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p4);
+			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p1);
+
+			auto texThick = thick / texW;
+			auto m = (p1[0] + p2[0]) / 2 / texW;
+			auto y = H / texH;
+
+			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m, 0));
+			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m, y));
+			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m + texThick, y));
+																						
+			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m + texThick, y));
+			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m + texThick, 0));
+			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m, 0));
+
+		};
+
+		Vector3f const stepDirection(1, 0, 0);
+		Vector3f p1(bottomLeft[0], 0, -bottomLeft[1]);
+
+		while (p1[0] < bottomLeft[0] + W) {
+
+			auto p2 = p1 - Vector3f(0, 0, W);
+			f(p1, p2);
+
+			auto p3 = p1 + step * stepDirection;
+			f(p3, p2);
+
+			p1 = p3;
+		}
+
+	}
+
+	background.first.ShaderName ="ParallaxShader";
+	fabricRender.first.ShaderName = "ParallaxShader";
 	
 	/*
 	 *	Line below should be in tes-engine/include/ShaderManager/ShaderManager.h
 	 */
 	std::string const CONST_STRING_HEIGHTMAP_UNIFORM = "HeightMap";
 
-	fabricRenderPair.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "fiber_texture.jpg";
-	//fabricRenderPair.first.SamplerMap[CONST_STRING_HEIGHTMAP_UNIFORM] = "owl-green-height.png";
-	//fabricRenderPair.first.SamplerMap[CONST_STRING_NORMALMAP_UNIFORM] = "owl-green-normal.png";
+	background.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "background.jpg";
 
-	fabricRenderPair.second.RefreshBuffer();
+	fabricRender.first.SamplerMap[CONST_STRING_NORMALMAP_UNIFORM] = "NormalMap.png";
+	fabricRender.first.SamplerMap[CONST_STRING_HEIGHTMAP_UNIFORM] = "HeightMap.png";
+	fabricRender.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "linesAll.png";
 
-
+	background.second.RefreshBuffer();
+	fabricRender.second.RefreshBuffer();
+	
 	Inited = true;
 }
 
@@ -257,9 +281,10 @@ void TMyApplication::InnerDraw()
 	Renderer->RotateMatrix(quat2);
 
 
-
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glDisable(GL_DEPTH_TEST);
+
 	CheckGlError("");
 
 	auto mat1 = quatToMatrix(quat1);
@@ -268,11 +293,24 @@ void TMyApplication::InnerDraw()
 
 	Vector3f lightPos = {0.f, 1.f, 1.f};
 
-	Vector3f eye = mat2 * (mat1 * Vector3f(0.0f, 0.f, -distance));
-
+	Vector3f eye = mat2 * mat1 * Vector3f(0.0f, 0.f, -distance);
 
 	{
-		TRenderParamsSetter params(fabricRenderPair.first);
+		TRenderParamsSetter params(background.first);
+
+		RenderUniform3fv("eye", eye.data());
+		RenderUniform3fv("lightPos", lightPos.data());
+
+		Matrix3f normMatrix = Renderer->GetModelviewMatrix().inverse().transpose().block<3, 3>(0, 0);
+
+		RenderUniformMatrix3fv("NormalMatrix", false, normMatrix.data());
+		RenderUniformMatrix4fv("ModelViewMatrix", false, Renderer->GetModelviewMatrix().data());
+		RenderUniformMatrix3fv("ModelViewMatrix3x3", false, Renderer->GetModelviewMatrix().block<3, 3>(0, 0).data());
+
+		Renderer->DrawTriangleList(background.second);
+	}
+	{
+		TRenderParamsSetter params(fabricRender.first);
 
 		RenderUniform3fv("eye", eye.data());
 		RenderUniform3fv("lightPos", lightPos.data());
@@ -283,8 +321,9 @@ void TMyApplication::InnerDraw()
 		RenderUniformMatrix4fv("ModelViewMatrix", false, Renderer->GetModelviewMatrix().data());
 		RenderUniformMatrix3fv("ModelViewMatrix3x3", false, Renderer->GetModelviewMatrix().block<3,3>(0,0).data());
 
-		Renderer->DrawTriangleList(fabricRenderPair.second);
+		Renderer->DrawTriangleList(fabricRender.second);		
 	}
+
 
 	Renderer->PopMatrix();
 

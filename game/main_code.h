@@ -33,7 +33,8 @@ protected:
 	bool Inited;
 
 public:
-	TRenderPair fabricRenderPair;
+	TRenderPair fabricRender;
+	TRenderPair background;
 
 	bool Loaded;
 
