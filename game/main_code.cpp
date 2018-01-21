@@ -86,9 +86,13 @@ void TMyApplication::InnerInit()
 
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
 
-	Vector2f const bottomLeft(-1000, -1000);
-	float const W = 2000;
-	float const H = 2000;
+	Vector2f const bottomLeft(-500, -500);
+	float const W = 1000;
+	float const H = 1000;
+
+	Vector2f const backgroundBottomLeft(-1000, -1000);
+	float const backgroundW = 2000;
+	float const backgroundH = 2000;
 	
 	{
 		//resolution of background image
@@ -96,16 +100,16 @@ void TMyApplication::InnerInit()
 		float const imageH = 512;
 
 
-		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0], 0, bottomLeft[1]));
-		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0], 0, bottomLeft[1] + H));
-		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0] + W, 0, bottomLeft[1] + H));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(backgroundBottomLeft[0], 0, backgroundBottomLeft[1]));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(backgroundBottomLeft[0], 0, backgroundBottomLeft[1] + backgroundH));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(backgroundBottomLeft[0] + backgroundW, 0, backgroundBottomLeft[1] + backgroundH));
 		
-		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0] + W, 0, bottomLeft[0] + H));
-		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0] + W, 0, bottomLeft[0]));
-		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(bottomLeft[0], 0, bottomLeft[0]));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(backgroundBottomLeft[0] + backgroundW, 0, backgroundBottomLeft[0] + backgroundH));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(backgroundBottomLeft[0] + backgroundW, 0, backgroundBottomLeft[0]));
+		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(backgroundBottomLeft[0], 0, backgroundBottomLeft[0]));
 
-		float const tw = W / imageW;
-		float const th = H / imageH;
+		float const tw = backgroundW / imageW;
+		float const th = backgroundH / imageH;
 
 		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, th));
 		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, 0));
@@ -114,7 +118,6 @@ void TMyApplication::InnerInit()
 		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(tw, 0));
 		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(tw, th));
 		background.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].emplace_back(Vector2f(0, th));
-
 
 		background.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
 		background.second.Data.Vec4CoordArr[CONST_STRING_COLOR_ATTRIB].emplace_back(Vector4f(1, 1, 1, 1));
@@ -179,7 +182,7 @@ void TMyApplication::InnerInit()
 
 	}
 
-	background.first.ShaderName ="ParallaxShader";
+	background.first.ShaderName ="DefaultShader";
 	fabricRender.first.ShaderName = "ParallaxShader";
 	
 	/*
