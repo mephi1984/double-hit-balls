@@ -32,11 +32,17 @@ const std::string CONST_BALL_TEXTURE = "ball";
 const std::string CONST_BALLGLOW_TEXTURE = "ball_glow";
 
 const std::string CONST_REFLECTOR_TEXTURE = "reflector";
-
+/*
 const std::string CONST_WALL_LEFT_TEXTURE = "wall_left";
 const std::string CONST_WALL_RIGHT_TEXTURE = "wall_right";
 const std::string CONST_WALL_UP_TEXTURE = "wall_up";
 const std::string CONST_WALL_BONUS_TEXTURE = "wall_bonus";
+*/
+
+const std::string CONST_WALL_LEFT_TEXTURE = "left_frame_fragment";
+const std::string CONST_WALL_RIGHT_TEXTURE = "right_frame_fragment";
+const std::string CONST_WALL_UP_TEXTURE = "top_frame_fragment";
+const std::string CONST_WALL_BONUS_TEXTURE = "bottom_frame_fragment";
 
 const std::string CONST_BACK_BTN_TEXTURE = "back_btn";
 const std::string CONST_SLIDE_UP_BTN_TEXTURE = "slide_up_btn";
@@ -58,7 +64,8 @@ void TMyApplication::InnerInit()
     
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
-	ST::PathToResources = "resources/";
+	//ST::PathToResources = "resources/";
+	ST::PathToResources = "../../../assets/";
 #else
 	ST::PathToResources = "../../../assets/";
 #endif
