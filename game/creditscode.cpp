@@ -26,7 +26,7 @@ void TGameCredits::Draw()
     RenderUniform1f("Transparency", transparency);
     
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList["main_menu_bkg_left"]);
-	Renderer->DrawRect(Vector2f(0, 0.f), Vector2f(480.f, 320.f));
+	Renderer->DrawRect(Vector2f(0, 0.f), Vector2f(Renderer->GetScreenWidth(), Renderer->GetScreenHeight()));
 	
 	const Vector2f creditsPos(140.f, 130.f);
 	

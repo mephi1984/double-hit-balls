@@ -20,18 +20,19 @@ boost::signals2::signal<void (Vector2f)> OnScrollSignal;
 boost::signals2::signal<void ()> OnDrawSignal;
 
 
-const std::string CONST_BLOCK_TEXTURE1 = "block1";
-const std::string CONST_BLOCK_TEXTURE2 = "block2";
-const std::string CONST_BLOCK_TEXTURE3 = "block3";
+const std::string CONST_BLOCK_TEXTURE1 = "block1_mod1";
+const std::string CONST_BLOCK_TEXTURE2 = "block2_mod1";
+const std::string CONST_BLOCK_TEXTURE3 = "block3_mod1";
 
-const std::string CONST_BONUS_GOTHROUGH_TEXTURE = "bonus_gothrough";
-const std::string CONST_BONUS_MULTIPLIER_TEXTURE = "bonus_multiplier";
-const std::string CONST_BONUS_FLOOR_TEXTURE = "bonus_floor";
+const std::string CONST_BONUS_GOTHROUGH_TEXTURE = "bonus_gothrough_mod1";
+const std::string CONST_BONUS_MULTIPLIER_TEXTURE = "bonus_multiplier_mod1";
+const std::string CONST_BONUS_FLOOR_TEXTURE = "bonus_floor_mod1";
 
-const std::string CONST_BALL_TEXTURE = "ball";
+const std::string CONST_BALL_TEXTURE = "ball_mod1";
+
 const std::string CONST_BALLGLOW_TEXTURE = "ball_glow";
 
-const std::string CONST_REFLECTOR_TEXTURE = "reflector";
+const std::string CONST_REFLECTOR_TEXTURE = "reflector_mod1";
 /*
 const std::string CONST_WALL_LEFT_TEXTURE = "wall_left";
 const std::string CONST_WALL_RIGHT_TEXTURE = "wall_right";

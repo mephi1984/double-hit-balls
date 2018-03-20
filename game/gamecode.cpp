@@ -85,7 +85,7 @@ void TBrick::TryDrawAppear(int ipos, int jpos)
 	*SE::Console << "TBrick::TryDrawAppear";
     Vector2f centerPos = GetPosFrom(ipos, jpos);
     
-    Vector2f blockHalfSize = Vector2f(0.5f*CONST_BRICK_WIDTH, 0.5f*CONST_BRICK_HEIGHT);
+    Vector2f blockHalfSize = Vector2f(0.5f*CONST_BRICK_WIDTH * Renderer->GetScreenWidth()/480.f, 0.5f*CONST_BRICK_HEIGHT * Renderer->GetScreenHeight()/320.f);
     
     std::string texName;
     if (Locked == 2)
@@ -153,9 +153,9 @@ Vector4f TBrick::GetColor()
 Vector2f TBrick::GetPosFrom(int ipos, int jpos)
 {
 	*SE::Console << "TBrick::GetPosFrom";
-    const Vector2f BorderShift(CONST_BRICK_SHIFT_X, CONST_BRICK_SHIFT_Y);
+    const Vector2f BorderShift(CONST_BRICK_SHIFT_X * Renderer->GetScreenWidth()/480.f, CONST_BRICK_SHIFT_Y * Renderer->GetScreenHeight()/320.f);
     
-    return BorderShift+Vector2f(CONST_BRICK_WIDTH*ipos + 0.5f*CONST_BRICK_WIDTH, 320.f - CONST_BRICK_HEIGHT*(jpos)-0.5f*CONST_BRICK_HEIGHT);
+    return BorderShift+Vector2f(CONST_BRICK_WIDTH*Renderer->GetScreenWidth()/480.f*ipos + 0.5f*CONST_BRICK_WIDTH*Renderer->GetScreenWidth()/480.f, Renderer->GetScreenHeight() - CONST_BRICK_HEIGHT*Renderer->GetScreenHeight()/320.f*(jpos)-0.5f*CONST_BRICK_HEIGHT*Renderer->GetScreenHeight()/320.f);
 
 }
 
@@ -461,7 +461,7 @@ void TGameLevel::ReloadBlockInstansingList()
     
     std::pair<Vector4f, std::string> tempPair;
     BlockInstansingList.ColorBlockList.clear();
-     
+    
     for (int i=0; i<CONST_BRICKMATRIX_WIDTH; i++)
     {
         for (int j=0; j<CONST_BRICKMATRIX_HEIGHT; j++)
@@ -489,8 +489,8 @@ void TGameLevel::ReloadBlockInstansingList()
                     itr--;
                 }
                 
-                Vector2f posFrom = BlockMatrix[i][j].GetPosFrom(i,j) + Vector2f(-0.5f*CONST_BRICK_WIDTH, -0.5f*CONST_BRICK_HEIGHT);
-                Vector2f posTo = BlockMatrix[i][j].GetPosFrom(i,j) + Vector2f(+0.5f*CONST_BRICK_WIDTH, +0.5f*CONST_BRICK_HEIGHT);
+                Vector2f posFrom = BlockMatrix[i][j].GetPosFrom(i,j) + Vector2f(-0.5f*CONST_BRICK_WIDTH*Renderer->GetScreenWidth()/480.f, -0.5f*CONST_BRICK_HEIGHT*Renderer->GetScreenHeight()/320.f);
+                Vector2f posTo = BlockMatrix[i][j].GetPosFrom(i,j) + Vector2f(+0.5f*CONST_BRICK_WIDTH*Renderer->GetScreenWidth()/480.f, +0.5f*CONST_BRICK_HEIGHT*Renderer->GetScreenHeight()/320.f);
                 
                 itr->second.Data += MakeDataTriangleList(posFrom, posTo);
                 
@@ -508,8 +508,8 @@ void TGameLevel::ReloadBlockInstansingList()
 Vector2f TGameLevel::GetBlock(const Vector2f& pos)
 {    
 	*SE::Console << "TGameLevel::GetBlock";
-	int x = static_cast<int>((pos(0) - CONST_BRICK_SHIFT_X) / CONST_BRICK_WIDTH);
-	int y = static_cast<int>((320.0f + CONST_BRICK_SHIFT_Y - pos(1)) / CONST_BRICK_HEIGHT);
+	int x = static_cast<int>((pos(0) - CONST_BRICK_SHIFT_X*Renderer->GetScreenWidth()/480.f) / CONST_BRICK_WIDTH*Renderer->GetScreenWidth()/480.f);
+	int y = static_cast<int>((Renderer->GetScreenHeight() + CONST_BRICK_SHIFT_Y*Renderer->GetScreenHeight()/320.f - pos(1)) / CONST_BRICK_HEIGHT*Renderer->GetScreenHeight()/320.f);
 	
 	if (x < 0)
 		x = 0;
@@ -726,7 +726,7 @@ void TGameLevel::Draw()
         Renderer->ScaleMatrix(scale);
 		Renderer->TranslateMatrix(-Vector3f(Renderer->GetMatrixWidth() * 0.5f, Renderer->GetMatrixHeight() * 0.5f, 0));
         glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[LevelScreenTexture]);
-        Renderer->DrawRect(Vector2f(0, 0), Vector2f(480.f, 320.f));
+        Renderer->DrawRect(Vector2f(0, 0), Vector2f(Renderer->GetScreenWidth(), Renderer->GetScreenHeight())); // Game Screen Scale
         Renderer->PopMatrix();
         CheckGlError();
         return;
@@ -763,14 +763,14 @@ void TGameLevel::Draw()
     {
        
         Renderer->SwitchToFrameBuffer("LevelBuffer");
-        Renderer->SetProjectionMatrix(480.f, 320.f);
+        Renderer->SetProjectionMatrix(Renderer->GetScreenWidth(), Renderer->GetScreenHeight());
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         CheckGlError();
     }
     
     glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[BkgTexture]);
-	Renderer->DrawRect(Vector2f(0, 0), Vector2f(480.f, 320.f));
+	Renderer->DrawRect(Vector2f(0, 0), Vector2f(Renderer->GetScreenWidth(), Renderer->GetScreenHeight()));
 	
 	std::list<TBall>::iterator iBall;
     
@@ -811,19 +811,32 @@ void TGameLevel::Draw()
     glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_REFLECTOR_TEXTURE]);
 	Renderer->DrawRect(Vector2f(-128.f, -16.f)+ReflectorPos, Vector2f(128.f, 16.f)+ReflectorPos);
 	
-    
-    const Vector2f wallUpPos1(240.f-256.f, 320.f-64.f);
-    const Vector2f wallUpPos2(240.f+256.f, 320.f);
+    float tSW = Renderer->GetScreenWidth(); // Screen Width
+	float tSH = Renderer->GetScreenHeight(); // Screen Height
+	float lWTW = tSW / static_cast<float>(ResourceManager->TexList.GetTextureHeight(CONST_WALL_LEFT_TEXTURE)) * static_cast<float>(ResourceManager->TexList.GetTextureWidth(CONST_WALL_LEFT_TEXTURE)) * tSH/tSW; // left Wall Texture Width
+	float rWTW = lWTW; // right Wall Texture Width
+	float uWTW = (tSW - (lWTW + rWTW)) / static_cast<float>(ResourceManager->TexList.GetTextureWidth(CONST_WALL_UP_TEXTURE)) * static_cast<float>(ResourceManager->TexList.GetTextureHeight(CONST_WALL_UP_TEXTURE)) * tSW/tSH; // up Wall Texture Width
+	float bWTO = (lWTW+rWTW) * 0.5f; // bonus Wall x-Offset
+	float bWTW = (tSW-bWTO)/static_cast<float>(ResourceManager->TexList.GetTextureWidth(CONST_WALL_BONUS_TEXTURE)) * static_cast<float>(ResourceManager->TexList.GetTextureHeight(CONST_WALL_BONUS_TEXTURE)) * tSW/tSH; // bonus Wall Texture Width
+
+    //const Vector2f wallUpPos1(240.f-256.f, 320.f-64.f);
+    //const Vector2f wallUpPos2(240.f+256.f, 320.f);
+	const Vector2f wallUpPos1(lWTW, tSH-uWTW);
+	const Vector2f wallUpPos2(tSW - rWTW, tSH);
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_UP_TEXTURE]);
 	Renderer->DrawRect(wallUpPos1, wallUpPos2);
 	
-	const Vector2f wallLeftPos1(0.f, 320.f - 512.f);
-	const Vector2f wallLeftPos2(32.f, 320.f);
+	//const Vector2f wallLeftPos1(0.f, 320.f - 512.f);
+	//const Vector2f wallLeftPos2(32.f, 320.f);
+	const Vector2f wallLeftPos1(0.f, 0.f);
+	const Vector2f wallLeftPos2(lWTW, tSH);
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_LEFT_TEXTURE]);
 	Renderer->DrawRect(wallLeftPos1, wallLeftPos2);
 	
-	const Vector2f wallRightPos1(480.f-32.f, 320.f - 512.f);
-	const Vector2f wallRightPos2(480.f, 320.f);
+	//const Vector2f wallRightPos1(480.f-32.f, 320.f - 512.f);
+	//const Vector2f wallRightPos2(480.f, 320.f);
+	const Vector2f wallRightPos1(tSW-rWTW, 0.f);
+	const Vector2f wallRightPos2(tSW, tSH);
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_RIGHT_TEXTURE]);
 	Renderer->DrawRect(wallRightPos1, wallRightPos2);
 	
@@ -835,7 +848,10 @@ void TGameLevel::Draw()
         
 	    glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_BONUS_TEXTURE]);
 	    
-	    Renderer->DrawRect(Vector2f(-256.f, -16.f)+wallDownPos, Vector2f(256.f, 16.f)+wallDownPos);
+	    //Renderer->DrawRect(Vector2f(-256.f, -16.f)+wallDownPos, Vector2f(256.f, 16.f)+wallDownPos);
+		const Vector2f wallBonusPos1(bWTO, wallDownPos[1] - bWTW*0.5f);
+		const Vector2f wallBonusPos2(tSW - bWTO, wallDownPos[1] + bWTW*0.5f);
+		Renderer->DrawRect(wallBonusPos1, wallBonusPos2);
     }
 	
     
@@ -1401,7 +1417,7 @@ void TGameLevel::UpdateBallList(size_t dt)
     Vector2f ballPos = iBall->GetPos();
 
     
-    if (ballPos(0) > 480.f-15.f)
+    if (ballPos(0) > Renderer->GetScreenWidth()-15.f)
     {
         iBall->ReflectToLeft();
     }
@@ -1411,7 +1427,7 @@ void TGameLevel::UpdateBallList(size_t dt)
         iBall->ReflectToRight();
     }
 	
-	if (ballPos(1) > 320.0f-16.f)
+	if (ballPos(1) > Renderer->GetScreenHeight()-16.f)
 	{
         iBall->ReflectToDown();
     }
