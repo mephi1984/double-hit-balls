@@ -27,9 +27,9 @@ void TGameMenu::Draw()
     RenderUniform1f("Transparency", 1.f);
     float bkgShift = MenuPos*0.1f - 100.f;
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["main_menu_bkg_left"]);	
-	Renderer->DrawRect(Vector2f(bkgShift,0.f), Vector2f(480.f+bkgShift,320.f));
+	Renderer->DrawRect(Vector2f(bkgShift,0.f), Vector2f(Renderer->GetScreenWidth()+bkgShift,Renderer->GetScreenHeight()));
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["main_menu_bkg_right"]);
-	Renderer->DrawRect(Vector2f(480.f+bkgShift,0.f), Vector2f(960.f+bkgShift,320.f));
+	Renderer->DrawRect(Vector2f(Renderer->GetScreenWidth()+bkgShift,0.f), Vector2f(960.f+bkgShift,Renderer->GetScreenHeight()));
 
 
 	if (SelectedGame == 0)

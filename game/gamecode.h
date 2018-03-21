@@ -19,9 +19,9 @@ const float CONST_BRICK_APPEAR_TIME = 200.f;
 
 const int CONST_BRICKMATRIX_WIDTH = 12;
 const int CONST_BRICKMATRIX_HEIGHT = 13;
-const float CONST_BRICK_WIDTH = 37.5f;
+const float CONST_BRICK_WIDTH = 38.65f;
 const float CONST_BRICK_HEIGHT = 0.5f*CONST_BRICK_WIDTH;
-const float CONST_BRICK_SHIFT_X = 15.f;
+const float CONST_BRICK_SHIFT_X = 8.2f;
 const float CONST_BRICK_SHIFT_Y = -16.f;
 
 const float CONST_BONUS_APPEAR_TIME = 400.f;

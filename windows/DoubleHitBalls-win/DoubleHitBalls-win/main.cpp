@@ -8,7 +8,7 @@ int APIENTRY WinMain(HINSTANCE hCurrentInst, HINSTANCE hPreviousInst,
 	LPSTR lpszCmdLine, int nCmdShow)
 {
 
-	int width = 800;
+	int width = 700;
 	int height = 480;
 
 

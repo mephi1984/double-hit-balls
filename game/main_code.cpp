@@ -32,17 +32,18 @@ const std::string CONST_BALL_TEXTURE = "ball_mod1";
 
 const std::string CONST_BALLGLOW_TEXTURE = "ball_glow";
 
-const std::string CONST_REFLECTOR_TEXTURE = "reflector_mod1";
-/*
-const std::string CONST_WALL_LEFT_TEXTURE = "wall_left";
-const std::string CONST_WALL_RIGHT_TEXTURE = "wall_right";
-const std::string CONST_WALL_UP_TEXTURE = "wall_up";
-const std::string CONST_WALL_BONUS_TEXTURE = "wall_bonus";
-*/
+const std::string CONST_REFLECTOR_TEXTURE = "reflector";
 
+const std::string CONST_WALL_LEFT_TEXTURE = "wall_left_mod1";
+const std::string CONST_WALL_RIGHT_TEXTURE = "wall_right_mod1";
+const std::string CONST_WALL_UP_TEXTURE = "wall_up_mod1";
+//const std::string CONST_WALL_BONUS_TEXTURE = "wall_bonus";
+
+/*
 const std::string CONST_WALL_LEFT_TEXTURE = "left_frame_fragment";
 const std::string CONST_WALL_RIGHT_TEXTURE = "right_frame_fragment";
 const std::string CONST_WALL_UP_TEXTURE = "top_frame_fragment";
+*/
 const std::string CONST_WALL_BONUS_TEXTURE = "bottom_frame_fragment";
 
 const std::string CONST_BACK_BTN_TEXTURE = "back_btn";
