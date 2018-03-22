@@ -32,7 +32,7 @@ const std::string CONST_BALL_TEXTURE = "ball_mod1";
 
 const std::string CONST_BALLGLOW_TEXTURE = "ball_glow";
 
-const std::string CONST_REFLECTOR_TEXTURE = "reflector";
+const std::string CONST_REFLECTOR_TEXTURE = "reflector_mod1";
 
 const std::string CONST_WALL_LEFT_TEXTURE = "wall_left_mod1";
 const std::string CONST_WALL_RIGHT_TEXTURE = "wall_right_mod1";
@@ -98,6 +98,10 @@ void TMyApplication::InnerInit()
 	ResourceManager->TexList.AddTexture("console_bkg.bmp");
 
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
+	
+	// Level frames Init
+	ResourceManager->FrameManager.AddFrameRenderBuffer("LeftLevelFrame", Renderer->GetScreenWidth()*0.1f,Renderer->GetScreenHeight());
+	ResourceManager->FrameManager.AddFrameRenderBuffer("RightLevelFrame", Renderer->GetScreenWidth()*0.1f, Renderer->GetScreenHeight());
 
 	OnDrawSignal.connect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
 	Inited = true;
