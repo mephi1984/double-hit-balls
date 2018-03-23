@@ -99,17 +99,13 @@ void TMyApplication::InnerInit()
 
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
 	
-	// Level frames Init
-	ResourceManager->FrameManager.AddFrameRenderBuffer("LeftLevelFrame", Renderer->GetScreenWidth()*0.1f,Renderer->GetScreenHeight());
-	ResourceManager->FrameManager.AddFrameRenderBuffer("RightLevelFrame", Renderer->GetScreenWidth()*0.1f, Renderer->GetScreenHeight());
-
 	OnDrawSignal.connect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
 	Inited = true;
 
 	Renderer->SetOrthoProjection();
 
 	Renderer->SetFullScreenViewport();
-	
+	GameLevel.SetLevelScale();
 }
 
 void TMyApplication::InnerDeinit()

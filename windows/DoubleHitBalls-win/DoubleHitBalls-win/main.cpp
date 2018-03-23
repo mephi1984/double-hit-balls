@@ -4,11 +4,12 @@
 
 TMyApplication* App = NULL;
 
+
 int APIENTRY WinMain(HINSTANCE hCurrentInst, HINSTANCE hPreviousInst,
 	LPSTR lpszCmdLine, int nCmdShow)
 {
 
-	int width = 800;
+	int width = 800; // To change Level scale -> CONST_LEVEL_VIEWPORT_WIDTH/HEIGHT
 	int height = 480;
 
 

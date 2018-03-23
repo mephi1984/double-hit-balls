@@ -120,6 +120,8 @@ struct TBallInstancingList
 class TGameLevel : public TGameAreaAncestor
 {
 protected:
+	float lvlWidth;
+	float lvlHeight;
     std::string BkgTexture;
     std::string LevelScreenTexture;
     std::string LevelFileName;
@@ -183,6 +185,9 @@ public:
     
     void FillWithFile(const std::string& filename);
     
+	void SetLevelScale();
+	Vector2f GetLevelScale();
+
     void SetStandBy();
     void SetLoading(const std::string& bkg, const std::string& levelscreen);
     bool IsLoaded();
