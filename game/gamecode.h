@@ -185,8 +185,8 @@ public:
     
     void FillWithFile(const std::string& filename);
     
-	void SetLevelScale();
-	Vector2f GetLevelScale();
+	//void SetLevelScale();
+	//Vector2f GetLevelScale();
 
     void SetStandBy();
     void SetLoading(const std::string& bkg, const std::string& levelscreen);

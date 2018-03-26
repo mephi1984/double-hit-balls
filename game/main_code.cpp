@@ -1,5 +1,3 @@
-#include "main_code.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -56,6 +54,7 @@ const std::string CONST_CREDITS_TEXTURE = "credits";
 
 const float CONST_CREDITS_SHOW_TIME = 150.f;
 
+
 TMyApplication* Application;
 
 
@@ -105,7 +104,8 @@ void TMyApplication::InnerInit()
 	Renderer->SetOrthoProjection();
 
 	Renderer->SetFullScreenViewport();
-	GameLevel.SetLevelScale();
+	Application->SetGameLevelScreenScale();
+	//GameLevel.SetLevelScale();
 }
 
 void TMyApplication::InnerDeinit()
@@ -499,4 +499,27 @@ bool TMyApplication::IsLoaded()
 bool TMyApplication::IsInited()
 {
     return Inited;
+}
+
+void TMyApplication::SetGameLevelScreenScale()
+{
+	if ((((float)Renderer->GetScreenWidth())/((float)Renderer->GetScreenHeight())) >= levelScreenRatio)
+	{
+		levelScreenHeight = (float)Renderer->GetScreenHeight();
+		levelScreenWidth = levelScreenHeight * levelScreenRatio;
+	} else 
+	{
+		levelScreenWidth = (float)Renderer->GetScreenWidth();
+		levelScreenHeight = levelScreenWidth / levelScreenRatio;
+	}
+}
+
+float TMyApplication::GetGameLevelScreenWidth()
+{
+	return levelScreenWidth;
+}
+
+float TMyApplication::GetGameLevelScreenHeight()
+{
+	return levelScreenHeight;
 }

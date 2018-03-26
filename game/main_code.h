@@ -88,6 +88,10 @@ const int CONST_GAMESTATE_PRELOADING = 7;
 class TMyApplication : public TApplication
 {
 protected:
+	int levelScreenWidth;
+	int levelScreenHeight;
+	float levelScreenRatio = 1.5f;
+
 	TGameMenu Menu;
 	TGameLevel GameLevel;
 	TGameCredits GameCredits;
@@ -147,7 +151,10 @@ public:
 	virtual void InnerOnMove(Vector2f p, Vector2f shift);
 
 	virtual void OnFling(Vector2f v);
-
+	
+	float GetGameLevelScreenWidth();
+	float GetGameLevelScreenHeight();
+	void SetGameLevelScreenScale();
 };
 
 
