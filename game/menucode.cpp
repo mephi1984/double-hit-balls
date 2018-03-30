@@ -1,6 +1,7 @@
 #include "menucode.h"
 #include "main_code.h"
 
+
 const float CONST_SPEED_NEG_ACCELERATION_K = 0.03f;
 
 const float CONST_MENU_POS_K = 0.25f;
@@ -135,7 +136,7 @@ void TGameMenu::OnTapDown(Vector2f pos)
 {
 	*SE::Console << "TGameMenu::OnTapDown";
     HoldToTap = true;
-	
+
     if (pos(1)<64.f && pos(0)>=265.f-128.f && pos(0)<=265.f+128.f)
     {
         Application->GoFromMenuToCredits();
@@ -172,6 +173,11 @@ void TGameMenu::OnTapUp(Vector2f pos)
 	*SE::Console << "TGameMenu::OnTapUp";
 	HoldToTap = false;
 	
+	std::fstream tapLog;
+	tapLog.open("tapLog.txt", std::ios::app);
+	tapLog << "Tapped up:: " << pos(0) << " " << pos(1) << endl;
+	tapLog.close();
+
 	if (SelectedGame != -1)
 	{
         MenuPos = -CONST_MENU_WINDOW_DISTANCE*SelectedGame-40.f;

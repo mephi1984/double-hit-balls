@@ -8,6 +8,7 @@
 #include "menucode.h"
 
 #include "main_code.h"
+#include <boost/property_tree/json_parser.hpp>
 
 boost::signals2::signal<void (Vector2f)> OnTapUpSignal;
 boost::signals2::signal<void (Vector2f)> OnTapUpAfterMoveSignal;
@@ -96,6 +97,7 @@ void TMyApplication::InnerInit()
 
 	ResourceManager->TexList.AddTexture("console_bkg.bmp");
 
+
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
 	
 	OnDrawSignal.connect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
@@ -106,6 +108,7 @@ void TMyApplication::InnerInit()
 	Renderer->SetFullScreenViewport();
 	Application->SetGameLevelScreenScale();
 	//GameLevel.SetLevelScale();
+
 }
 
 void TMyApplication::InnerDeinit()
@@ -324,6 +327,7 @@ void TMyApplication::InnerDraw()
 {
 	glDisable(GL_DEPTH_TEST);
 
+	sparkler.draw();
 
     OnDrawSignal();
 
@@ -377,6 +381,7 @@ void TMyApplication::InnerUpdate(size_t dt)
 	{
 		//*SE::Console << "4CONST_GAMESTATE_MENU";
         Menu.Update(dt);
+		
     }
     else if (GameState == CONST_GAMESTATE_FROM_MENU_TO_LEVEL)
 	{
@@ -522,4 +527,20 @@ float TMyApplication::GetGameLevelScreenWidth()
 float TMyApplication::GetGameLevelScreenHeight()
 {
 	return levelScreenHeight;
+}
+
+void TMyApplication::InnerOnMouseDown(TMouseState& mouseState) {
+	/*
+	if (mouseState.LeftButtonPressed) {
+		if ((float)mouseState.X >= (Renderer->GetScreenWidth())*0.25f && (float)mouseState.X <= (Renderer->GetScreenWidth())*0.75f && (float)mouseState.Y >= (Renderer->GetScreenHeight())*0.25f && (float)mouseState.Y <= (Renderer->GetScreenHeight())*0.75f) {
+			// some tmp code
+			Application->GoFromMenuToGame(1);
+		}
+	}
+	*/
+	OnTapDownSignal(Vector2f(mouseState.X, ((Renderer->GetScreenHeight()) - mouseState.Y))); // Temporary mouse down action for WIN32
+}
+
+void TMyApplication::InnerOnMouseMove(TMouseState& mouseState) {
+	
 }

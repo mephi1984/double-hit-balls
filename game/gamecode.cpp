@@ -761,7 +761,7 @@ void TGameLevel::Draw()
         Renderer->ScaleMatrix(scale);
 		Renderer->TranslateMatrix(-Vector3f(Renderer->GetMatrixWidth() * 0.5f, Renderer->GetMatrixHeight() * 0.5f, 0));
         glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[LevelScreenTexture]);
-        Renderer->DrawRect(Vector2f(xlOffset, ylOffset), Vector2f(xlOffset+tSW, ylOffset+tSH)); // Game Screen Scale
+        Renderer->DrawRect(Vector2f(xlOffset, ylOffset), Vector2f(xlOffset+tSW, ylOffset+tSH), Vector2f (0.f,0.f), Vector2f(1.f,1.f)); // Game Screen Scale
         Renderer->PopMatrix();
         CheckGlError();
         return;
@@ -805,7 +805,7 @@ void TGameLevel::Draw()
     }
     
     glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[BkgTexture]);
-	Renderer->DrawRect(Vector2f(xlOffset, ylOffset), Vector2f(xlOffset+tSW, ylOffset+tSH));
+	Renderer->DrawRect(Vector2f(xlOffset, ylOffset), Vector2f(xlOffset+tSW, ylOffset+tSH),Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
 	std::list<TBall>::iterator iBall;
     
@@ -846,22 +846,22 @@ void TGameLevel::Draw()
     glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_REFLECTOR_TEXTURE]);
 	float xRW = 210.f * tSW/700.f; // x Reflector Width
 	float yRH = 45.f * tSH/480.f; // y Reflector Height
-	Renderer->DrawRect(Vector2f(-xRW*0.5f, -yRH*0.5f)+ReflectorPos, Vector2f(xRW*0.5f, yRH*0.5f)+ReflectorPos);
+	Renderer->DrawRect(Vector2f(-xRW*0.5f, -yRH*0.5f)+ReflectorPos, Vector2f(xRW*0.5f, yRH*0.5f)+ReflectorPos, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 
 	const Vector2f wallUpPos1(xlOffset, tSH-ylOffset-uWTW);
 	const Vector2f wallUpPos2(tSW + xlOffset, tSH-ylOffset);
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_UP_TEXTURE]);
-	Renderer->DrawRect(wallUpPos1, wallUpPos2);
+	Renderer->DrawRect(wallUpPos1, wallUpPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
 	const Vector2f wallLeftPos1(xlOffset, lrFBO+ylOffset);
 	const Vector2f wallLeftPos2(lWTW + xlOffset, tSH-ylOffset-uWTW);
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_LEFT_TEXTURE]);
-	Renderer->DrawRect(wallLeftPos1, wallLeftPos2);
+	Renderer->DrawRect(wallLeftPos1, wallLeftPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
 	const Vector2f wallRightPos1(tSW+xlOffset-rWTW, lrFBO+ylOffset);
 	const Vector2f wallRightPos2(tSW + xlOffset, tSH-ylOffset-uWTW);
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_RIGHT_TEXTURE]);
-	Renderer->DrawRect(wallRightPos1, wallRightPos2);
+	Renderer->DrawRect(wallRightPos1, wallRightPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
 
 	if (BonusFloorTimer>0.f)
@@ -873,7 +873,7 @@ void TGameLevel::Draw()
 	    
 		const Vector2f wallBonusPos1(bWTO + xlOffset, ylOffset + wallDownPos(1) - bWTW*0.5f);
 		const Vector2f wallBonusPos2(tSW + xlOffset - bWTO, ylOffset + wallDownPos(1) + bWTW*0.5f);
-		Renderer->DrawRect(wallBonusPos1, wallBonusPos2);
+		Renderer->DrawRect(wallBonusPos1, wallBonusPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
     }
 	
     

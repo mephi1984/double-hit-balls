@@ -1,0 +1,8 @@
+attribute vec3 vPosition;
+
+uniform mat4 ProjectionMatrix;
+
+void main() 
+{
+	gl_Position = ProjectionMatrix * vec4(vPosition.xyz, 1.0);
+}

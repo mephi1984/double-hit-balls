@@ -90,7 +90,7 @@ class TMyApplication : public TApplication
 protected:
 	int levelScreenWidth;
 	int levelScreenHeight;
-	float levelScreenRatio = 1.5f;
+	float levelScreenRatio = 1.6;
 
 	TGameMenu Menu;
 	TGameLevel GameLevel;
@@ -113,6 +113,12 @@ protected:
 	void DisapplySignalsToGame();
 	void ApplySignalsToCredits();
 	void DisapplySignalsToCredits();
+
+	// Mouse new methods
+	virtual void InnerOnMouseDown(TMouseState& mouseState);
+	virtual void InnerOnMouseMove(TMouseState& mouseState);
+
+	ParticleEffect sparkler;
 
 public:
 	bool Loaded;
@@ -160,6 +166,10 @@ public:
 
 extern TMyApplication* Application;
 
-
+class TMySalmonRenderer : public TSalmonRenderer
+{
+public:
+	void DrawRect(const Vector2f& p1, const Vector2f& p2);
+};
 
 #endif
