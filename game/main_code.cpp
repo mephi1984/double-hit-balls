@@ -85,10 +85,18 @@ void TMyApplication::InnerInit()
 	GameState = CONST_GAMESTATE_PRELOADING;
 	StateTimer = 0.f;
 
-
+	/*
 	ResourceManager->ShaderManager.AddShader("DefaultShader", "shader1vertex.txt", "shader1fragment.txt");
 	ResourceManager->ShaderManager.AddShader("FrameShader", "frameshader_vertex.txt", "frameshader_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("BrickShader", "brickshader_vertex.txt", "brickshader_fragment.txt");
+	Renderer->PushShader("DefaultShader");
+	*/
+
+	ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/texture-shader.vertex", "shaders/texture-shader.fragment");
+	ResourceManager->ShaderManager.AddShader("ColorShader", "shaders/color-shader.vertex", "shaders/color-shader.fragment");
+	ResourceManager->ShaderManager.AddShader("FrameShader", "shaders/frameshader_vertex.txt", "shaders/frameshader_fragment.txt");
+	ResourceManager->ShaderManager.AddShader("BrickShader", "shaders/brickshader_vertex.txt", "shaders/brickshader_fragment.txt");
+	ResourceManager->ShaderManager.AddShader(ParticleEffect::PARTICLE_SHADER, "shaders/particle-shader.vertex", "shaders/particle-shader.fragment");
 	Renderer->PushShader("DefaultShader");
 
 	ResourceManager->TexList.AddTexture(CONST_LOADING_BACKGROUND_BLACK + ".png", CONST_LOADING_BACKGROUND_BLACK);
@@ -108,6 +116,7 @@ void TMyApplication::InnerInit()
 	Renderer->SetFullScreenViewport();
 	Application->SetGameLevelScreenScale();
 	//GameLevel.SetLevelScale();
+	EffectsInit();
 
 }
 
@@ -327,9 +336,9 @@ void TMyApplication::InnerDraw()
 {
 	glDisable(GL_DEPTH_TEST);
 
-	sparkler.draw();
-
     OnDrawSignal();
+
+	EffectsDraw();
 
 }
 
@@ -376,6 +385,7 @@ void TMyApplication::InnerUpdate(size_t dt)
 	{
 		*SE::Console << "3CONST_GAMESTATE_LEVEL";
         GameLevel.Update(dt);
+		EffectsUpdate(dt);
     }
     else if (GameState == CONST_GAMESTATE_MENU)
 	{
@@ -543,4 +553,54 @@ void TMyApplication::InnerOnMouseDown(TMouseState& mouseState) {
 
 void TMyApplication::InnerOnMouseMove(TMouseState& mouseState) {
 	
+}
+
+void TMyApplication::EffectsInit() {
+
+	boost::property_tree::ptree JSONsource;
+	boost::property_tree::ptree JSONconfig;
+	std::string effectJSON;
+	boost::property_tree::json_parser::read_json(ST::PathToResources + "config.json", JSONconfig);
+
+	// LEFT
+	effectJSON = JSONconfig.get<std::string>("lefteffect");
+	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+	lsparkler.parse(JSONsource); // parse JSON
+	lsparkler.load(); // load textures
+	// RIGHT
+	effectJSON = JSONconfig.get<std::string>("righteffect");
+	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+	rsparkler.parse(JSONsource);
+	rsparkler.load();
+	// TOP
+	effectJSON = JSONconfig.get<std::string>("topeffect");
+	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+	tsparkler.parse(JSONsource);
+	tsparkler.load();
+	// BOTTOM
+	effectJSON = JSONconfig.get<std::string>("boteffect");
+	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+	bsparkler.parse(JSONsource);
+	bsparkler.load();
+
+	float width = Renderer->GetScreenWidth();
+	float height = Renderer->GetScreenHeight();
+
+	lsparkler.setCoords({ width / 2, height / 2, 0 });
+	rsparkler.setCoords({ width / 2, height / 2, 0 });
+	tsparkler.setCoords({ width / 2, height / 2, 0 });
+	bsparkler.setCoords({ width / 2, height / 2, 0 });
+}
+
+void TMyApplication::EffectsUpdate(size_t dt) {
+	lsparkler.update(dt / 1000.f);
+	rsparkler.update(dt / 1000.f);
+	tsparkler.update(dt / 1000.f);
+	bsparkler.update(dt / 1000.f);
+}
+void TMyApplication::EffectsDraw() {
+	lsparkler.draw();
+	rsparkler.draw();
+	tsparkler.draw();
+	bsparkler.draw();
 }

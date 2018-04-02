@@ -114,14 +114,17 @@ protected:
 	void ApplySignalsToCredits();
 	void DisapplySignalsToCredits();
 
+	void EffectsInit();
+
 	// Mouse new methods
 	virtual void InnerOnMouseDown(TMouseState& mouseState);
 	virtual void InnerOnMouseMove(TMouseState& mouseState);
 
-	ParticleEffect sparkler;
 
 public:
 	bool Loaded;
+
+	ParticleEffect lsparkler, rsparkler, tsparkler, bsparkler; // Diffrent directed reflection effects
 
 	TMyApplication() : TApplication(), Loaded(false), Inited(false) { }
 
@@ -139,6 +142,8 @@ public:
 	void GoFromCreditsToMenu();
 	void MarkSetGameLevelPause();
 	void MarkReleaseGameLevelPause();
+	void EffectsUpdate(size_t dt);
+	void EffectsDraw();
 
 	void OpenNextLevel();
 

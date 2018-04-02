@@ -323,6 +323,11 @@ void TBall::Go()
 void TBall::ReflectToLeft()
 {
 	*SE::Console << "TBall::ReflectToLeft";
+
+	Application->lsparkler.setCoords({Pos(0),Pos(1),0});
+	Application->lsparkler.stopSpawn();
+	Application->lsparkler.startSpawn();
+
     if (Velocity(0) > 0.f)
     {
         Velocity(0) = - Velocity(0);
@@ -332,6 +337,11 @@ void TBall::ReflectToLeft()
 void TBall::ReflectToRight()
 {
 	*SE::Console << "TBall::ReflectToRight";
+
+	Application->rsparkler.setCoords({ Pos(0),Pos(1),0 });
+	Application->rsparkler.stopSpawn();
+	Application->rsparkler.startSpawn();
+
     if (Velocity(0) < 0.f)
     {
         Velocity(0) = - Velocity(0);
@@ -341,6 +351,11 @@ void TBall::ReflectToRight()
 void TBall::ReflectToUp()
 {
 	*SE::Console << "TBall::ReflectToUp";
+
+	Application->tsparkler.setCoords({ Pos(0),Pos(1),0 });
+	Application->tsparkler.stopSpawn();
+	Application->tsparkler.startSpawn();
+
     if (Velocity(1) < 0.f)
     {
         Velocity(1) = - Velocity(1);
@@ -350,6 +365,11 @@ void TBall::ReflectToUp()
 void TBall::ReflectToDown()
 {
 	*SE::Console << "TBall::ReflectToDown";
+
+	Application->bsparkler.setCoords({ Pos(0),Pos(1),0 });
+	Application->bsparkler.stopSpawn();
+	Application->bsparkler.startSpawn();
+
     if (Velocity(1) > 0.f)
     {
         Velocity(1) = - Velocity(1);

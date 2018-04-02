@@ -6,8 +6,8 @@
 	{
 		"name": "Spark",
 		
-		"maxParticles": 5,
-		"preloading": 5,
+		"maxParticles": 11,
+		"preloading": 11,
 		
 		"texturePath": "textures/spark-white.png",
 		"textureSize": [ 10, 10 ],
@@ -28,21 +28,21 @@
 				"value": 0
 			},
 			{
-				"t": 0.050,
-				"value": 50
+				"t": 0.01,
+				"value": 20
 			}
 			]
 		},
 		
 		"spawnRange":
 		{
-			"value": [ 0, 0, 0, 170 ]
+			"value": [ 0, 180, 0, 175 ]
 		},
 		
 		"lifeTime":
 		{
-			"min": 0.05,
-			"max": 0.1
+			"min": 0.02,
+			"max": 0.15
 		},
 		
 		"coords_system": "PARTICLE_BIRTH",
@@ -51,17 +51,17 @@
 		
 		"coords":
 		{
-			"interpolation": "LINEAR_SPLINE",
+			"interpolation": "CUBIC_SPLINE",
 			"timeline":
 			[
 			{
 				"t": 0.000,
-				"value": [ 0, 0, 0 ]
+				"value": [ 10, 0, 0 ]
 			},
 			{
-				"t": 2,
-				"min": [ 300, 0, 0 ],
-				"max": [ 600, 0, 0 ]
+				"t": 0.15,
+				"min": [ 60, 0, 0 ],
+				"max": [ 100, 0, 0 ]
 			}
 			]
 		},
@@ -73,7 +73,7 @@
 		
 		"scale":
 		{
-			"value": 1
+			"value": 0.5
 		},
 		
 		"color":

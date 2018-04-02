@@ -1,0 +1,85 @@
+{
+	"name": "Simple Sparkler",
+	
+	"emitters":
+	[
+	{
+		"name": "Spark",
+		
+		"maxParticles": 11,
+		"preloading": 11,
+		
+		"texturePath": "textures/spark-white.png",
+		"textureSize": [ 10, 10 ],
+		
+		"hasInertion": "false",
+		"gravity": [0, 0, 0],
+		
+		"spawnRange_system": "PARTICLE_EFFECT",
+		
+		"spawnTotal":
+		{
+			"interpolation": "LINEAR_SPLINE",
+			"timelineType": "LIMITED",
+			"timeline":
+			[
+			{
+				"t": 0.000,
+				"value": 0
+			},
+			{
+				"t": 0.01,
+				"value": 20
+			}
+			]
+		},
+		
+		"spawnRange":
+		{
+			"value": [ 0, 90, 0, 175 ]
+		},
+		
+		"lifeTime":
+		{
+			"min": 0.02,
+			"max": 0.15
+		},
+		
+		"coords_system": "PARTICLE_BIRTH",
+		"coords_axis_system": "PARTICLE_BIRTH",
+		"rotation_system": "PARTICLE_EFFECT",
+		
+		"coords":
+		{
+			"interpolation": "CUBIC_SPLINE",
+			"timeline":
+			[
+			{
+				"t": 0.000,
+				"value": [ 10, 0, 0 ]
+			},
+			{
+				"t": 0.15,
+				"min": [ 60, 0, 0 ],
+				"max": [ 100, 0, 0 ]
+			}
+			]
+		},
+		
+		"rotation":
+		{
+			"value": [ 0, 0, 0 ]
+		},
+		
+		"scale":
+		{
+			"value": 0.5
+		},
+		
+		"color":
+		{
+			"value": [ 1, 1, 0, 1 ]
+		}
+	}
+	]
+}

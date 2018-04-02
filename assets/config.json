@@ -1,3 +1,6 @@
 {
-	"effect": "effects/ball-hit-spark.json"
+	"lefteffect": "effects/ball-hit-spark-l.json",
+	"righteffect": "effects/ball-hit-spark-r.json",
+	"topeffect": "effects/ball-hit-spark-t.json",
+	"boteffect": "effects/ball-hit-spark-b.json"
 }
