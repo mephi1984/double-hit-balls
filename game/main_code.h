@@ -92,6 +92,9 @@ protected:
 	int levelScreenHeight;
 	float levelScreenRatio = 1.6;
 
+	ParticleEffect lsparkler, rsparkler, tsparkler, bsparkler; // Different directed reflection effects
+	ParticleEffect lvlFirework; // Level finished effect
+
 	TGameMenu Menu;
 	TGameLevel GameLevel;
 	TGameCredits GameCredits;
@@ -124,8 +127,6 @@ protected:
 public:
 	bool Loaded;
 
-	ParticleEffect lsparkler, rsparkler, tsparkler, bsparkler; // Diffrent directed reflection effects
-
 	TMyApplication() : TApplication(), Loaded(false), Inited(false) { }
 
 	virtual void InnerInit();
@@ -142,8 +143,14 @@ public:
 	void GoFromCreditsToMenu();
 	void MarkSetGameLevelPause();
 	void MarkReleaseGameLevelPause();
+	
+	// Effects -------
 	void EffectsUpdate(size_t dt);
 	void EffectsDraw();
+
+	void fireworkEffect();
+	void hitSpark(std::string direct, Vector2f Pos);
+	// Effects -------
 
 	void OpenNextLevel();
 
@@ -170,11 +177,5 @@ public:
 
 
 extern TMyApplication* Application;
-
-class TMySalmonRenderer : public TSalmonRenderer
-{
-public:
-	void DrawRect(const Vector2f& p1, const Vector2f& p2);
-};
 
 #endif

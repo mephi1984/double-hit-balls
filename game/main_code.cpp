@@ -338,7 +338,6 @@ void TMyApplication::InnerDraw()
 
     OnDrawSignal();
 
-	EffectsDraw();
 
 }
 
@@ -582,6 +581,11 @@ void TMyApplication::EffectsInit() {
 	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
 	bsparkler.parse(JSONsource);
 	bsparkler.load();
+	// Level finish
+	effectJSON = JSONconfig.get<std::string>("lvlFinish");
+	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+	lvlFirework.parse(JSONsource);
+	lvlFirework.load();
 
 	float width = Renderer->GetScreenWidth();
 	float height = Renderer->GetScreenHeight();
@@ -590,6 +594,7 @@ void TMyApplication::EffectsInit() {
 	rsparkler.setCoords({ width / 2, height / 2, 0 });
 	tsparkler.setCoords({ width / 2, height / 2, 0 });
 	bsparkler.setCoords({ width / 2, height / 2, 0 });
+	lvlFirework.setCoords({ width / 2, 0, 0 });
 }
 
 void TMyApplication::EffectsUpdate(size_t dt) {
@@ -597,10 +602,41 @@ void TMyApplication::EffectsUpdate(size_t dt) {
 	rsparkler.update(dt / 1000.f);
 	tsparkler.update(dt / 1000.f);
 	bsparkler.update(dt / 1000.f);
+	lvlFirework.update(dt / 1000.f);
 }
 void TMyApplication::EffectsDraw() {
 	lsparkler.draw();
 	rsparkler.draw();
 	tsparkler.draw();
 	bsparkler.draw();
+	lvlFirework.draw();
+}
+
+void TMyApplication::hitSpark(std::string direct,Vector2f Pos) {
+	if (direct == "left") {
+		lsparkler.setCoords({ Pos(0),Pos(1),0 });
+		lsparkler.stopSpawn();
+		lsparkler.startSpawn();
+
+	}
+	if (direct == "right") {
+		rsparkler.setCoords({ Pos(0),Pos(1),0 });
+		rsparkler.stopSpawn();
+		rsparkler.startSpawn();
+	}
+	if (direct == "up") {
+		tsparkler.setCoords({ Pos(0),Pos(1),0 });
+		tsparkler.stopSpawn();
+		tsparkler.startSpawn();
+	}
+	if (direct == "down") {
+		bsparkler.setCoords({ Pos(0),Pos(1),0 });
+		bsparkler.stopSpawn();
+		bsparkler.startSpawn();
+	}
+}
+
+void TMyApplication::fireworkEffect() {
+	lvlFirework.stopSpawn();
+	lvlFirework.startSpawn();
 }

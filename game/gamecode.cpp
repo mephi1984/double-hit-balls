@@ -20,7 +20,7 @@ const float CONST_TIMER_LOADING = 150.f;
 
 const float CONST_PAUSE_APPEAR_TIME = 150.f;
 
-const float CONST_FINISH_FREEZE_TIME = 1000.f;
+const float CONST_FINISH_FREEZE_TIME = 4000.f; // 1000.f
 const float CONST_FINISHING_TIME = 250.f;
 
 const float CONST_BALL_VELOCITY = 200.f;
@@ -324,9 +324,7 @@ void TBall::ReflectToLeft()
 {
 	*SE::Console << "TBall::ReflectToLeft";
 
-	Application->lsparkler.setCoords({Pos(0),Pos(1),0});
-	Application->lsparkler.stopSpawn();
-	Application->lsparkler.startSpawn();
+	Application->hitSpark("left",Pos);
 
     if (Velocity(0) > 0.f)
     {
@@ -338,9 +336,7 @@ void TBall::ReflectToRight()
 {
 	*SE::Console << "TBall::ReflectToRight";
 
-	Application->rsparkler.setCoords({ Pos(0),Pos(1),0 });
-	Application->rsparkler.stopSpawn();
-	Application->rsparkler.startSpawn();
+	Application->hitSpark("right", Pos);
 
     if (Velocity(0) < 0.f)
     {
@@ -352,9 +348,7 @@ void TBall::ReflectToUp()
 {
 	*SE::Console << "TBall::ReflectToUp";
 
-	Application->tsparkler.setCoords({ Pos(0),Pos(1),0 });
-	Application->tsparkler.stopSpawn();
-	Application->tsparkler.startSpawn();
+	Application->hitSpark("up", Pos);
 
     if (Velocity(1) < 0.f)
     {
@@ -366,9 +360,7 @@ void TBall::ReflectToDown()
 {
 	*SE::Console << "TBall::ReflectToDown";
 
-	Application->bsparkler.setCoords({ Pos(0),Pos(1),0 });
-	Application->bsparkler.stopSpawn();
-	Application->bsparkler.startSpawn();
+	Application->hitSpark("down", Pos);
 
     if (Velocity(1) > 0.f)
     {
@@ -574,7 +566,7 @@ bool TGameLevel::TapInBackBtnArea(const Vector2f& pos)
 void TGameLevel::SetFinishFreeze()
 {
 	*SE::Console << "TGameLevel::SetFinishFreeze";
-    StateTimer = CONST_FINISH_FREEZE_TIME;
+    StateTimer = CONST_FINISH_FREEZE_TIME; // Firework timeline timer
     
     LevelState = CONST_LEVELSTATE_FINISH_FREEZE;
     
@@ -858,6 +850,8 @@ void TGameLevel::Draw()
         iBonus->Draw();
     }
     
+	Application->EffectsDraw();
+
     DrawBallInstancingList();
     
     Renderer->PopShader();
@@ -1201,6 +1195,8 @@ void TGameLevel::Update(size_t dt)
     
     if (noMoreBlocks && LevelState != CONST_LEVELSTATE_FINISH_FREEZE)
     {
+		Application->fireworkEffect(); // Firework start
+
         Application->OpenNextLevel();
         Application->MarkSetGameLevelPause();
         SetFinishFreeze();

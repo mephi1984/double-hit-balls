@@ -172,11 +172,6 @@ void TGameMenu::OnTapUp(Vector2f pos)
 {
 	*SE::Console << "TGameMenu::OnTapUp";
 	HoldToTap = false;
-	
-	std::fstream tapLog;
-	tapLog.open("tapLog.txt", std::ios::app);
-	tapLog << "Tapped up:: " << pos(0) << " " << pos(1) << endl;
-	tapLog.close();
 
 	if (SelectedGame != -1)
 	{

@@ -6,8 +6,7 @@
 	{
 		"name": "Spark",
 		
-		"maxParticles": 11,
-		"preloading": 11,
+		"preloading": 5,
 		
 		"texturePath": "textures/spark-white.png",
 		"textureSize": [ 10, 10 ],
@@ -28,7 +27,7 @@
 				"value": 0
 			},
 			{
-				"t": 0.01,
+				"t": 0.05,
 				"value": 20
 			}
 			]
@@ -41,8 +40,8 @@
 		
 		"lifeTime":
 		{
-			"min": 0.02,
-			"max": 0.15
+			"min": 0.01,
+			"max": 0.1
 		},
 		
 		"coords_system": "PARTICLE_BIRTH",
@@ -56,12 +55,12 @@
 			[
 			{
 				"t": 0.000,
-				"value": [ 10, 0, 0 ]
+				"value": [ -3, 0, 0 ]
 			},
 			{
-				"t": 0.15,
-				"min": [ 60, 0, 0 ],
-				"max": [ 100, 0, 0 ]
+				"t": 0.1,
+				"min": [ 10, 0, 0 ],
+				"max": [ 70, 0, 0 ]
 			}
 			]
 		},
@@ -73,13 +72,103 @@
 		
 		"scale":
 		{
-			"value": 0.5
+			"value": 0.4
 		},
 		
 		"color":
 		{
 			"value": [ 1, 1, 0, 1 ]
+		},
+		"emitters":
+		[
+		{
+			"name": "Spark",
+			
+			"maxParticles": 6,
+			"preloading": 6,
+			
+			"texturePath": "textures/spark-white.png",
+			"textureSize": [ 10, 10 ],
+			
+			"gravity": [0, -100, 0],
+			
+			"spawnRange_system": "PARTICLE_BIRTH",
+			
+			"spawnTotal":
+			{
+				"interpolation": "LINEAR_SPLINE",
+				"matchDeathTime": "true",
+				"timeline":
+				[
+				{
+					"t": 0.000,
+					"value": 0
+				},
+				{
+					"t": 0.08,
+					"value": 6
+				}
+				]
+			},
+			"spawnRange":
+			{
+				"value": [ 0, 180, 0, 160 ]
+			},
+			
+			"lifeTime":
+			{
+				"min": 0.01,
+				"max": 0.1
+			},
+			
+			"coords_system": "PARTICLE_BIRTH",
+			"coords_axis_system": "PARTICLE_BIRTH",
+			"rotation_system": "PARTICLE_BIRTH",
+			
+			"coords":
+			{
+				"interpolation": "LINEAR_SPLINE",
+				"timeline":
+				[
+				{
+					"t": 0.000,
+					"value": [ 0, 0, 0 ]
+				},
+				{
+					"t": 0.1,
+					"min": [ 0, 0, 0 ],
+					"max": [ 80, 0, 0 ]
+				}
+				]
+			},
+			
+			"rotation":
+			{
+				"value": [ 0, 0, 0 ]
+			},
+			
+			"scale":
+			{
+				"value": 0.2
+			},
+			
+			"color":
+			{
+				"interpolation": "LINEAR_SPLINE",
+				"timeline":
+				[
+				{
+					"t": 0.000,
+					"value": [ 1, 1, 0, 1 ]
+				},
+				{
+					"t": 0.100,
+					"value": [ 1, 0.5, 0, 1 ]
+				}
+				]
+			}			
 		}
+		]
 	}
 	]
 }
