@@ -173,6 +173,8 @@ public:
 	float GetGameLevelScreenWidth();
 	float GetGameLevelScreenHeight();
 	void SetGameLevelScreenScale();
+
+	void SetButtonsAction();
 };
 
 

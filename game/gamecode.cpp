@@ -868,12 +868,12 @@ void TGameLevel::Draw()
 	Renderer->DrawRect(wallUpPos1, wallUpPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
 	const Vector2f wallLeftPos1(xlOffset, lrFBO+ylOffset);
-	const Vector2f wallLeftPos2(lWTW + xlOffset, tSH-ylOffset-uWTW);
+	const Vector2f wallLeftPos2(lWTW + xlOffset, tSH-ylOffset-(uWTW*0.8f));
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_LEFT_TEXTURE]);
 	Renderer->DrawRect(wallLeftPos1, wallLeftPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
 	const Vector2f wallRightPos1(tSW+xlOffset-rWTW, lrFBO+ylOffset);
-	const Vector2f wallRightPos2(tSW + xlOffset, tSH-ylOffset-uWTW);
+	const Vector2f wallRightPos2(tSW + xlOffset, tSH-ylOffset-(uWTW*0.8f));
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_RIGHT_TEXTURE]);
 	Renderer->DrawRect(wallRightPos1, wallRightPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	

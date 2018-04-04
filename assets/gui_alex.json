@@ -1,0 +1,29 @@
+{
+	"widgets": [{
+		"type": "FrameLayout",
+		"name": "levelLayout",
+		"background": "#00000000",
+		"width": "match_parent",
+		"height": "match_parent",
+		"horizontalAlignment": "HA_CENTER",
+		"verticalAlignment": "VA_CENTER",
+		"children": [{
+			"type": "HorizontalLinearLayout",
+			"name": "topPannel",
+			"background": "#000000ff",
+			"marginBottom": 300,
+			"width": "wrap_content",
+			"height": "wrap_content",
+			"itemSpacing": 1,
+			"children": [{
+				"type": "Button",
+				"name": "backButton",
+				"width": 60,
+				"height": 40,
+				"background": "showBothModesButton_normal.png",
+				"pressedDrawable": "showBothModesButton_pressed.png",
+				"hoverDrawable": "showBothModesButton_selected.png"
+			}]
+		}]
+	}]
+}

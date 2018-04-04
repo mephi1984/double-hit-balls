@@ -33,17 +33,11 @@ const std::string CONST_BALLGLOW_TEXTURE = "ball_glow";
 
 const std::string CONST_REFLECTOR_TEXTURE = "reflector_mod1";
 
-const std::string CONST_WALL_LEFT_TEXTURE = "wall_left_mod1";
-const std::string CONST_WALL_RIGHT_TEXTURE = "wall_right_mod1";
-const std::string CONST_WALL_UP_TEXTURE = "wall_up_mod1";
-//const std::string CONST_WALL_BONUS_TEXTURE = "wall_bonus";
+const std::string CONST_WALL_LEFT_TEXTURE = "wall_left_mod2";
+const std::string CONST_WALL_RIGHT_TEXTURE = "wall_right_mod2";
+const std::string CONST_WALL_UP_TEXTURE = "wall_up_mod2";
 
-/*
-const std::string CONST_WALL_LEFT_TEXTURE = "left_frame_fragment";
-const std::string CONST_WALL_RIGHT_TEXTURE = "right_frame_fragment";
-const std::string CONST_WALL_UP_TEXTURE = "top_frame_fragment";
-*/
-const std::string CONST_WALL_BONUS_TEXTURE = "bottom_frame_fragment";
+const std::string CONST_WALL_BONUS_TEXTURE = "wall_bonus_mod2";
 
 const std::string CONST_BACK_BTN_TEXTURE = "back_btn";
 const std::string CONST_SLIDE_UP_BTN_TEXTURE = "slide_up_btn";
@@ -117,7 +111,10 @@ void TMyApplication::InnerInit()
 	Application->SetGameLevelScreenScale();
 	//GameLevel.SetLevelScale();
 	EffectsInit();
-
+	/*
+	ResourceManager->newGuiManager.LoadFromConfig("gui_alex.json");
+	SetButtonsAction();
+	*/
 }
 
 void TMyApplication::InnerDeinit()
@@ -639,4 +636,13 @@ void TMyApplication::hitSpark(std::string direct,Vector2f Pos) {
 void TMyApplication::fireworkEffect() {
 	lvlFirework.stopSpawn();
 	lvlFirework.startSpawn();
+}
+
+void TMyApplication::SetButtonsAction () {
+	auto backBtn = ResourceManager->newGuiManager.findWidgetByName("backButton");
+	if (backBtn) {
+		backBtn->onMouseUpSignal.connect([this, backBtn](Vector2f pos, int touchNumber) {
+				
+		});
+	}
 }
