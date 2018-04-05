@@ -119,6 +119,7 @@ struct TBallInstancingList
 
 class TGameLevel : public TGameAreaAncestor
 {
+	friend class TMyApplication;
 protected:
 	float lvlWidth;
 	float lvlHeight;

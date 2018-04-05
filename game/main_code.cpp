@@ -111,10 +111,14 @@ void TMyApplication::InnerInit()
 	Application->SetGameLevelScreenScale();
 	//GameLevel.SetLevelScale();
 	EffectsInit();
-	/*
+	
+	// ------- UI -------
+	ResourceManager->FontManager.AddFont("arial32", "arial32.png", "arial32.txt");
+	ResourceManager->FontManager.AddFont("lucon12", "lucon12.png", "lucon12.txt");
+	ResourceManager->FontManager.PushFont("lucon12");
 	ResourceManager->newGuiManager.LoadFromConfig("gui_alex.json");
 	SetButtonsAction();
-	*/
+	// ------- UI -------
 }
 
 void TMyApplication::InnerDeinit()
@@ -202,7 +206,7 @@ void TMyApplication::ApplySignalsToGame()
     OnTapUpSignal.connect(boost::bind(&TGameLevel::OnTapUp, boost::ref(GameLevel), _1));
     OnFlingSignal.connect(boost::bind(&TGameLevel::OnFling, boost::ref(GameLevel), _1));
 	OnScrollSignal.connect(boost::bind(&TGameLevel::OnScroll, boost::ref(GameLevel), _1));
-    OnTapDownSignal.connect(boost::bind(&TGameLevel::OnTapDown, boost::ref(GameLevel), _1));
+    //OnTapDownSignal.connect(boost::bind(&TGameLevel::OnTapDown, boost::ref(GameLevel), _1));
     
 }
 
@@ -211,7 +215,7 @@ void TMyApplication::DisapplySignalsToGame()
     OnTapUpSignal.disconnect(boost::bind(&TGameLevel::OnTapUp, boost::ref(GameLevel), _1));
     OnFlingSignal.disconnect(boost::bind(&TGameLevel::OnFling, boost::ref(GameLevel), _1));
     OnScrollSignal.disconnect(boost::bind(&TGameLevel::OnScroll, boost::ref(GameLevel), _1));
-    OnTapDownSignal.disconnect(boost::bind(&TGameLevel::OnTapDown, boost::ref(GameLevel), _1));
+    //OnTapDownSignal.disconnect(boost::bind(&TGameLevel::OnTapDown, boost::ref(GameLevel), _1));
     
 }
 
@@ -544,7 +548,7 @@ void TMyApplication::InnerOnMouseDown(TMouseState& mouseState) {
 		}
 	}
 	*/
-	OnTapDownSignal(Vector2f(mouseState.X, ((Renderer->GetScreenHeight()) - mouseState.Y))); // Temporary mouse down action for WIN32
+	OnTapDownSignal(Vector2f(mouseState.X, ((Renderer->GetScreenHeight()) - mouseState.Y))); // Temp mouse down action for WIN32
 }
 
 void TMyApplication::InnerOnMouseMove(TMouseState& mouseState) {
@@ -641,8 +645,9 @@ void TMyApplication::fireworkEffect() {
 void TMyApplication::SetButtonsAction () {
 	auto backBtn = ResourceManager->newGuiManager.findWidgetByName("backButton");
 	if (backBtn) {
-		backBtn->onMouseUpSignal.connect([this, backBtn](Vector2f pos, int touchNumber) {
-				
+		backBtn->onMouseDownSignal.connect([this, backBtn](Vector2f pos, int touchNumber) {
+			this->GameLevel.SetPause();
+			this->GameLevel.PrevLevelStateIsStandby = true;
 		});
 	}
 }

@@ -20,9 +20,9 @@
 				"name": "backButton",
 				"width": 60,
 				"height": 40,
-				"background": "showBothModesButton_normal.png",
-				"pressedDrawable": "showBothModesButton_pressed.png",
-				"hoverDrawable": "showBothModesButton_selected.png"
+				"background": "back_btn.png",
+				"pressedDrawable": "back_btn.png",
+				"hoverDrawable": "back_btn.png"
 			}]
 		}]
 	}]
