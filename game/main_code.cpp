@@ -234,10 +234,20 @@ void TMyApplication::LoadResources()
 {
 
     TextureNamesToLoad.clear();
+
+	// :::::::::::::::::::::::::::::::::::::
+	// :::::::::::::PTREE LOAD::::::::::::::
     
+	boost::property_tree::ptree Textures_pt;
+	boost::property_tree::json_parser::read_json(ST::PathToResources + "bg_textures_config.json", Textures_pt);
+	std::string bg_ext = ".jpeg";
+
+	// :::::::::::::::::::::::::::::::::::::
+
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("main_menu_bkg_left.png", "main_menu_bkg_left"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("main_menu_bkg_right.png", "main_menu_bkg_right"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("select_level.png", "select_level"));
+	/*
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock1.png", "shutterstock1"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock2.png", "shutterstock2"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock3.png", "shutterstock3"));
@@ -247,10 +257,24 @@ void TMyApplication::LoadResources()
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock7.png", "shutterstock7"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock8.png", "shutterstock8"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock9.png", "shutterstock9"));
-    
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock10.png", "shutterstock10"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock11.png", "shutterstock11"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock12.png", "shutterstock12"));
+	*/
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock1"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_2") + bg_ext, "shutterstock2"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_11") + bg_ext, "shutterstock3"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_13") + bg_ext, "shutterstock4"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock5"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock6"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock7"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock8"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock9"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock10"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock11"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock12"));
+
+
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot1.png", "levelshot1"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot2.png", "levelshot2"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot3.png", "levelshot3"));

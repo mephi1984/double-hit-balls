@@ -92,7 +92,8 @@ protected:
 	int levelScreenHeight;
 	float levelScreenRatio = 1.6;
 
-	ParticleEffect lsparkler, rsparkler, tsparkler, bsparkler; // Different directed reflection effects
+	ParticleEffect lsparkler, rsparkler, tsparkler, bsparkler; // Different directed reflection 
+
 	ParticleEffect lvlFirework; // Level finished effect
 
 	TGameMenu Menu;

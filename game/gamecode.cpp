@@ -816,8 +816,31 @@ void TGameLevel::Draw()
         CheckGlError();
     }
     
+	// Level background
+	// :::::::::::
+	float bkgTW = (float)ResourceManager->TexList.GetTextureWidth(BkgTexture);
+	float bkgTH = (float)ResourceManager->TexList.GetTextureHeight(BkgTexture);
+	float bkgSW; // Background Secreen Width
+	float bkgSH; // Background Secreen Height
+	float bkgSWO; // Background Secreen Width Offset
+	float bkgSHO; // Background Secreen Height Offset
+	
+	if ((bkgTW/bkgTH) >= 1.6f/*screen ratio*/) {
+		bkgSW = (tSH/bkgTH) * bkgTW;
+		bkgSH = tSH;
+		bkgSWO = (((float)Renderer->GetScreenWidth()) - bkgSW) * 0.5f;
+		bkgSHO = ylOffset;
+	} else {
+		bkgSH = (tSW / bkgTW) * bkgTH;
+		bkgSW = tSW;
+		bkgSWO = xlOffset;
+		bkgSHO = ylOffset;
+	}
+
+	// :::::::::::
     glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[BkgTexture]);
-	Renderer->DrawRect(Vector2f(xlOffset, ylOffset), Vector2f(xlOffset+tSW, ylOffset+tSH),Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
+	//Renderer->DrawRect(Vector2f(xlOffset, ylOffset), Vector2f(xlOffset+tSW, ylOffset+tSH),Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
+	Renderer->DrawRect(Vector2f(bkgSWO, bkgSHO), Vector2f(bkgSWO + bkgSW, bkgSHO + bkgSH), Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
 	std::list<TBall>::iterator iBall;
     
