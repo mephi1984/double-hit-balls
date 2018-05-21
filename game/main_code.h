@@ -161,7 +161,11 @@ public:
 
 	void LoadResources();
 
-	virtual void InnerOnTapDown(Vector2f p);
+	virtual void InnerOnTapDown(Vector2f p)
+	{
+		//-OnTapDownSignal(Vector2f(p.v[0], p.v[1]));
+		OnTapDownSignal(Vector2f(p(0), p(1)));
+	}
 
 	virtual void InnerOnTapUp(Vector2f p);
 

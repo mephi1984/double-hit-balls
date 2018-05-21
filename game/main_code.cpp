@@ -116,7 +116,7 @@ void TMyApplication::InnerInit()
 	ResourceManager->FontManager.AddFont("arial32", "arial32.png", "arial32.txt");
 	ResourceManager->FontManager.AddFont("lucon12", "lucon12.png", "lucon12.txt");
 	ResourceManager->FontManager.PushFont("lucon12");
-	ResourceManager->newGuiManager.LoadFromConfig("gui_alex.json");
+	ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
 	SetButtonsAction();
 	// ------- UI -------
 }
@@ -152,12 +152,6 @@ void TMyApplication::InnerDeinit()
     OnDrawSignal.disconnect(boost::bind(&TGameLevel::Draw, boost::ref(GameLevel)));
     OnDrawSignal.disconnect(boost::bind(&TGameCredits::Draw, boost::ref(GameCredits)));
 
-}
-
-void TMyApplication::InnerOnTapDown(Vector2f p)
-{
-	//-OnTapDownSignal(Vector2f(p.v[0], p.v[1]));
-	OnTapDownSignal(Vector2f(p(0), p(1)));
 }
 
 void TMyApplication::InnerOnTapUp(Vector2f p)

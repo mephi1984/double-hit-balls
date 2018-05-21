@@ -1,0 +1,23 @@
+{
+	"widgets": [{
+		"type": "FrameLayout",
+		"name": "menu_background",
+		"background": "#00000000",
+		"width": "match_parent",
+		"height": "match_parent",
+		"children": [{
+			"type": "FrameLayout",
+			"name": "stars_plane",
+			"background": "#00000000",
+			"width": "wrap_content",
+			"height": "wrap_content",
+			"children": [{
+				"type": "ImageView",
+				"name": "galaxy",
+				"background": "024863276-illustration-spiral-galaxy-vec.png",
+				"width": 700,
+				"height": 480
+			}]
+		}]
+	}]
+}
