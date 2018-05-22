@@ -1,0 +1,43 @@
+{
+	"Space":[
+		{
+			"name": "galaxy_1",
+			"position":{
+				"x_coord": 0.5,
+				"y_coord": 0.5
+			},
+			"texture": "galaxy_1.png",
+			"scale": 1.0,
+			"Stars": [
+				{
+					"name": "star_1",
+					"position": {
+						"x_coord": 0.2,
+						"y_coord": 0.3
+					},
+					"texture": "star_1.png",
+					"scale": 1.0,
+					"levels": [
+						{
+							"name": "level_1"
+						}
+					]
+				},
+				{
+					"name": "star_2",
+					"position": {
+						"x_coord": 0.2,
+						"y_coord": 0.3
+					},
+					"texture": "star_2.png",
+					"scale": 1.0,
+					"levels": [
+						{
+							"name": "level_1"
+						}
+					]
+				}
+			]
+		}
+	]
+}

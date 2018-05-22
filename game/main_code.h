@@ -28,6 +28,7 @@
 #include "menucode.h"
 #include "creditscode.h"
 #include "loadingcode.h"
+#include "galaxy_menu.h"
 
 using namespace SE;
 

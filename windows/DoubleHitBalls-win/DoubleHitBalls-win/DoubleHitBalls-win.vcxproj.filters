@@ -33,10 +33,13 @@
     <ClCompile Include="..\..\..\game\loadingcode.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="galaxy.cpp">
+    <ClCompile Include="..\..\..\game\galaxy.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="galaxy_objects.cpp">
+    <ClCompile Include="..\..\..\game\galaxy_objects.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\game\galaxy_menu.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,10 +65,13 @@
     <ClInclude Include="..\..\..\game\loadingcode.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="galaxy.h">
+    <ClInclude Include="..\..\..\game\galaxy.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="galaxy_objects.h">
+    <ClInclude Include="..\..\..\game\galaxy_objects.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\game\galaxy_menu.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

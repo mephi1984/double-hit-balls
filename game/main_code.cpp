@@ -119,6 +119,12 @@ void TMyApplication::InnerInit()
 	ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
 	SetButtonsAction();
 	// ------- UI -------
+
+	// TESTS
+	//Eigen::Vector2f nv(1.0f, 0.0f);
+	//GalaxyMenu gm("galax", nv, 0.2f);
+
+
 }
 
 void TMyApplication::InnerDeinit()
