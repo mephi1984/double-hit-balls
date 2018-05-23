@@ -120,9 +120,14 @@ void TMyApplication::InnerInit()
 	SetButtonsAction();
 	// ------- UI -------
 
-	// TESTS
-	//Eigen::Vector2f nv(1.0f, 0.0f);
-	//GalaxyMenu gm("galax", nv, 0.2f);
+	// TESTS of menu
+	GalaxyMenu menu_ms;
+	if (menu_ms.InitGalaxyMenu("galaxy_ptree.json")) {
+		std::cout << "ok" << std::endl;
+	}
+	else {
+		std::cout << "menu error" << std::endl;
+	}
 
 
 }

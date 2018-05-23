@@ -12,7 +12,11 @@ public:
 	std::vector<StarObject> Stars;
 	// ====== All objects =======
 
-
+	// ::#Params#::
+	std::string name;
+	float scale;
+	Eigen::Vector2f position;
+	std::string texture;
 
 private:
 

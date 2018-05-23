@@ -18,10 +18,10 @@ public:
 	std::vector<std::string> levels;
 
 	// ::#Params#::
-	std::string selfTexture;
+	std::string texture;
 	std::string name;
-	Eigen::Vector2f selfPosition;
-	float selfScale;
+	Eigen::Vector2f position;
+	float scale;
 
 private:
 
