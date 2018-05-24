@@ -22,17 +22,27 @@ TGameMenu::TGameMenu()
 
 void TGameMenu::Draw()
 {
+#define NEW_MENU_DRAW
 //	*SE::Console << "TGameMenu::Draw";
     CheckGlError("Draw TGameMenu");
     RenderUniform1i("sel", 0);
     RenderUniform1f("Transparency", 1.f);
     float bkgShift = MenuPos*0.1f - 100.f;
+#ifndef NEW_MENU_DRAW
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["main_menu_bkg_left"]);	
 	Renderer->DrawRect(Vector2f(bkgShift,0.f), Vector2f(Renderer->GetScreenWidth()+bkgShift,Renderer->GetScreenHeight()));
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["main_menu_bkg_right"]);
 	Renderer->DrawRect(Vector2f(Renderer->GetScreenWidth()+bkgShift,0.f), Vector2f(960.f+bkgShift,Renderer->GetScreenHeight()));
+#else
 
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+	/*..GalaxMenu draw..*/
+	GalaxMenu.DrawGalaxyMenu();
+#endif
+
+#ifndef NEW_MENU_DRAW
 	if (SelectedGame == 0)
 	{
         RenderUniform1i("sel", 1);
@@ -62,6 +72,7 @@ void TGameMenu::Draw()
     
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["logo_small"]);
     Renderer->DrawRect(Vector2f(240.f-128.f+15.f, 0.f), Vector2f(240.f+128.f+15.f, 64.f));
+#endif
 
     CheckGlError("Draw TGameMenu 2");
 
@@ -70,6 +81,9 @@ void TGameMenu::Draw()
 
 void TGameMenu::Update(size_t dt)
 {
+	/*..Galaxy Menu..*/
+	GalaxMenu.UpdateGalaxyMenu((float)SE::Renderer->GetScreenWidth(), (float)SE::Renderer->GetScreenHeight());
+
 	if (HoldToTap)
 		return;
 	// если кнопка не нажата

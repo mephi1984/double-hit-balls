@@ -25,7 +25,7 @@ public:
 	// ======== Main Methods ========
 	bool InitGalaxyMenu(std::string config_json, float scale = 1.f);
 	void DrawGalaxyMenu();
-	void UpdateGalaxyMenu();
+	void UpdateGalaxyMenu(float s_width, float s_height);
 	// ======== Main Methods ========
 
 	void InteractWithGalaxy(/*..Vector/Vector/Int..*/); // Prototype for mouse/tap events
@@ -35,6 +35,8 @@ public:
 	float menuScale = 1.f; // (not const!!)
 	float xDimension;
 	float yDimension;
+	std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>> galaxies_params; // ::position/dimensions::
+	std::vector<std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>>> stars_params;
 
 private:
 

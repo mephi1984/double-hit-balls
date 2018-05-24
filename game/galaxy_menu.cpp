@@ -56,10 +56,14 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 	}
 }
 
-void GalaxyMenu::UpdateGalaxyMenu() {
+void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height) {
+	/*..Reset..*/
+	galaxies_params.clear();
+	stars_params.clear();
+
 	/*..Menu ancestor geometry..*/
-	float gameScreenWidth = 800.f;
-	float gameScreenHeight = 480.f;
+	float gameScreenWidth = s_width;
+	float gameScreenHeight = s_height;
 	Eigen::Vector2f gameScreenCenter = Eigen::Vector2f(gameScreenWidth/2,gameScreenHeight/2);
 
 	/*..Menu geometry..*/
@@ -68,30 +72,41 @@ void GalaxyMenu::UpdateGalaxyMenu() {
 	Eigen::Vector2f currentMenuPos = Eigen::Vector2f(gameScreenCenter(0) + (gameScreenWidth/2/*relative to the screen x-dimension*/)*menuPosition(0), gameScreenCenter(1) + (gameScreenHeight/2/*relative to the screen y-dimension*/)*menuPosition(1));
 
 	/*..Galaxies geometry..*/
-	std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>> galaxies_params;  // ::position/dimensions::
-	std::vector<std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>>> stars_params;
-
 	for (int i = 0; i < galaxies.size(); i++) {
+		*SE::Console << "galaxy_" + std::to_string(i);
 		Eigen::Vector2f tex_size = textureSizeNormalize(
-			Eigen::Vector2f(((float)SE::ResourceManager->TexList.GetTextureWidth("galaxy_texture_" + i)), ((float)SE::ResourceManager->TexList.GetTextureHeight("galaxy_texture_" + i)))
+			Eigen::Vector2f(
+				((float)SE::ResourceManager->TexList.GetTextureWidth("galaxy_" + std::to_string(i))),
+				((float)SE::ResourceManager->TexList.GetTextureHeight("galaxy_" + std::to_string(i))))
 		); // normalized
 		galaxies_params.push_back(std::make_pair(
-			Eigen::Vector2f(currentMenuPos(0) + (xDimension/2)*galaxies[i].position(0), currentMenuPos(1) + (yDimension / 2)*galaxies[i].position(1)),
 			Eigen::Vector2f(
-				tex_size(0)*galaxies[i].scale,
-				tex_size(1)*galaxies[i].scale
+				currentMenuPos(0) + (xDimension/2)*galaxies[i].position(0),
+				currentMenuPos(1) + (yDimension / 2)*galaxies[i].position(1)),
+			Eigen::Vector2f(
+				(tex_size(0)*galaxies[i].scale)*menuScale,
+				(tex_size(1)*galaxies[i].scale)*menuScale
 			)
 		));
 		
 		/*..Stars geometry..*/
 		std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>> star_params;
 		for (int j = 0; j < galaxies[i].Stars.size(); j++) {
+			*SE::Console << "star_" + std::to_string(i) + "_" + std::to_string(j);
+			tex_size = textureSizeNormalize(
+				Eigen::Vector2f(
+				((float)SE::ResourceManager->TexList.GetTextureWidth("star_" + std::to_string(i) + "_" + std::to_string(j))),
+				((float)SE::ResourceManager->TexList.GetTextureHeight("star_" + std::to_string(i) + "_" + std::to_string(j))))
+			); // normalized
 			star_params.push_back(std::make_pair(
 				Eigen::Vector2f(
-					galaxies_params[i].first(0) + (galaxies_params[i].second(0)/2)*galaxies[i].Stars[j].scale,
-					galaxies_params[i].first(1) + (galaxies_params[i].second(1)/2)*galaxies[i].Stars[j].scale
+					galaxies_params[i].first(0) + (galaxies_params[i].second(0)/2)*galaxies[i].Stars[j].position(0),
+					galaxies_params[i].first(1) + (galaxies_params[i].second(1)/2)*galaxies[i].Stars[j].position(1)
 				),
-				Eigen::Vector2f() // #from here
+				Eigen::Vector2f(
+					(tex_size(0)*galaxies[i].Stars[j].scale)*galaxies[i].scale*menuScale,
+					(tex_size(1)*galaxies[i].Stars[j].scale)*galaxies[i].scale*menuScale
+				)
 			));
 		}
 		stars_params.push_back(star_params);
@@ -130,6 +145,10 @@ Eigen::Vector2f GalaxyMenu::textureSizeNormalize(Eigen::Vector2f texVec, int t_t
 		y_dim = val_clamp(texVec(1), Ymin, Ymax);
 		x_dim = y_dim * tex_ratio;
 	}
+	*SE::Console << "==============";
+	*SE::Console << std::to_string(texVec(0));
+	*SE::Console << std::to_string(texVec(1));
+	*SE::Console << "--------------";
 	return Eigen::Vector2f(x_dim, y_dim);
 }
 
@@ -140,4 +159,49 @@ float GalaxyMenu::val_clamp(float val, float min, float max) {
 		return max;
 	else
 		return val;
+}
+
+void GalaxyMenu::DrawGalaxyMenu() {
+
+	for (int i = 0; i < galaxies_params.size(); i++) {
+
+		glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["galaxy_" + std::to_string(i)]);
+		/*SE::Console << "c_out::";
+		*SE::Console << std::to_string((galaxies_params[i].second(0)));
+		*SE::Console << std::to_string((galaxies_params[i].first(1) - galaxies_params[i].second(1) / 2));
+		*SE::Console << std::to_string((galaxies_params[i].first(0) + galaxies_params[i].second(0) / 2));
+		*SE::Console << std::to_string((galaxies_params[i].first(1) + galaxies_params[i].second(1) / 2));*/
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(
+				galaxies_params[i].first(0) - galaxies_params[i].second(0)/2,
+				galaxies_params[i].first(1) - galaxies_params[i].second(1)/2
+			),
+			Eigen::Vector2f(
+				galaxies_params[i].first(0) + galaxies_params[i].second(0)/2,
+				galaxies_params[i].first(1) + galaxies_params[i].second(1)/2
+			)
+		); // DrawRect
+
+		/*..Draw stars..*/
+		if (stars_params.size() >= i) {
+			for (int j = 0; j < stars_params[i].size(); j++) {
+				glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["star_" + std::to_string(i) + "_" + std::to_string(j)]);
+				SE::Renderer->DrawRect(
+					Eigen::Vector2f(
+						stars_params[i][j].first(0) - stars_params[i][j].second(0) / 2,
+						stars_params[i][j].first(1) - stars_params[i][j].second(1) / 2
+					),
+					Eigen::Vector2f(
+						stars_params[i][j].first(0) + stars_params[i][j].second(0) / 2,
+						stars_params[i][j].first(1) + stars_params[i][j].second(1) / 2
+					)
+				); // DrawRect
+			}
+		}
+	}
+
+}
+
+void GalaxyMenu::InteractWithGalaxy() {
+
 }

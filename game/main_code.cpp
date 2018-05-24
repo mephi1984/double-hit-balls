@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <string>
 
 #include "include/Engine.h"
 
@@ -116,13 +117,12 @@ void TMyApplication::InnerInit()
 	ResourceManager->FontManager.AddFont("arial32", "arial32.png", "arial32.txt");
 	ResourceManager->FontManager.AddFont("lucon12", "lucon12.png", "lucon12.txt");
 	ResourceManager->FontManager.PushFont("lucon12");
-	ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
-	SetButtonsAction();
+	//ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
+	//SetButtonsAction();
 	// ------- UI -------
 
 	// TESTS of menu
-	GalaxyMenu menu_ms;
-	if (menu_ms.InitGalaxyMenu("galaxy_ptree.json")) {
+	if (Menu.GalaxMenu.InitGalaxyMenu("galaxy_ptree.json")) {
 		std::cout << "ok" << std::endl;
 	}
 	else {
@@ -279,6 +279,16 @@ void TMyApplication::LoadResources()
 	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock11"));
 	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock12"));
 
+	/*..galaxies and stars/planets Init..*/ // tmp
+	std::vector<int> galaxies;
+	galaxies.resize(1);
+	galaxies[0] = 2;
+	for (int i = 0; i < galaxies.size(); i++) {
+		TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/galaxies/galaxy_" + std::to_string(i) + ".png", "galaxy_" + std::to_string(i)));
+		for (int j = 0; j < galaxies[i]; j++) {
+			TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j)));
+		}
+	}
 
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot1.png", "levelshot1"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot2.png", "levelshot2"));

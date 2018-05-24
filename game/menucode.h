@@ -3,6 +3,7 @@
 
 #include "include/Engine.h"
 #include "game_area_interface.h"
+#include "galaxy_menu.h"
 
 using namespace SE;
 
@@ -33,6 +34,9 @@ public:
 	void OpenNextLevel();
 	int GetMenuItemCount();
 	void SetMenuItemCount(int menuItemCount);
+
+	/*..Galaxy Menu..*/
+	GalaxyMenu GalaxMenu;
 
 };
 

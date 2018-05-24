@@ -1,22 +1,22 @@
 {
 	"Space":[
 		{
-			"name": "galaxy_1",
+			"name": "galaxy_0",
 			"position":{
-				"x_coord": 0.5,
-				"y_coord": 0.5
+				"x_coord": 0.0,
+				"y_coord": 0.0
 			},
-			"texture": "galaxy_1.png",
+			"texture": "galaxy_0.png",
 			"scale": 1.0,
 			"Stars": [
 				{
-					"name": "star_1",
+					"name": "star_0_0",
 					"position": {
-						"x_coord": 0.2,
-						"y_coord": 0.3
+						"x_coord": -0.45,
+						"y_coord": 0.18
 					},
-					"texture": "star_1.png",
-					"scale": 1.0,
+					"texture": "star_0_0.png",
+					"scale": 0.06,
 					"levels": [
 						{
 							"name": "level_1"
@@ -24,13 +24,13 @@
 					]
 				},
 				{
-					"name": "star_2",
+					"name": "star_0_1",
 					"position": {
-						"x_coord": 0.2,
-						"y_coord": 0.3
+						"x_coord": 0.25,
+						"y_coord": -0.15
 					},
-					"texture": "star_2.png",
-					"scale": 1.0,
+					"texture": "star_0_1.png",
+					"scale": 0.07,
 					"levels": [
 						{
 							"name": "level_1"
