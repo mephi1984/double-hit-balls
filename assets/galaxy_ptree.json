@@ -3,17 +3,17 @@
 		{
 			"name": "galaxy_0",
 			"position":{
-				"x_coord": 0.0,
-				"y_coord": 0.0
+				"x_coord": -0.45,
+				"y_coord": 0.4
 			},
 			"texture": "galaxy_0.png",
-			"scale": 1.0,
+			"scale": 0.6,
 			"Stars": [
 				{
 					"name": "star_0_0",
 					"position": {
 						"x_coord": -0.45,
-						"y_coord": 0.18
+						"y_coord": 0.15
 					},
 					"texture": "star_0_0.png",
 					"scale": 0.06,
@@ -31,6 +31,31 @@
 					},
 					"texture": "star_0_1.png",
 					"scale": 0.07,
+					"levels": [
+						{
+							"name": "level_1"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "galaxy_1",
+			"position":{
+				"x_coord": 0.4,
+				"y_coord": 0.05
+			},
+			"texture": "galaxy_1.png",
+			"scale": 0.7,
+			"Stars": [
+				{
+					"name": "star_1_0",
+					"position": {
+						"x_coord": -0.15,
+						"y_coord": 0.15
+					},
+					"texture": "star_1_0.png",
+					"scale": 0.06,
 					"levels": [
 						{
 							"name": "level_1"

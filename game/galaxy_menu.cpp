@@ -26,7 +26,7 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 	error_pt.put("error", "something goes wrong at InitGalaxyMenu");
 
 	/*..Init Menu..*/
-	BOOST_FOREACH(auto menu_pt, config_pt.get_child("Space")) {
+	BOOST_FOREACH(auto menu_pt, config_pt.get_child("Space", error_pt)) {
 		Galaxy galax;
 
 		galax.name = menu_pt.second.get<std::string>("name", "error");
@@ -62,8 +62,8 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height) {
 	stars_params.clear();
 
 	/*..Menu ancestor geometry..*/
-	float gameScreenWidth = s_width;
-	float gameScreenHeight = s_height;
+	float gameScreenWidth = s_width * anchorSize;
+	float gameScreenHeight = s_height * anchorSize;
 	Eigen::Vector2f gameScreenCenter = Eigen::Vector2f(gameScreenWidth/2,gameScreenHeight/2);
 
 	/*..Menu geometry..*/
@@ -81,14 +81,15 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height) {
 		); // normalized
 		galaxies_params.push_back(std::make_pair(
 			Eigen::Vector2f(
-				currentMenuPos(0) + (xDimension/2)*galaxies[i].position(0),
+				currentMenuPos(0) + (xDimension / 2)*galaxies[i].position(0),
 				currentMenuPos(1) + (yDimension / 2)*galaxies[i].position(1)),
 			Eigen::Vector2f(
 				(tex_size(0)*galaxies[i].scale)*menuScale,
 				(tex_size(1)*galaxies[i].scale)*menuScale
 			)
 		));
-		
+		*SE::Console << "dimensions: " << std::to_string(((tex_size(0)*galaxies[i].scale)*menuScale)) << " " << std::to_string(((tex_size(1)*galaxies[i].scale)*menuScale));
+
 		/*..Stars geometry..*/
 		std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>> star_params;
 		for (int j = 0; j < galaxies[i].Stars.size(); j++) {
@@ -125,16 +126,16 @@ Eigen::Vector2f GalaxyMenu::textureSizeNormalize(Eigen::Vector2f texVec, int t_t
 	float Ymax; // Max normalized texture height
 	float Ymin;
 	if (t_type == 0) {
-		Xmax = 1280.f; 
-		Xmin = 800.f;
-		Ymax = 1024.f;
-		Ymin = 640.f;
+		Xmax = SE::Renderer->GetScreenWidth(); 
+		Xmin = Xmax;
+		Ymax = SE::Renderer->GetScreenHeight();
+		Ymin = Ymax;
 	}
 	else { // temp for star textures
-		Xmax = 512.f;
-		Xmin = 320.f;
-		Ymax = 512.f;
-		Ymin = 320.f;
+		Xmax = (((float)SE::Renderer->GetScreenWidth())/2);
+		Xmin = Xmax;
+		Ymax = (((float)SE::Renderer->GetScreenHeight())/2);
+		Ymin = Ymax;
 	}
 
 	if (texVec(0) > texVec(1)) {
@@ -144,10 +145,11 @@ Eigen::Vector2f GalaxyMenu::textureSizeNormalize(Eigen::Vector2f texVec, int t_t
 	else {
 		y_dim = val_clamp(texVec(1), Ymin, Ymax);
 		x_dim = y_dim * tex_ratio;
-	}
+	} 
 	*SE::Console << "==============";
 	*SE::Console << std::to_string(texVec(0));
 	*SE::Console << std::to_string(texVec(1));
+	*SE::Console << "if value 0.0000 - must be textures not inited at main_code.cpp or texture-name is wrong";
 	*SE::Console << "--------------";
 	return Eigen::Vector2f(x_dim, y_dim);
 }
@@ -166,11 +168,6 @@ void GalaxyMenu::DrawGalaxyMenu() {
 	for (int i = 0; i < galaxies_params.size(); i++) {
 
 		glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["galaxy_" + std::to_string(i)]);
-		/*SE::Console << "c_out::";
-		*SE::Console << std::to_string((galaxies_params[i].second(0)));
-		*SE::Console << std::to_string((galaxies_params[i].first(1) - galaxies_params[i].second(1) / 2));
-		*SE::Console << std::to_string((galaxies_params[i].first(0) + galaxies_params[i].second(0) / 2));
-		*SE::Console << std::to_string((galaxies_params[i].first(1) + galaxies_params[i].second(1) / 2));*/
 		SE::Renderer->DrawRect(
 			Eigen::Vector2f(
 				galaxies_params[i].first(0) - galaxies_params[i].second(0)/2,
@@ -202,6 +199,193 @@ void GalaxyMenu::DrawGalaxyMenu() {
 
 }
 
-void GalaxyMenu::InteractWithGalaxy() {
+void GalaxyMenu::InteractWithGalaxy(size_t dt) {
+	if (timer_active) {
+		// ::::::::::::: timer active ::::::::::::::
+		if (menuState == 0) { // main view
+			//std::pair<Eigen::Vector2f, Eigen::Vector2f> spacePlane = std::make_pair(findCorner(0, 0), findCorner(1, 1));
+			
 
+		}
+		if (menuState == 1) { // zoomed galaxy
+
+		}
+		if (menuState == 2) { // level select view
+
+		}
+
+		// \_/\_/\_/\_/ timer active \_/\_/\_/\_/
+	}
+	else {
+		// ::::::::::::: timer inactive ::::::::::::::
+		if (lastTapPos != Eigen::Vector2f(-9999.9f, -9999.9f)) {
+			if (menuState == 0) {// main view
+				//if ((currentTapShift(0) <= 0.01f && currentTapShift(0) >= -0.01f) && (currentTapShift(1) <= 0.01f && currentTapShift(1) >= -0.01f)) {
+				if (currentTapShift(0) == 0.f && currentTapShift(1) == 0.f){
+					// OnTapDown->OnTapUp
+					//int y = findGalaxyByPos(Eigen::Vector2f());
+					Eigen::Vector2f t = currentTapShift;
+					*SE::Console << "DU vec(" + std::to_string(t(0)) + ", " + std::to_string(t(1)) + ") ";
+				}
+				else {
+					// OnTapDown->OnMove->OnTapUp
+					Eigen::Vector2f t = currentTapShift;
+					*SE::Console << "DMU vec(" + std::to_string(t(0)) + ", " + std::to_string(t(1)) + ") ";
+				}
+
+			}
+			if (menuState == 1) { // zoomed galaxy
+				if ((currentTapShift(0) <= 0.01f && currentTapShift(0) >= -0.01f) && (currentTapShift(1) <= 0.01f && currentTapShift(1) >= -0.01f)) {
+					// OnTapDown->OnTapUp
+
+				}
+				else {
+					// OnTapDown->OnMove->OnTapUp
+
+				}
+
+			}
+			if (menuState == 2) { // level select view
+				if ((currentTapShift(0) <= 0.01f && currentTapShift(0) >= -0.01f) && (currentTapShift(1) <= 0.01f && currentTapShift(1) >= -0.01f)) {
+					// OnTapDown->OnTapUp
+
+				}
+				else {
+					// OnTapDown->OnMove->OnTapUp
+
+				}
+
+			}
+			lastTapPos = Eigen::Vector2f(-9999.9f, -9999.9f); // tap position reset
+		}
+		// \_/\_/\_/\_/ timer inactive \_/\_/\_/\_/
+	}
+
+	// timer reset
+	if (timer_active) {
+		interact_timer += (float)dt;
+	}
+	else if (interact_timer != 0.f) {
+		interact_timer = 0.f;
+		currentTapShift = Eigen::Vector2f(0.f, 0.f);
+	}
+
+}
+
+void GalaxyMenu::tapDown(Eigen::Vector2f pos) {
+	if (!timer_active) {
+		timer_active = true;
+		lastTapPos = pos;
+	}
+}
+
+void GalaxyMenu::tapUp(Eigen::Vector2f pos) {
+	if (timer_active) {
+		timer_active = false;
+		// lastTapPos = vec(0,0) useless for now
+	}
+}
+
+void GalaxyMenu::tapMove(Eigen::Vector2f shift) {
+	if (timer_active) {
+		currentTapShift = shift; // shift need to be fixed
+	}
+}
+
+Eigen::Vector2f GalaxyMenu::findCorner(int x_c, int y_c) {
+	float x_pos = 0.f;
+	float y_pos = 0.f;
+	float x_p, y_p;
+	if (x_c > 0) { // ===
+		if (y_c > 0) { // ---
+			for (int i = 0; i < galaxies_params.size(); i++) {
+				x_p = galaxies_params[i].first(0) + (galaxies_params[i].second(0) / 2);
+				y_p = galaxies_params[i].first(1) + (galaxies_params[i].second(1) / 2);
+				x_pos = graterV(x_pos, x_p);
+				y_pos = graterV(y_pos, y_p);
+				for (int j = 0; j < stars_params[i].size(); j++) {
+					x_p = stars_params[i][j].first(0) + (stars_params[i][j].second(0));
+					y_p = stars_params[i][j].first(1) + (stars_params[i][j].second(1));
+					x_pos = graterV(x_pos, x_p);
+					y_pos = graterV(y_pos, y_p);
+				}
+			}
+		}
+		else {// ---
+			for (int i = 0; i < galaxies_params.size(); i++) {
+				x_p = galaxies_params[i].first(0) + (galaxies_params[i].second(0) / 2);
+				y_p = galaxies_params[i].first(1) - (galaxies_params[i].second(1) / 2);
+				x_pos = graterV(x_pos, x_p);
+				y_pos = lowerV(y_pos, y_p);
+				for (int j = 0; j < stars_params[i].size(); j++) {
+					x_p = stars_params[i][j].first(0) + (stars_params[i][j].second(0));
+					y_p = stars_params[i][j].first(1) - (stars_params[i][j].second(1));
+					x_pos = graterV(x_pos, x_p);
+					y_pos = lowerV(y_pos, y_p);
+				}
+			}
+		}// ---
+	} 
+	else { // ===
+		if (y_c > 0) { // ---
+			for (int i = 0; i < galaxies_params.size(); i++) {
+				x_p = galaxies_params[i].first(0) - (galaxies_params[i].second(0) / 2);
+				y_p = galaxies_params[i].first(1) + (galaxies_params[i].second(1) / 2);
+				x_pos = lowerV(x_pos, x_p);
+				y_pos = graterV(y_pos, y_p);
+				for (int j = 0; j < stars_params[i].size(); j++) {
+					x_p = stars_params[i][j].first(0) - (stars_params[i][j].second(0));
+					y_p = stars_params[i][j].first(1) + (stars_params[i][j].second(1));
+					x_pos = lowerV(x_pos, x_p);
+					y_pos = graterV(y_pos, y_p);
+				}
+			}
+		}
+		else { // ---
+			for (int i = 0; i < galaxies_params.size(); i++) {
+				x_p = galaxies_params[i].first(0) - (galaxies_params[i].second(0) / 2);
+				y_p = galaxies_params[i].first(1) - (galaxies_params[i].second(1) / 2);
+				x_pos = lowerV(x_pos, x_p);
+				y_pos = lowerV(y_pos, y_p);
+				for (int j = 0; j < stars_params[i].size(); j++) {
+					x_p = stars_params[i][j].first(0) - (stars_params[i][j].second(0));
+					y_p = stars_params[i][j].first(1) - (stars_params[i][j].second(1));
+					x_pos = lowerV(x_pos, x_p);
+					y_pos = lowerV(y_pos, y_p);
+				}
+			}
+		} // ---
+	} // ===
+	return Eigen::Vector2f(x_pos, y_pos);
+}
+
+float GalaxyMenu::graterV(float first_val, float second_val) {
+	if (first_val > second_val)
+		return first_val;
+	else
+		return second_val;
+}
+
+float GalaxyMenu::lowerV(float first_val, float second_val) {
+	if (first_val < second_val)
+		return first_val;
+	else
+		return second_val;
+}
+
+void GalaxyMenu::galaxyFocus(int index) {
+
+}
+
+int GalaxyMenu::findGalaxyByPos(Eigen::Vector2f pos) {
+
+	for (int i = 0; i < galaxies_params.size(); i++) {
+		if (pos(0) >= (galaxies_params[i].first(0) - galaxies_params[i].second(0)/2) && pos(0) <= (galaxies_params[i].first(0) + galaxies_params[i].second(0)/2)) {
+			if (pos(1) >= (galaxies_params[i].first(1) - galaxies_params[i].second(1) / 2) && pos(1) <= (galaxies_params[i].first(1) + galaxies_params[i].second(1)/2)) {
+				return i;
+			}
+		}
+	}
+
+	return -1;
 }
