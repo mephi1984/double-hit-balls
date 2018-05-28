@@ -198,6 +198,7 @@ void TMyApplication::ApplySignalsToMenu()
 	OnTapDownSignal.connect(boost::bind(&GalaxyMenu::tapDown, boost::ref(Menu.GalaxMenu), _1));
 	OnTapUpSignal.connect(boost::bind(&GalaxyMenu::tapUp, boost::ref(Menu.GalaxMenu), _1));
 	OnScrollSignal.connect(boost::bind(&GalaxyMenu::tapMove, boost::ref(Menu.GalaxMenu), _1));
+	OnTapUpAfterMoveSignal.connect(boost::bind(&GalaxyMenu::tapUp, boost::ref(Menu.GalaxMenu), _1));
 
 }
 
@@ -214,6 +215,7 @@ void TMyApplication::DisapplySignalsToMenu()
 	OnTapDownSignal.disconnect(boost::bind(&GalaxyMenu::tapDown, boost::ref(Menu.GalaxMenu), _1));
 	OnTapUpSignal.disconnect(boost::bind(&GalaxyMenu::tapUp, boost::ref(Menu.GalaxMenu), _1));
 	OnScrollSignal.disconnect(boost::bind(&GalaxyMenu::tapMove, boost::ref(Menu.GalaxMenu), _1));
+	OnTapUpAfterMoveSignal.disconnect(boost::bind(&GalaxyMenu::tapUp, boost::ref(Menu.GalaxMenu), _1));
 
 }
 
@@ -292,9 +294,8 @@ void TMyApplication::LoadResources()
 
 	/*..galaxies and stars/planets Init..*/ // tmp
 	std::vector<int> galaxies;
-	galaxies.resize(2);
-	galaxies[0] = 2;
-	galaxies[1] = 1;
+	galaxies.resize(1);
+	galaxies[0] = 3;
 	for (int i = 0; i < galaxies.size(); i++) {
 		TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/galaxies/galaxy_" + std::to_string(i) + ".png", "galaxy_" + std::to_string(i)));
 		for (int j = 0; j < galaxies[i]; j++) {

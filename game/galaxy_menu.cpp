@@ -41,9 +41,11 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 			star.scale = stars_pt.second.get<float>("scale", 0.0f);
 			star.texture = stars_pt.second.get<std::string>("texture", "error");
 			star.position = Eigen::Vector2f(stars_pt.second.get<float>("position.x_coord", 0.0f), stars_pt.second.get<float>("position.y_coord", 0.0f));
-			/*..strings replace by objects..*/
+			/*..Levels..*/
 			BOOST_FOREACH(auto levels_pt, stars_pt.second.get_child("levels")) {
-				star.levels.push_back(levels_pt.second.get<std::string>("name", "empty"));
+
+				star.selectionMenu.levels.push_back(levels_pt.second.get<std::string>("name", "empty"));
+
 			}
 			galax.Stars.push_back(star);
 		} 
@@ -56,7 +58,7 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 	}
 }
 
-void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height) {
+void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 	/*..Reset..*/
 	galaxies_params.clear();
 	stars_params.clear();
@@ -66,10 +68,20 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height) {
 	float gameScreenHeight = s_height * anchorSize;
 	Eigen::Vector2f gameScreenCenter = Eigen::Vector2f(gameScreenWidth/2,gameScreenHeight/2);
 
+	/*..coefficients calculation..*/
+	/*Eigen::Vector2f tap_shift = Eigen::Vector2f(
+		totalTapShift(0)/gameScreenWidth,
+		totalTapShift(1)/gameScreenHeight
+	);
+		menu_offset = Eigen::Vector2f(
+			negativeV(tap_shift(0)) * val_clamp(abs(menu_offset(0) + (tap_shift(0) * dt / 1000.f)), 0.f, 0.15f),
+			negativeV(tap_shift(1)) * val_clamp(abs(menu_offset(1) + (tap_shift(1) * dt / 1000.f)), 0.f, 0.15f)
+		);*/
+
 	/*..Menu geometry..*/
 	xDimension = menuScale * gameScreenWidth;
 	yDimension = menuScale * gameScreenHeight;
-	Eigen::Vector2f currentMenuPos = Eigen::Vector2f(gameScreenCenter(0) + (gameScreenWidth/2/*relative to the screen x-dimension*/)*menuPosition(0), gameScreenCenter(1) + (gameScreenHeight/2/*relative to the screen y-dimension*/)*menuPosition(1));
+	Eigen::Vector2f currentMenuPos = Eigen::Vector2f(gameScreenCenter(0) + (gameScreenWidth/2/*relative to the screen x-dimension*/)*(menuPosition(0) - menu_offset(0)), gameScreenCenter(1) + (gameScreenHeight/2/*relative to the screen y-dimension*/)*(menuPosition(1) - menu_offset(1)));
 
 	/*..Galaxies geometry..*/
 	for (int i = 0; i < galaxies.size(); i++) {
@@ -114,7 +126,43 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height) {
 	}
 
 	/*..Level list geometry..*/
+	for (int i = 0; i < galaxies.size(); i++) {
+		for (int j = 0; j < galaxies[i].Stars.size(); j++) {
+			galaxies[i].Stars[j].selectionMenu.params = std::make_pair(
+				Eigen::Vector2f(
+					currentMenuPos(0) + (galaxies[i].Stars[j].selectionMenu.offset(0) * gameScreenWidth / 2),
+					currentMenuPos(1) + (galaxies[i].Stars[j].selectionMenu.offset(1) * gameScreenHeight / 2)
+				),
+				Eigen::Vector2f(
+					gameScreenWidth * galaxies[i].Stars[j].selectionMenu.dim(0),
+					gameScreenHeight * galaxies[i].Stars[j].selectionMenu.dim(1)
+				)
+			);
+			/*..buttons plane..*/
+			galaxies[i].Stars[j].selectionMenu.buttons_plane = std::make_pair(
+				Eigen::Vector2f(
+					galaxies[i].Stars[j].selectionMenu.params.first(0) + galaxies[i].Stars[j].selectionMenu.params.second(0) / 2 * galaxies[i].Stars[j].selectionMenu.plane_pos(0),
+					galaxies[i].Stars[j].selectionMenu.params.first(1) + galaxies[i].Stars[j].selectionMenu.params.second(1) / 2 * galaxies[i].Stars[j].selectionMenu.plane_pos(1)
+				),
+				Eigen::Vector2f(
+					galaxies[i].Stars[j].selectionMenu.params.second(0) * galaxies[i].Stars[j].selectionMenu.plane_size(0),
+					galaxies[i].Stars[j].selectionMenu.params.second(1) * galaxies[i].Stars[j].selectionMenu.plane_size(1)
+				)
+			);
+			// buttons plane dimensions build, relative to buttons #from here
+			// buttons
+			for (int y = 0; y < galaxies[i].Stars[j].selectionMenu.levels.size(); y++) {
+				galaxies[i].Stars[j].selectionMenu.buttons.push_back(std::make_pair(
+					Eigen::Vector2f(
 
+					),
+					Eigen::Vector2f(
+
+					)
+				));
+			}
+		}
+	}
 
 }
 
@@ -203,8 +251,14 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 	if (timer_active) {
 		// ::::::::::::: timer active ::::::::::::::
 		if (menuState == 0) { // main view
-			//std::pair<Eigen::Vector2f, Eigen::Vector2f> spacePlane = std::make_pair(findCorner(0, 0), findCorner(1, 1));
-			
+			if (currentTapShift(0) == 0.f && currentTapShift(1) == 0.f) {
+				// OnTapDown->
+				//int y = findGalaxyByPos(Eigen::Vector2f());
+			}
+			else {
+				// OnTapDown->OnMove->
+				totalTapShift = Eigen::Vector2f(totalTapShift(0) + currentTapShift(0), totalTapShift(1) + currentTapShift(1));
+			}
 
 		}
 		if (menuState == 1) { // zoomed galaxy
@@ -220,22 +274,24 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 		// ::::::::::::: timer inactive ::::::::::::::
 		if (lastTapPos != Eigen::Vector2f(-9999.9f, -9999.9f)) {
 			if (menuState == 0) {// main view
-				//if ((currentTapShift(0) <= 0.01f && currentTapShift(0) >= -0.01f) && (currentTapShift(1) <= 0.01f && currentTapShift(1) >= -0.01f)) {
-				if (currentTapShift(0) == 0.f && currentTapShift(1) == 0.f){
+				if (totalTapShift(0) == 0.f && totalTapShift(1) == 0.f){
 					// OnTapDown->OnTapUp
-					//int y = findGalaxyByPos(Eigen::Vector2f());
-					Eigen::Vector2f t = currentTapShift;
-					*SE::Console << "DU vec(" + std::to_string(t(0)) + ", " + std::to_string(t(1)) + ") ";
+
+					int y = findPlanetByPos(lastTapPos);
+					if (y != -1) {
+						/*..level selec menu open..*/
+						
+					}
+
 				}
 				else {
 					// OnTapDown->OnMove->OnTapUp
-					Eigen::Vector2f t = currentTapShift;
-					*SE::Console << "DMU vec(" + std::to_string(t(0)) + ", " + std::to_string(t(1)) + ") ";
+
 				}
 
 			}
 			if (menuState == 1) { // zoomed galaxy
-				if ((currentTapShift(0) <= 0.01f && currentTapShift(0) >= -0.01f) && (currentTapShift(1) <= 0.01f && currentTapShift(1) >= -0.01f)) {
+				if ((currentTapShift(0) == 0.f) && (currentTapShift(1) == 0.f)) {
 					// OnTapDown->OnTapUp
 
 				}
@@ -246,7 +302,7 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 
 			}
 			if (menuState == 2) { // level select view
-				if ((currentTapShift(0) <= 0.01f && currentTapShift(0) >= -0.01f) && (currentTapShift(1) <= 0.01f && currentTapShift(1) >= -0.01f)) {
+				if ((currentTapShift(0) == 0.f) && (currentTapShift(1) == 0.f)) {
 					// OnTapDown->OnTapUp
 
 				}
@@ -256,18 +312,19 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 				}
 
 			}
-			lastTapPos = Eigen::Vector2f(-9999.9f, -9999.9f); // tap position reset
 		}
 		// \_/\_/\_/\_/ timer inactive \_/\_/\_/\_/
 	}
 
-	// timer reset
+	/*..main reset..*/
 	if (timer_active) {
 		interact_timer += (float)dt;
 	}
 	else if (interact_timer != 0.f) {
-		interact_timer = 0.f;
-		currentTapShift = Eigen::Vector2f(0.f, 0.f);
+		interact_timer = 0.f; // reset
+		currentTapShift = Eigen::Vector2f(0.f, 0.f); // reset
+		totalTapShift = Eigen::Vector2f(0.f, 0.f); // reset
+		lastTapPos = Eigen::Vector2f(-9999.9f, -9999.9f); // reset
 	}
 
 }
@@ -288,6 +345,7 @@ void GalaxyMenu::tapUp(Eigen::Vector2f pos) {
 
 void GalaxyMenu::tapMove(Eigen::Vector2f shift) {
 	if (timer_active) {
+		//*SE::Console << "shift = " + std::to_string(shift(0)) + " " + std::to_string(shift(1)); // mt issue
 		currentTapShift = shift; // shift need to be fixed
 	}
 }
@@ -373,8 +431,13 @@ float GalaxyMenu::lowerV(float first_val, float second_val) {
 		return second_val;
 }
 
-void GalaxyMenu::galaxyFocus(int index) {
+void GalaxyMenu::takeInFocus(int g_index, int s_index) {
+	if (s_index != -1) { /*..galaxy zoom..*/
 
+	}
+	else { /*..star zoom..*/
+
+	}
 }
 
 int GalaxyMenu::findGalaxyByPos(Eigen::Vector2f pos) {
@@ -388,4 +451,30 @@ int GalaxyMenu::findGalaxyByPos(Eigen::Vector2f pos) {
 	}
 
 	return -1;
+}
+
+int GalaxyMenu::negativeV(float val) {
+	if (val >= 0) {
+		return 1;
+	}
+	return -1;
+}
+
+int GalaxyMenu::findPlanetByPos(Eigen::Vector2f pos) {
+	for (int i = 0; i < stars_params.size(); i++) {
+		for (int j = 0; j < stars_params[i].size(); j++) {
+			if (pos(0) >= (stars_params[i][j].first(0) - stars_params[i][j].second(0) / 2) && pos(0) <= (stars_params[i][j].first(0) + stars_params[i][j].second(0) / 2)) {
+				if (pos(1) >= (stars_params[i][j].first(1) - stars_params[i][j].second(1) / 2) && pos(1) <= (stars_params[i][j].first(1) + stars_params[i][j].second(1) / 2)) {
+					return j;
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+void GalaxyMenu::showLevelSelectMenu(int index) {
+
+
+
 }

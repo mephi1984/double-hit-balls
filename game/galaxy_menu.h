@@ -25,7 +25,7 @@ public:
 	// ======== Main Methods ========
 	bool InitGalaxyMenu(std::string config_json, float scale = 1.f);
 	void DrawGalaxyMenu();
-	void UpdateGalaxyMenu(float s_width, float s_height);
+	void UpdateGalaxyMenu(float s_width, float s_height, size_t dt);
 	// ======== Main Methods ========
 
 	void InteractWithGalaxy(size_t dt); // Prototype for mouse/tap events
@@ -54,18 +54,27 @@ private:
 	Eigen::Vector2f findCorner(int x_c, int y_c);
 	float graterV(float first_v, float second_v);
 	float lowerV(float first_v, float second_v);
+	int negativeV(float val);
 
 	int menuState = 0; // 0 - all galaxies are visible, 1 - zoomed to current galaxy , 2 - level select menu
 
 	/*..Interact params..*/
 	bool timer_active = false;
-	float interact_timer = 0.f;
-	Eigen::Vector2f lastTapPos = Eigen::Vector2f(-9999.9f, -9999.9f);
-	Eigen::Vector2f currentTapShift;
+	float interact_timer = 0.f; // reset
+	Eigen::Vector2f lastTapPos = Eigen::Vector2f(-9999.9f, -9999.9f); // reset
+	Eigen::Vector2f currentTapShift; // reset
+	Eigen::Vector2f totalTapShift; // reset
+
+	/*..coefficients..*/
+	Eigen::Vector2f menu_offset;
 
 	/*..Interact methods..*/
-	void galaxyFocus(int index);
+	void takeInFocus(int g_index, int s_index = -1);
 	int findGalaxyByPos(Eigen::Vector2f pos);
+	int findPlanetByPos(Eigen::Vector2f pos);
+
+	/*..level select methods..*/
+	void showLevelSelectMenu(int index);
 
 };
 
