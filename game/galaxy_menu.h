@@ -49,6 +49,8 @@ private:
 
 	void readSaveData(); // inner init method
 
+	void drawSelectionMenu(int index);
+
 	Eigen::Vector2f textureSizeNormalize(Eigen::Vector2f texVec, int t_type = 0/*0-galaxy, 1-stars*/);
 	float val_clamp(float v, float min, float max);
 	Eigen::Vector2f findCorner(int x_c, int y_c);

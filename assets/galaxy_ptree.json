@@ -19,6 +19,15 @@
 					"scale": 0.1,
 					"levels": [
 						{
+							"name": "level_0"
+						},
+						{
+							"name": "level_1"
+						},
+						{
+							"name": "level_1"
+						},
+						{
 							"name": "level_1"
 						}
 					]

@@ -1,6 +1,7 @@
 
 #include "galaxy_menu.h"
 #include <algorithm>
+#include <math.h>
 
 GalaxyMenu::GalaxyMenu()
 {
@@ -128,14 +129,18 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 	/*..Level list geometry..*/
 	for (int i = 0; i < galaxies.size(); i++) {
 		for (int j = 0; j < galaxies[i].Stars.size(); j++) {
+			float button_x_dim = ((1.f - (galaxies[i].Stars[j].selectionMenu.border_x_offset * 2 + (galaxies[i].Stars[j].selectionMenu.columns - 1)*galaxies[i].Stars[j].selectionMenu.buttons_offset)) / galaxies[i].Stars[j].selectionMenu.columns); // relative size
+			int rows_count = (int)ceil((float)galaxies[i].Stars[j].selectionMenu.levels.size() / (float)galaxies[i].Stars[j].selectionMenu.columns);
 			galaxies[i].Stars[j].selectionMenu.params = std::make_pair(
 				Eigen::Vector2f(
-					currentMenuPos(0) + (galaxies[i].Stars[j].selectionMenu.offset(0) * gameScreenWidth / 2),
-					currentMenuPos(1) + (galaxies[i].Stars[j].selectionMenu.offset(1) * gameScreenHeight / 2)
+					gameScreenCenter(0) + (galaxies[i].Stars[j].selectionMenu.offset(0) * gameScreenWidth / 2),
+					gameScreenCenter(1) + (galaxies[i].Stars[j].selectionMenu.offset(1) * gameScreenHeight / 2)
 				),
 				Eigen::Vector2f(
 					gameScreenWidth * galaxies[i].Stars[j].selectionMenu.dim(0),
-					gameScreenHeight * galaxies[i].Stars[j].selectionMenu.dim(1)
+					//gameScreenHeight * galaxies[i].Stars[j].selectionMenu.dim(1)
+					//gameScreenHeight * galaxies[i].Stars[j].selectionMenu.dim(1) * (galaxies[i].Stars[j].selectionMenu.border_y_offset * 2 + (ceil(galaxies[i].Stars[j].selectionMenu.levels.size() / galaxies[i].Stars[j].selectionMenu.columns) - 1)*galaxies[i].Stars[j].selectionMenu.buttons_offset) + galaxies[i].Stars[j].selectionMenu.dim(0)*(ceil(galaxies[i].Stars[j].selectionMenu.levels.size() / galaxies[i].Stars[j].selectionMenu.columns)*(button_x_dim / galaxies[i].Stars[j].selectionMenu.buttons_ratio))
+					gameScreenWidth * galaxies[i].Stars[j].selectionMenu.dim(0) * (galaxies[i].Stars[j].selectionMenu.border_y_offset * 2 + rows_count*(button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio) + (rows_count-1)*galaxies[i].Stars[j].selectionMenu.border_y_offset)
 				)
 			);
 			/*..buttons plane..*/
@@ -149,18 +154,29 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 					galaxies[i].Stars[j].selectionMenu.params.second(1) * galaxies[i].Stars[j].selectionMenu.plane_size(1)
 				)
 			);
-			// buttons plane dimensions build, relative to buttons #from here
-			// buttons
-			for (int y = 0; y < galaxies[i].Stars[j].selectionMenu.levels.size(); y++) {
-				galaxies[i].Stars[j].selectionMenu.buttons.push_back(std::make_pair(
-					Eigen::Vector2f(
 
+			// buttons
+			std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>> buttons_params;
+			buttons_params.resize(galaxies[i].Stars[j].selectionMenu.levels.size());
+			for (int y = 0; y < buttons_params.size(); y++) {
+				
+				float x_rpos = (galaxies[i].Stars[j].selectionMenu.border_x_offset + (y - floor((float)y / (float)galaxies[i].Stars[j].selectionMenu.columns)*(float)galaxies[i].Stars[j].selectionMenu.columns)*(button_x_dim + galaxies[i].Stars[j].selectionMenu.buttons_offset) + button_x_dim/2);
+				//float y_rpos = (/**/ galaxies[i].Stars[j].selectionMenu.border_y_offset + (floor((float)y / (float)galaxies[i].Stars[j].selectionMenu.columns))*(/*..*/ galaxies[i].Stars[j].selectionMenu.buttons_offset + button_x_dim / galaxies[i].Stars[j].selectionMenu.buttons_ratio /*..*/) + button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio/2 /**/);
+				float y_rpos = (galaxies[i].Stars[j].selectionMenu.border_y_offset + ((int)floor(((float)y)/((float)galaxies[i].Stars[j].selectionMenu.columns)))*(button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio) + (((int)floor(((float)y) / ((float)galaxies[i].Stars[j].selectionMenu.columns)))-1) * galaxies[i].Stars[j].selectionMenu.border_y_offset + ((button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio)/2.f));
+
+				buttons_params[y] = std::make_pair(
+					Eigen::Vector2f(
+						(galaxies[i].Stars[j].selectionMenu.buttons_plane.first(0) - galaxies[i].Stars[j].selectionMenu.buttons_plane.second(0)/2) + galaxies[i].Stars[j].selectionMenu.buttons_plane.second(0)*x_rpos,
+						(galaxies[i].Stars[j].selectionMenu.buttons_plane.first(1) + galaxies[i].Stars[j].selectionMenu.buttons_plane.second(1)/2) - galaxies[i].Stars[j].selectionMenu.buttons_plane.second(1)*y_rpos
 					),
 					Eigen::Vector2f(
+						button_x_dim*galaxies[i].Stars[j].selectionMenu.buttons_plane.second(0),
+						(button_x_dim / galaxies[i].Stars[j].selectionMenu.buttons_ratio)*galaxies[i].Stars[j].selectionMenu.buttons_plane.second(1)
 
 					)
-				));
+				);
 			}
+			galaxies[i].Stars[j].selectionMenu.buttons = buttons_params;
 		}
 	}
 
@@ -243,6 +259,9 @@ void GalaxyMenu::DrawGalaxyMenu() {
 				); // DrawRect
 			}
 		}
+
+		/*..Draw level selection menu..*/
+		drawSelectionMenu(0);
 	}
 
 }
@@ -477,4 +496,50 @@ void GalaxyMenu::showLevelSelectMenu(int index) {
 
 
 
+}
+
+void GalaxyMenu::drawSelectionMenu(int index) {
+	int i = index;
+	if (i != -1) {
+		glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["red_square"]);
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(
+				galaxies[0].Stars[i].selectionMenu.buttons_plane.first(0) - galaxies[0].Stars[i].selectionMenu.buttons_plane.second(0) / 2,
+				galaxies[0].Stars[i].selectionMenu.buttons_plane.first(1) - galaxies[0].Stars[i].selectionMenu.buttons_plane.second(1) / 2
+			),
+			Eigen::Vector2f(
+				galaxies[0].Stars[i].selectionMenu.buttons_plane.first(0) + galaxies[0].Stars[i].selectionMenu.buttons_plane.second(0) / 2,
+				galaxies[0].Stars[i].selectionMenu.buttons_plane.first(1) + galaxies[0].Stars[i].selectionMenu.buttons_plane.second(1) / 2
+			)
+		); // DrawRect
+
+		// buttons
+		for (int j = 0; j < galaxies[0].Stars[i].selectionMenu.buttons.size(); j++) {
+			glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["black_square"]);
+			SE::Renderer->DrawRect(
+				Eigen::Vector2f(
+					galaxies[0].Stars[i].selectionMenu.buttons[j].first(0) - galaxies[0].Stars[i].selectionMenu.buttons[j].second(0) / 2,
+					galaxies[0].Stars[i].selectionMenu.buttons[j].first(1) - galaxies[0].Stars[i].selectionMenu.buttons[j].second(1) / 2
+				),
+				Eigen::Vector2f(
+					galaxies[0].Stars[i].selectionMenu.buttons[j].first(0) + galaxies[0].Stars[i].selectionMenu.buttons[j].second(0) / 2,
+					galaxies[0].Stars[i].selectionMenu.buttons[j].first(1) + galaxies[0].Stars[i].selectionMenu.buttons[j].second(1) / 2
+				)
+			); // DrawRect
+		}
+
+	}
+	/*
+	// debug
+	glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["red_square"]);
+	SE::Renderer->DrawRect(
+		Eigen::Vector2f(
+			galaxies[0].Stars[0].selectionMenu.params.first(0) - galaxies[0].Stars[0].selectionMenu.params.second(0) / 2,
+			galaxies[0].Stars[0].selectionMenu.params.first(1) - galaxies[0].Stars[0].selectionMenu.params.second(1) / 2
+		),
+		Eigen::Vector2f(
+			galaxies[0].Stars[0].selectionMenu.params.first(0) + galaxies[0].Stars[0].selectionMenu.params.second(0) / 2,
+			galaxies[0].Stars[0].selectionMenu.params.first(1) + galaxies[0].Stars[0].selectionMenu.params.second(1) / 2
+		));
+		*/
 }

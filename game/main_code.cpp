@@ -303,6 +303,11 @@ void TMyApplication::LoadResources()
 		}
 	}
 
+	/*..buttons and level list plane textures..*/
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("red_square.png", "red_square"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("black_square.png", "black_square"));
+
+
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot1.png", "levelshot1"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot2.png", "levelshot2"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot3.png", "levelshot3"));
