@@ -54,8 +54,8 @@ void TMyApplication::InnerInit()
     
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
-	//ST::PathToResources = "resources/";
-	ST::PathToResources = "../../../assets/";
+	ST::PathToResources = "resources/";
+	//ST::PathToResources = "../../../assets/";
 #else
 	ST::PathToResources = "../../../assets/";
 #endif
@@ -76,6 +76,7 @@ void TMyApplication::InnerInit()
 	ResourceManager->ShaderManager.AddShader("ColorShader", "color_vertex.txt", "color_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("SSAA_4X", "SSAA_4X.vertex", "SSAA_4X.frag");
 	ResourceManager->ShaderManager.AddShader("ParallaxShader", "parallax_vertex.txt", "parallax_fragment.txt");
+	ResourceManager->ShaderManager.AddShader("SimpleShading", "simple_shading.vertex", "simple_shading.fragment");
 	Renderer->PushShader("DefaultShader");
 
 	ResourceManager->TexList.AddTexture("console_bkg.bmp");
@@ -144,26 +145,25 @@ void TMyApplication::InnerInit()
 
 		float const R = 5;
 		float const r = 6;
-		size_t const threadsCount = 3;
+		size_t const threadsCount = 5;
 		size_t const verticesCount = 6;
-		float const angle = pi / 18;
-		size_t const iterationsCount = 50;
+		//float const angle = pi / 18;
+		float const angle = pi / 6;
+		size_t const iterationsCount = 20;
 		auto g = [this, R, r, threadsCount, verticesCount, angle, iterationsCount, texW, texH, thick, H, W] (const Vector3f &start, const Vector3f &end) {
-			Vector3f direction = end - start;
-			Vector3f translate = direction / iterationsCount;
-			direction.normalize();
+			Vector3f translate = (end - start) / iterationsCount;
 
-			auto e0 = Vector3f(1, 0, -direction.x() / direction.z());
-			auto e1 = Vector3f(0, 1, -direction.y() / direction.z());
-			e1 = e1 - (e1.dot(e0) / e0.dot(e0)) * e0;
-			
-			e0.normalize();
-			e1.normalize();
+			Vector3f e0 = Vector3f(1, 0, -translate.x() / translate.z()).normalized();
+			Vector3f e1 = Vector3f(0, 1, -translate.y() / translate.z());
+			e1 = (e1 - (e1.dot(e0) / e0.dot(e0)) * e0).normalized();
 
+			std::vector<Vector3f> threadCenters;
 			std::vector<std::vector<Vector4f>> threads;
 			for(auto i = 0; i < threadsCount; i++) {
 				std::vector<Vector4f> vertices;
 				Vector3f threadCenter = R * (e0 * cosf(i * 2 * pi / threadsCount) + e1 * sinf(i * 2 * pi / threadsCount));
+				threadCenters.push_back(threadCenter);
+
 				for(auto j = 0; j < verticesCount; j++) {
 					auto verticeCenter = threadCenter + r * (e0 * cosf(j * 2 * pi / verticesCount) + e1 * sinf(j * 2 * pi / verticesCount));
 					vertices.push_back(Vector4f(verticeCenter.x(), verticeCenter.y(), verticeCenter.z(), 1));
@@ -172,7 +172,7 @@ void TMyApplication::InnerInit()
 				threads.push_back(vertices);
 			}
 			
-		    auto transform = Translation3f(translate) * AngleAxis<float>(angle, direction);
+		    auto transform = Translation3f(translate) * AngleAxis<float>(angle, translate.normalized());
 			auto matrix = transform.matrix();
 			
 			for(auto i = 0; i < iterationsCount; i++) {
@@ -188,33 +188,58 @@ void TMyApplication::InnerInit()
 
 					newThreads.push_back(newVertices);
 
-					for(auto k = 0; k < verticesCount; k++) {
-						auto vk = vertices[k];
-						auto vk1 = vertices[(k + 1) % verticesCount];
-						auto nvk = newVertices[k];
-						auto nvk1 = newVertices[(k + 1) % verticesCount];
-
-						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk.head(3));
-						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1.head(3));
-						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk.head(3));
-						
-						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1.head(3));
-						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk1.head(3));
-						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk.head(3));
 					
-						auto texThick = thick / texW;
-						auto m = (start[0] + end[0]) / 2 / texW;
-						auto y = H / texH;
+					auto threadCenter_ = Vector4f(threadCenters[j].x(), threadCenters[j].y(), threadCenters[j].z(), 1);
+					auto threadCenter = threadCenter_.head(3);
+					auto newThreadCenter = (matrix * threadCenter_).head(3);
 
-						auto texPiece = texH / iterationsCount;
+					threadCenters[j] = newThreadCenter;
+					
+					/*
 
-						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0));
-						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.01, 0));
-						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0.01));
+					Vector3f threadCenter;
+					Vector3f newThreadCenter;
+					for(auto k = 0; k < verticesCount; k++) {
+						threadCenter += vertices[k].head(3);
+						newThreadCenter += newVertices[k].head(3);
+					}
+					threadCenter = threadCenter / verticesCount;
+					newThreadCenter = newThreadCenter / verticesCount;
+					*/
+					for(auto k = 0; k < verticesCount; k++) {
+						auto vk = vertices[k].head(3);
+						auto vk1 = vertices[(k + 1) % verticesCount].head(3);
+						auto nvk = newVertices[k].head(3);
+						auto nvk1 = newVertices[(k + 1) % verticesCount].head(3);
+
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk);
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1);
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk);
 						
-						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.01, 0));
-						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.01, 0.01));
-						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0.01));
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1);
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk1);
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk);
+
+						*Console << "k=" + boost::lexical_cast<std::string>(k) + "\n";
+
+						*Console << "tc=" + boost::lexical_cast<std::string>(threadCenter(0))+ " " + boost::lexical_cast<std::string>(threadCenter(1)) + " " + boost::lexical_cast<std::string>(threadCenter(2)) +"\n";
+						*Console << "ntc="+ boost::lexical_cast<std::string>(newThreadCenter(0)) + " "+ boost::lexical_cast<std::string>(newThreadCenter(1))+ " " + boost::lexical_cast<std::string>(newThreadCenter(2))+"\n";
+
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((vk - threadCenter));
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((vk1 - threadCenter));
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((nvk - newThreadCenter));
+
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((vk1 - threadCenter));
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((nvk1 - newThreadCenter));
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((nvk - newThreadCenter));
+
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.1, 0.1));
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.2, 0.1));
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.1, 0.2));
+						
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.2, 0.1));
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.2, 0.2));
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.1, 0.2));
 					}
 				}
 
@@ -235,7 +260,7 @@ void TMyApplication::InnerInit()
 	}
 
 	background.first.ShaderName ="DefaultShader";
-	fabricRender.first.ShaderName = "ParallaxShader";
+	fabricRender.first.ShaderName = "SimpleShading";
 	
 	/*
 	 *	Line below should be in tes-engine/include/ShaderManager/ShaderManager.h
@@ -247,6 +272,7 @@ void TMyApplication::InnerInit()
 	fabricRender.first.SamplerMap[CONST_STRING_NORMALMAP_UNIFORM] = "NormalMap.png";
 	fabricRender.first.SamplerMap[CONST_STRING_HEIGHTMAP_UNIFORM] = "HeightMap.png";
 	fabricRender.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "clean-fabric-texture-4-780x585.jpg";
+	fabricRender.first.Vec4Map[CONST_STRING_LIGHT_DIRECTION_UNIFORM] = Vector4f(0, -1, 0, 0);
 
 	background.second.RefreshBuffer();
 	fabricRender.second.RefreshBuffer();
@@ -336,7 +362,6 @@ void TMyApplication::InnerDraw()
 	Renderer->RotateMatrix(quat1);
 
 	Renderer->RotateMatrix(quat2);
-
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);

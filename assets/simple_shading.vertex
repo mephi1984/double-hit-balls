@@ -1,0 +1,14 @@
+attribute vec3 vPosition;
+attribute vec3 Normal;
+attribute vec2 vTexCoord;
+
+uniform mat4 ProjectionMatrix;
+
+varying vec2 texCoord;
+varying vec3 fragNormal;
+
+void main() {
+	gl_Position = ProjectionMatrix * vec4(vPosition.xyz, 1.0);
+	texCoord = vTexCoord;
+	fragNormal = Normal;
+}
