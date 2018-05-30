@@ -54,7 +54,8 @@ void TMyApplication::InnerInit()
     
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
-	ST::PathToResources = "resources/";
+	//ST::PathToResources = "resources/";
+	ST::PathToResources = "../../../assets/";
 #else
 	ST::PathToResources = "../../../assets/";
 #endif
@@ -83,6 +84,9 @@ void TMyApplication::InnerInit()
 	ResourceManager->TexList.AddTexture("HeightMap.png");
 	ResourceManager->TexList.AddTexture("NormalMap.png");
 	ResourceManager->TexList.AddTexture("linesAll.png");
+	ResourceManager->TexList.AddTexture("clean-fabric-texture-4-780x585.jpg");
+
+	
 
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
 
@@ -137,49 +141,97 @@ void TMyApplication::InnerInit()
 		float const  step = 12;
 		float const  thick = 10;
 
-		auto f = [this, texW, texH, thick, W, H] (const Vector3f &p1, const Vector3f &p2) {
-			auto pv = p2 - p1;
-			Vector3f ortho(pv[2], 0, pv[0]);
-			ortho.normalize();
-			auto p3 = p2 + ortho * thick;
-			auto p4 = p1 + ortho * thick;
 
-			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p1);
-			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p2);
-			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p3);
-																				
-			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p3);
-			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p4);
-			fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(p1);
+		float const R = 5;
+		float const r = 6;
+		size_t const threadsCount = 3;
+		size_t const verticesCount = 6;
+		float const angle = pi / 18;
+		size_t const iterationsCount = 50;
+		auto g = [this, R, r, threadsCount, verticesCount, angle, iterationsCount, texW, texH, thick, H, W] (const Vector3f &start, const Vector3f &end) {
+			Vector3f direction = end - start;
+			Vector3f translate = direction / iterationsCount;
+			direction.normalize();
 
-			auto texThick = thick / texW;
-			auto m = (p1[0] + p2[0]) / 2 / texW;
-			auto y = H / texH;
+			auto e0 = Vector3f(1, 0, -direction.x() / direction.z());
+			auto e1 = Vector3f(0, 1, -direction.y() / direction.z());
+			e1 = e1 - (e1.dot(e0) / e0.dot(e0)) * e0;
+			
+			e0.normalize();
+			e1.normalize();
 
-			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m, 0));
-			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m, y));
-			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m + texThick, y));
-																						
-			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m + texThick, y));
-			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m + texThick, 0));
-			fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(m, 0));
+			std::vector<std::vector<Vector4f>> threads;
+			for(auto i = 0; i < threadsCount; i++) {
+				std::vector<Vector4f> vertices;
+				Vector3f threadCenter = R * (e0 * cosf(i * 2 * pi / threadsCount) + e1 * sinf(i * 2 * pi / threadsCount));
+				for(auto j = 0; j < verticesCount; j++) {
+					auto verticeCenter = threadCenter + r * (e0 * cosf(j * 2 * pi / verticesCount) + e1 * sinf(j * 2 * pi / verticesCount));
+					vertices.push_back(Vector4f(verticeCenter.x(), verticeCenter.y(), verticeCenter.z(), 1));
+				}
 
+				threads.push_back(vertices);
+			}
+			
+		    auto transform = Translation3f(translate) * AngleAxis<float>(angle, direction);
+			auto matrix = transform.matrix();
+			
+			for(auto i = 0; i < iterationsCount; i++) {
+				std::vector<std::vector<Vector4f>> newThreads;
+
+				for(auto j = 0; j < threadsCount; j++) {
+					auto vertices = threads[j];
+					std::vector<Vector4f> newVertices;
+
+					for(auto k = 0; k < verticesCount; k++) {
+						newVertices.push_back(matrix * vertices[k]);
+					}
+
+					newThreads.push_back(newVertices);
+
+					for(auto k = 0; k < verticesCount; k++) {
+						auto vk = vertices[k];
+						auto vk1 = vertices[(k + 1) % verticesCount];
+						auto nvk = newVertices[k];
+						auto nvk1 = newVertices[(k + 1) % verticesCount];
+
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk.head(3));
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1.head(3));
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk.head(3));
+						
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1.head(3));
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk1.head(3));
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk.head(3));
+					
+						auto texThick = thick / texW;
+						auto m = (start[0] + end[0]) / 2 / texW;
+						auto y = H / texH;
+
+						auto texPiece = texH / iterationsCount;
+
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0));
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.01, 0));
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0.01));
+						
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.01, 0));
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.01, 0.01));
+						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0, 0.01));
+					}
+				}
+
+				threads = newThreads;
+			}
 		};
 
-		Vector3f const stepDirection(1, 0, 0);
+		Vector3f const stepDirection(18, 0, 0);
 		Vector3f p1(bottomLeft[0], 0, -bottomLeft[1]);
+		Vector3f p2 = p1 - Vector3f(0, 0, W);
 
-		while (p1[0] < bottomLeft[0] + W) {
-
-			auto p2 = p1 - Vector3f(0, 0, W);
-			f(p1, p2);
-
-			auto p3 = p1 + step * stepDirection;
-			f(p3, p2);
-
-			p1 = p3;
+		while(p1[0] < bottomLeft[0] + W)
+		{
+			g(p1, p2);
+			p1 += stepDirection;
+			p2 += stepDirection;
 		}
-
 	}
 
 	background.first.ShaderName ="DefaultShader";
@@ -194,10 +246,12 @@ void TMyApplication::InnerInit()
 
 	fabricRender.first.SamplerMap[CONST_STRING_NORMALMAP_UNIFORM] = "NormalMap.png";
 	fabricRender.first.SamplerMap[CONST_STRING_HEIGHTMAP_UNIFORM] = "HeightMap.png";
-	fabricRender.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "linesAll.png";
+	fabricRender.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "clean-fabric-texture-4-780x585.jpg";
 
 	background.second.RefreshBuffer();
 	fabricRender.second.RefreshBuffer();
+
+	glEnable(GL_DEPTH_TEST);
 	
 	Inited = true;
 }
@@ -286,8 +340,7 @@ void TMyApplication::InnerDraw()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	glDisable(GL_DEPTH_TEST);
-
+	
 	CheckGlError("");
 
 	auto mat1 = quatToMatrix(quat1);
@@ -312,6 +365,8 @@ void TMyApplication::InnerDraw()
 
 		Renderer->DrawTriangleList(background.second);
 	}
+
+	//glEnable(GL_CULL_FACE);
 	{
 		TRenderParamsSetter params(fabricRender.first);
 

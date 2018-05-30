@@ -8,8 +8,8 @@ int APIENTRY WinMain(HINSTANCE hCurrentInst, HINSTANCE hPreviousInst,
 	LPSTR lpszCmdLine, int nCmdShow)
 {
 
-	int width = 512;
-	int height = 512;
+	int width = 1024;
+	int height = 1024;
 
 
 	if (CreateEngine(width, height))
