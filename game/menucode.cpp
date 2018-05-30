@@ -1,3 +1,10 @@
+#define GALAXY_MENU_MODE
+
+#ifdef GALAXY_MENU_MODE // ===   GALAX MENU MODE   ===
+#define GALAX_MENU_DRAW
+#define GALAX_MENU_UPDATE
+#endif					// ===   GALAX MENU MODE   ===
+
 #include "menucode.h"
 #include "main_code.h"
 
@@ -22,13 +29,12 @@ TGameMenu::TGameMenu()
 
 void TGameMenu::Draw()
 {
-#define NEW_MENU_DRAW
 //	*SE::Console << "TGameMenu::Draw";
     CheckGlError("Draw TGameMenu");
     RenderUniform1i("sel", 0);
     RenderUniform1f("Transparency", 1.f);
     float bkgShift = MenuPos*0.1f - 100.f;
-#ifndef NEW_MENU_DRAW
+#ifndef GALAX_MENU_DRAW
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["main_menu_bkg_left"]);	
 	Renderer->DrawRect(Vector2f(bkgShift,0.f), Vector2f(Renderer->GetScreenWidth()+bkgShift,Renderer->GetScreenHeight()));
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["main_menu_bkg_right"]);
@@ -42,7 +48,7 @@ void TGameMenu::Draw()
 	GalaxMenu.DrawGalaxyMenu();
 #endif
 
-#ifndef NEW_MENU_DRAW
+#ifndef GALAX_MENU_DRAW
 	if (SelectedGame == 0)
 	{
         RenderUniform1i("sel", 1);
@@ -81,10 +87,11 @@ void TGameMenu::Draw()
 
 void TGameMenu::Update(size_t dt)
 {
+#ifdef GALAX_MENU_UPDATE
 	/*..Galaxy Menu..*/
 	GalaxMenu.InteractWithGalaxy(dt);
 	GalaxMenu.UpdateGalaxyMenu((float)SE::Renderer->GetScreenWidth(), (float)SE::Renderer->GetScreenHeight(), dt);
-
+#else
 	if (HoldToTap)
 		return;
 	// если кнопка не нажата
@@ -143,13 +150,14 @@ void TGameMenu::Update(size_t dt)
 	{
 		MenuSpeed += acc*dt;
 	}
-    
+#endif
     
 }
 
 void TGameMenu::OnTapDown(Vector2f pos)
 {
 	*SE::Console << "TGameMenu::OnTapDown";
+#ifndef GALAX_MENU_UPDATE
     HoldToTap = true;
 
     if (pos(1)<64.f && pos(0)>=265.f-128.f && pos(0)<=265.f+128.f)
@@ -180,12 +188,13 @@ void TGameMenu::OnTapDown(Vector2f pos)
     
 
     SelectedGame = -1;
-
+#endif
 }
 
 void TGameMenu::OnTapUp(Vector2f pos)
 {
 	*SE::Console << "TGameMenu::OnTapUp";
+#ifndef GALAX_MENU_UPDATE
 	HoldToTap = false;
 
 	if (SelectedGame != -1)
@@ -194,6 +203,7 @@ void TGameMenu::OnTapUp(Vector2f pos)
         Application->GoFromMenuToGame(SelectedGame);
         SelectedGame = -1;
     }
+#endif
 }
 
 void TGameMenu::OnTapUpAfterMove(Vector2f pos)
@@ -205,22 +215,28 @@ void TGameMenu::OnTapUpAfterMove(Vector2f pos)
 void TGameMenu::OnFling(Vector2f slideSpeed)
 {
 	*SE::Console << "TGameMenu::OnFling";
+#ifndef GALAX_MENU_UPDATE
 	HoldToTap = false;
 	MenuSpeed = slideSpeed(0);
+#endif
 }
 
 void TGameMenu::OnScroll(Vector2f shift)
 {
+#ifndef GALAX_MENU_UPDATE
 	MenuPos = MenuPos - shift(0);
+#endif
 }
 
 void TGameMenu::OpenNextLevel()
 {
 	*SE::Console << "TGameMenu::OpenNextLevel";
+#ifndef GALAX_MENU_UPDATE
     if (MenuItemCount < 12)
     {
         MenuItemCount++;
     }
+#endif
 }
 
 int TGameMenu::GetMenuItemCount()

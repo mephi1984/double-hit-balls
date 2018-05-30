@@ -29,18 +29,24 @@
 						},
 						{
 							"name": "level_1"
+						},
+						{
+							"name": "level_1"
 						}
 					]
 				},
 				{
 					"name": "star_0_1",
 					"position": {
-						"x_coord": 0.35,
-						"y_coord": 0.25
+						"x_coord": 0.28,
+						"y_coord": 0.31
 					},
 					"texture": "star_0_1.png",
 					"scale": 0.18,
 					"levels": [
+						{
+							"name": "level_1"
+						},
 						{
 							"name": "level_1"
 						}
@@ -55,6 +61,24 @@
 					"texture": "star_0_2.png",
 					"scale": 0.12,
 					"levels": [
+						{
+							"name": "level_1"
+						},
+						{
+							"name": "level_1"
+						},
+						{
+							"name": "level_1"
+						},
+						{
+							"name": "level_1"
+						},
+						{
+							"name": "level_1"
+						},
+						{
+							"name": "level_1"
+						},
 						{
 							"name": "level_1"
 						}

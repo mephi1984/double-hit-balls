@@ -1,5 +1,6 @@
 
 #include "galaxy_menu.h"
+#include "main_code.h"
 #include <algorithm>
 #include <math.h>
 
@@ -162,16 +163,16 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 				
 				float x_rpos = (galaxies[i].Stars[j].selectionMenu.border_x_offset + (y - floor((float)y / (float)galaxies[i].Stars[j].selectionMenu.columns)*(float)galaxies[i].Stars[j].selectionMenu.columns)*(button_x_dim + galaxies[i].Stars[j].selectionMenu.buttons_offset) + button_x_dim/2);
 				//float y_rpos = (/**/ galaxies[i].Stars[j].selectionMenu.border_y_offset + (floor((float)y / (float)galaxies[i].Stars[j].selectionMenu.columns))*(/*..*/ galaxies[i].Stars[j].selectionMenu.buttons_offset + button_x_dim / galaxies[i].Stars[j].selectionMenu.buttons_ratio /*..*/) + button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio/2 /**/);
-				float y_rpos = (galaxies[i].Stars[j].selectionMenu.border_y_offset + ((int)floor(((float)y)/((float)galaxies[i].Stars[j].selectionMenu.columns)))*(button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio) + (((int)floor(((float)y) / ((float)galaxies[i].Stars[j].selectionMenu.columns)))-1) * galaxies[i].Stars[j].selectionMenu.border_y_offset + ((button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio)/2.f));
+				float y_rpos = (galaxies[i].Stars[j].selectionMenu.border_y_offset + ((int)floor(((float)y)/((float)galaxies[i].Stars[j].selectionMenu.columns)))*(button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio) + (((int)floor(((float)y) / ((float)galaxies[i].Stars[j].selectionMenu.columns)))) * galaxies[i].Stars[j].selectionMenu.border_y_offset + ((button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio)/2.f));
 
 				buttons_params[y] = std::make_pair(
 					Eigen::Vector2f(
 						(galaxies[i].Stars[j].selectionMenu.buttons_plane.first(0) - galaxies[i].Stars[j].selectionMenu.buttons_plane.second(0)/2) + galaxies[i].Stars[j].selectionMenu.buttons_plane.second(0)*x_rpos,
-						(galaxies[i].Stars[j].selectionMenu.buttons_plane.first(1) + galaxies[i].Stars[j].selectionMenu.buttons_plane.second(1)/2) - galaxies[i].Stars[j].selectionMenu.buttons_plane.second(1)*y_rpos
+						(galaxies[i].Stars[j].selectionMenu.buttons_plane.first(1) + galaxies[i].Stars[j].selectionMenu.buttons_plane.second(1)/2) - galaxies[i].Stars[j].selectionMenu.buttons_plane.second(0)*y_rpos
 					),
 					Eigen::Vector2f(
 						button_x_dim*galaxies[i].Stars[j].selectionMenu.buttons_plane.second(0),
-						(button_x_dim / galaxies[i].Stars[j].selectionMenu.buttons_ratio)*galaxies[i].Stars[j].selectionMenu.buttons_plane.second(1)
+						(button_x_dim / galaxies[i].Stars[j].selectionMenu.buttons_ratio)*galaxies[i].Stars[j].selectionMenu.buttons_plane.second(0)
 
 					)
 				);
@@ -246,7 +247,12 @@ void GalaxyMenu::DrawGalaxyMenu() {
 		/*..Draw stars..*/
 		if (stars_params.size() >= i) {
 			for (int j = 0; j < stars_params[i].size(); j++) {
-				glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["star_" + std::to_string(i) + "_" + std::to_string(j)]);
+				if (planetHoverIndex == j) {
+					glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover"]);
+				}
+				else {
+					glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["star_" + std::to_string(i) + "_" + std::to_string(j)]);
+				}
 				SE::Renderer->DrawRect(
 					Eigen::Vector2f(
 						stars_params[i][j].first(0) - stars_params[i][j].second(0) / 2,
@@ -261,7 +267,8 @@ void GalaxyMenu::DrawGalaxyMenu() {
 		}
 
 		/*..Draw level selection menu..*/
-		drawSelectionMenu(0);
+		drawSelectionMenu(starIndex);
+		
 	}
 
 }
@@ -270,21 +277,50 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 	if (timer_active) {
 		// ::::::::::::: timer active ::::::::::::::
 		if (menuState == 0) { // main view
-			if (currentTapShift(0) == 0.f && currentTapShift(1) == 0.f) {
+			//if (currentTapShift(0) == 0.f && currentTapShift(1) == 0.f) {
+			if (currentTapShift(0) == totalTapShift(0) && currentTapShift(1) == totalTapShift(1)) {
 				// OnTapDown->
-				//int y = findGalaxyByPos(Eigen::Vector2f());
+
+				/*../hover\..*/
+				int phi = findPlanetByPos(lastTapPos - totalTapShift);
+				if (phi != -1) {
+					planetHoverIndex = phi;
+				}
+				else {
+					planetHoverIndex = -1;
+				}
+				/*..\hover/..*/
 			}
 			else {
 				// OnTapDown->OnMove->
-				totalTapShift = Eigen::Vector2f(totalTapShift(0) + currentTapShift(0), totalTapShift(1) + currentTapShift(1));
+				//totalTapShift = Eigen::Vector2f(totalTapShift(0) + currentTapShift(0), totalTapShift(1) + currentTapShift(1));
+
+				/*../hover\..*/
+				int phi = findPlanetByPos(lastTapPos - totalTapShift);
+				if (phi != -1) {
+					planetHoverIndex = phi;
+				}
+				else {
+					planetHoverIndex = -1;
+				}
+				/*..\hover/..*/
+
 			}
 
 		}
-		if (menuState == 1) { // zoomed galaxy
+		else if (menuState == 1) { // zoomed galaxy
 
 		}
-		if (menuState == 2) { // level select view
+		else if (menuState == 2) { // level select view
+			//if (currentTapShift(0) == 0.f && currentTapShift(1) == 0.f) {
+			if (currentTapShift(0) == totalTapShift(0) && currentTapShift(1) == totalTapShift(1)) {
+				// OnTapDown->
 
+			}
+			else {
+				// OnTapDown->OnMove->
+				//totalTapShift = Eigen::Vector2f(totalTapShift(0) + currentTapShift(0), totalTapShift(1) + currentTapShift(1));
+			}
 		}
 
 		// \_/\_/\_/\_/ timer active \_/\_/\_/\_/
@@ -293,24 +329,38 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 		// ::::::::::::: timer inactive ::::::::::::::
 		if (lastTapPos != Eigen::Vector2f(-9999.9f, -9999.9f)) {
 			if (menuState == 0) {// main view
-				if (totalTapShift(0) == 0.f && totalTapShift(1) == 0.f){
+				if (totalTapShift(0) == 0.f && totalTapShift(1) == 0.f) {
 					// OnTapDown->OnTapUp
 
-					int y = findPlanetByPos(lastTapPos);
-					if (y != -1) {
-						/*..level selec menu open..*/
-						
+					/*..level select menu open..*/
+					starIndex = findPlanetByPos(lastTapPos);
+					if (starIndex != -1) {
+						planetHoverIndex = starIndex;
+						menuState = 2;
+					}
+					else {
+						planetHoverIndex = -1;
 					}
 
 				}
 				else {
 					// OnTapDown->OnMove->OnTapUp
 
+					/*..level select menu open..*/
+					starIndex = findPlanetByPos(lastTapPos - totalTapShift);
+					if (starIndex != -1) {
+						planetHoverIndex = starIndex;
+						menuState = 2;
+					}
+					else {
+						planetHoverIndex = -1;
+					}
+
 				}
 
 			}
-			if (menuState == 1) { // zoomed galaxy
-				if ((currentTapShift(0) == 0.f) && (currentTapShift(1) == 0.f)) {
+			else if (menuState == 1) { // zoomed galaxy
+				if (totalTapShift(0) == 0.f && totalTapShift(1) == 0.f) {
 					// OnTapDown->OnTapUp
 
 				}
@@ -320,9 +370,24 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 				}
 
 			}
-			if (menuState == 2) { // level select view
-				if ((currentTapShift(0) == 0.f) && (currentTapShift(1) == 0.f)) {
+			else if (menuState == 2) { // level select view
+				if (totalTapShift(0) == 0.f && totalTapShift(1) == 0.f) {
 					// OnTapDown->OnTapUp
+
+					int lvl = findLevelButtonByPos(lastTapPos);
+					if (lvl != -1) {
+						// then if level is available, load it
+						starIndex = -1;
+						menuState = 0;
+						planetHoverIndex = -1;
+						Application->GoFromMenuToGame(lvl);
+					}
+					else if (!checkMenuBound(lastTapPos)) {
+						// back to state 0
+						starIndex = -1;
+						menuState = 0;
+						planetHoverIndex = -1;
+					}
 
 				}
 				else {
@@ -365,7 +430,8 @@ void GalaxyMenu::tapUp(Eigen::Vector2f pos) {
 void GalaxyMenu::tapMove(Eigen::Vector2f shift) {
 	if (timer_active) {
 		//*SE::Console << "shift = " + std::to_string(shift(0)) + " " + std::to_string(shift(1)); // mt issue
-		currentTapShift = shift; // shift need to be fixed
+		//currentTapShift = shift; // shift need to be fixed
+		totalTapShift += shift;
 	}
 }
 
@@ -492,15 +558,22 @@ int GalaxyMenu::findPlanetByPos(Eigen::Vector2f pos) {
 	return -1;
 }
 
-void GalaxyMenu::showLevelSelectMenu(int index) {
-
-
-
-}
-
 void GalaxyMenu::drawSelectionMenu(int index) {
 	int i = index;
 	if (i != -1) {
+
+		glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["matte_screen"]);
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(
+				0.f,
+				0.f
+			),
+			Eigen::Vector2f(
+				(float)SE::Renderer->GetScreenWidth(),
+				(float)SE::Renderer->GetScreenHeight()
+			)
+		); // DrawRect
+
 		glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["red_square"]);
 		SE::Renderer->DrawRect(
 			Eigen::Vector2f(
@@ -513,6 +586,20 @@ void GalaxyMenu::drawSelectionMenu(int index) {
 			)
 		); // DrawRect
 
+		/*..border..*/
+		drawBorder(
+			Eigen::Vector2f(
+				galaxies[0].Stars[i].selectionMenu.buttons_plane.first(0) - galaxies[0].Stars[i].selectionMenu.buttons_plane.second(0) / 2,
+				galaxies[0].Stars[i].selectionMenu.buttons_plane.first(1) - galaxies[0].Stars[i].selectionMenu.buttons_plane.second(1) / 2
+			),
+			Eigen::Vector2f(
+				galaxies[0].Stars[i].selectionMenu.buttons_plane.first(0) + galaxies[0].Stars[i].selectionMenu.buttons_plane.second(0) / 2,
+				galaxies[0].Stars[i].selectionMenu.buttons_plane.first(1) + galaxies[0].Stars[i].selectionMenu.buttons_plane.second(1) / 2
+			),
+			0.005f,
+			"outer" /*..inner/outer/center..mode */
+		);
+		
 		// buttons
 		for (int j = 0; j < galaxies[0].Stars[i].selectionMenu.buttons.size(); j++) {
 			glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["black_square"]);
@@ -529,17 +616,100 @@ void GalaxyMenu::drawSelectionMenu(int index) {
 		}
 
 	}
-	/*
-	// debug
-	glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["red_square"]);
-	SE::Renderer->DrawRect(
-		Eigen::Vector2f(
-			galaxies[0].Stars[0].selectionMenu.params.first(0) - galaxies[0].Stars[0].selectionMenu.params.second(0) / 2,
-			galaxies[0].Stars[0].selectionMenu.params.first(1) - galaxies[0].Stars[0].selectionMenu.params.second(1) / 2
-		),
-		Eigen::Vector2f(
-			galaxies[0].Stars[0].selectionMenu.params.first(0) + galaxies[0].Stars[0].selectionMenu.params.second(0) / 2,
-			galaxies[0].Stars[0].selectionMenu.params.first(1) + galaxies[0].Stars[0].selectionMenu.params.second(1) / 2
-		));
-		*/
+}
+
+int GalaxyMenu::findLevelButtonByPos(Eigen::Vector2f pos) {
+	for (int i = 0; i < galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons.size(); i++) {
+		float x_l = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].first(0) - galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].second(0)*0.5f;
+		float x_r = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].first(0) + galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].second(0)*0.5f;
+		float y_t = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].first(1) + galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].second(1)*0.5f;
+		float y_b = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].first(1) - galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].second(1)*0.5f;
+
+		if (pos(0) >= x_l && pos(0) <= x_r) {
+			if (pos(1) >= y_b && pos(1) <= y_t) {
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
+bool GalaxyMenu::checkMenuBound(Eigen::Vector2f pos) {
+	float x_l = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons_plane.first(0) - galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons_plane.second(0)*0.5f;
+	float x_r = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons_plane.first(0) + galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons_plane.second(0)*0.5f;
+	float y_t = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons_plane.first(1) + galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons_plane.second(1)*0.5f;
+	float y_b = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons_plane.first(1) - galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons_plane.second(1)*0.5f;
+
+	if (pos(0) >= x_l && pos(0) <= x_r) {
+		if (pos(1) >= y_b && pos(1) <= y_t) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void GalaxyMenu::drawBorder(Eigen::Vector2f lb_, Eigen::Vector2f rt_, float scale, std::string mode) {
+
+	std::string border_tex = "black_square";
+
+	float width = rt_(0) - lb_(0);
+	float height = rt_(1) - lb_(1);
+
+	if (mode.compare("inner") == 0) {
+		glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[border_tex]);
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(lb_(0), lb_(1)),
+			Eigen::Vector2f(lb_(0) + width*scale, rt_(1))
+		); // left
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(lb_(0), rt_(1) - width*scale),
+			Eigen::Vector2f(rt_(0), rt_(1))
+		); // top
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(rt_(0) - width*scale, lb_(1)),
+			Eigen::Vector2f(rt_(0), rt_(1))
+		); // right
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(lb_(0), lb_(1)),
+			Eigen::Vector2f(rt_(0), lb_(1) + width*scale)
+		); // bottom
+	}
+	else if (mode.compare("outer") == 0) {
+		glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[border_tex]);
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(lb_(0) - width*scale, lb_(1) - width*scale),
+			Eigen::Vector2f(lb_(0), rt_(1) + width*scale)
+		); // left
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(lb_(0) - width*scale, rt_(1)),
+			Eigen::Vector2f(rt_(0) + width*scale, rt_(1)+width*scale)
+		); // top
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(rt_(0), lb_(1) - width*scale),
+			Eigen::Vector2f(rt_(0)+width*scale, rt_(1) + width*scale)
+		); // right
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(lb_(0) - width*scale, lb_(1) - width*scale),
+			Eigen::Vector2f(rt_(0)+width*scale, lb_(1))
+		); // bottom
+	}
+	else if (mode.compare("center") == 0) {
+		glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[border_tex]);
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(lb_(0) - width*scale*0.5f, lb_(1) - width * scale*0.5f),
+			Eigen::Vector2f(lb_(0) + width * scale*0.5f, rt_(1) + width * scale*0.5f)
+		); // left
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(lb_(0) - width * scale*0.5f, rt_(1) - width * scale*0.5f),
+			Eigen::Vector2f(rt_(0) + width * scale*0.5f, rt_(1) + width * scale*0.5f)
+		); // top
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(rt_(0) - width * scale*0.5f, lb_(1) - width * scale*0.5f),
+			Eigen::Vector2f(rt_(0) + width * scale*0.5f, rt_(1) + width * scale*0.5f)
+		); // right
+		SE::Renderer->DrawRect(
+			Eigen::Vector2f(lb_(0) - width * scale*0.5f, lb_(1) - width * scale*0.5f),
+			Eigen::Vector2f(rt_(0) + width * scale*0.5f, lb_(1) + width * scale*0.5f)
+		); // bottom
+	}
 }

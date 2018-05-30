@@ -224,7 +224,7 @@ void TMyApplication::ApplySignalsToGame()
     OnTapUpSignal.connect(boost::bind(&TGameLevel::OnTapUp, boost::ref(GameLevel), _1));
     OnFlingSignal.connect(boost::bind(&TGameLevel::OnFling, boost::ref(GameLevel), _1));
 	OnScrollSignal.connect(boost::bind(&TGameLevel::OnScroll, boost::ref(GameLevel), _1));
-    //OnTapDownSignal.connect(boost::bind(&TGameLevel::OnTapDown, boost::ref(GameLevel), _1));
+    OnTapDownSignal.connect(boost::bind(&TGameLevel::OnTapDown, boost::ref(GameLevel), _1));
     
 }
 
@@ -233,7 +233,7 @@ void TMyApplication::DisapplySignalsToGame()
     OnTapUpSignal.disconnect(boost::bind(&TGameLevel::OnTapUp, boost::ref(GameLevel), _1));
     OnFlingSignal.disconnect(boost::bind(&TGameLevel::OnFling, boost::ref(GameLevel), _1));
     OnScrollSignal.disconnect(boost::bind(&TGameLevel::OnScroll, boost::ref(GameLevel), _1));
-    //OnTapDownSignal.disconnect(boost::bind(&TGameLevel::OnTapDown, boost::ref(GameLevel), _1));
+    OnTapDownSignal.disconnect(boost::bind(&TGameLevel::OnTapDown, boost::ref(GameLevel), _1));
     
 }
 
@@ -296,10 +296,12 @@ void TMyApplication::LoadResources()
 	std::vector<int> galaxies;
 	galaxies.resize(1);
 	galaxies[0] = 3;
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/matte_screen.png", "matte_screen"));
 	for (int i = 0; i < galaxies.size(); i++) {
 		TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/galaxies/galaxy_" + std::to_string(i) + ".png", "galaxy_" + std::to_string(i)));
 		for (int j = 0; j < galaxies[i]; j++) {
 			TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j)));
+			TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover" + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover"));
 		}
 	}
 

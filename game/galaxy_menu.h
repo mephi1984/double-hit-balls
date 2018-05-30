@@ -49,8 +49,7 @@ private:
 
 	void readSaveData(); // inner init method
 
-	void drawSelectionMenu(int index);
-
+	/*..calc methodes..*/
 	Eigen::Vector2f textureSizeNormalize(Eigen::Vector2f texVec, int t_type = 0/*0-galaxy, 1-stars*/);
 	float val_clamp(float v, float min, float max);
 	Eigen::Vector2f findCorner(int x_c, int y_c);
@@ -58,7 +57,11 @@ private:
 	float lowerV(float first_v, float second_v);
 	int negativeV(float val);
 
-	int menuState = 0; // 0 - all galaxies are visible, 1 - zoomed to current galaxy , 2 - level select menu
+	/*..states..*/
+	int menuState = 0; // 0 - all galaxies are visible, 1 - zoomed to current galaxy(reserved) , 2 - level select menu
+	int starIndex = -1;
+	int galaxyIndex = 0; // zoomed galaxy
+	int planetHoverIndex = -1;
 
 	/*..Interact params..*/
 	bool timer_active = false;
@@ -74,9 +77,12 @@ private:
 	void takeInFocus(int g_index, int s_index = -1);
 	int findGalaxyByPos(Eigen::Vector2f pos);
 	int findPlanetByPos(Eigen::Vector2f pos);
+	int findLevelButtonByPos(Eigen::Vector2f pos);
+	bool checkMenuBound(Eigen::Vector2f pos);
 
-	/*..level select methods..*/
-	void showLevelSelectMenu(int index);
+	/*..draw methodes..*/
+	void drawSelectionMenu(int index);
+	void drawBorder(Eigen::Vector2f lb_, Eigen::Vector2f rt_, float scale, std::string mode);
 
 };
 
