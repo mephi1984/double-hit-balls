@@ -71,7 +71,7 @@ private:
 	Eigen::Vector2f totalTapShift; // reset
 
 	/*..coefficients..*/
-	Eigen::Vector2f menu_offset;
+	Eigen::Vector2f menu_offset = Eigen::Vector2f(0, 0);
 
 	/*..Interact methods..*/
 	void takeInFocus(int g_index, int s_index = -1);

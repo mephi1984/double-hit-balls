@@ -265,6 +265,7 @@ void TMyApplication::LoadResources()
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("main_menu_bkg_left.png", "main_menu_bkg_left"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("main_menu_bkg_right.png", "main_menu_bkg_right"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("select_level.png", "select_level"));
+
 	/*
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock1.png", "shutterstock1"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock2.png", "shutterstock2"));
@@ -279,19 +280,21 @@ void TMyApplication::LoadResources()
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock11.png", "shutterstock11"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock12.png", "shutterstock12"));
 	*/
+
+	
 	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock1"));
 	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_2") + bg_ext, "shutterstock2"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_11") + bg_ext, "shutterstock3"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_13") + bg_ext, "shutterstock4"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock5"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock6"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock7"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock8"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock9"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock10"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock11"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock12"));
-
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_3") + bg_ext, "shutterstock3"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_4") + bg_ext, "shutterstock4"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_5") + bg_ext, "shutterstock5"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_6") + bg_ext, "shutterstock6"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_7") + bg_ext, "shutterstock7"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_8") + bg_ext, "shutterstock8"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_9") + bg_ext, "shutterstock9"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_10") + bg_ext, "shutterstock10"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_11") + bg_ext, "shutterstock11"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_12") + bg_ext, "shutterstock12"));
+	
 	/*..galaxies and stars/planets Init..*/ // tmp
 	std::vector<int> galaxies;
 	galaxies.resize(1);

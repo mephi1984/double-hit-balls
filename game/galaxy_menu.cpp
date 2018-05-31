@@ -90,8 +90,8 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 		*SE::Console << "galaxy_" + std::to_string(i);
 		Eigen::Vector2f tex_size = textureSizeNormalize(
 			Eigen::Vector2f(
-				((float)SE::ResourceManager->TexList.GetTextureWidth("galaxy_" + std::to_string(i))),
-				((float)SE::ResourceManager->TexList.GetTextureHeight("galaxy_" + std::to_string(i))))
+				((float)SE::ResourceManager->TexList.GetTextureOriginalWidth("galaxy_" + std::to_string(i))),
+				((float)SE::ResourceManager->TexList.GetTextureOriginalHeight("galaxy_" + std::to_string(i))))
 		); // normalized
 		galaxies_params.push_back(std::make_pair(
 			Eigen::Vector2f(
@@ -380,7 +380,7 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 						starIndex = -1;
 						menuState = 0;
 						planetHoverIndex = -1;
-						Application->GoFromMenuToGame(lvl);
+						Application->GoFromMenuToGame(lvl-1);
 					}
 					else if (!checkMenuBound(lastTapPos)) {
 						// back to state 0
@@ -602,7 +602,12 @@ void GalaxyMenu::drawSelectionMenu(int index) {
 		
 		// buttons
 		for (int j = 0; j < galaxies[0].Stars[i].selectionMenu.buttons.size(); j++) {
-			glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["black_square"]);
+			std::string levelNum;
+			size_t itr = galaxies[0].Stars[i].selectionMenu.levels[j].find("_");
+			for (int z = itr + 1; z < galaxies[0].Stars[i].selectionMenu.levels[j].size(); z++) {
+				levelNum += galaxies[0].Stars[i].selectionMenu.levels[j][z];
+			}
+			glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["shutterstock" + levelNum]);
 			SE::Renderer->DrawRect(
 				Eigen::Vector2f(
 					galaxies[0].Stars[i].selectionMenu.buttons[j].first(0) - galaxies[0].Stars[i].selectionMenu.buttons[j].second(0) / 2,
@@ -627,7 +632,12 @@ int GalaxyMenu::findLevelButtonByPos(Eigen::Vector2f pos) {
 
 		if (pos(0) >= x_l && pos(0) <= x_r) {
 			if (pos(1) >= y_b && pos(1) <= y_t) {
-				return i;
+				std::string lvlname = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.levels[i];
+				std::string lvlNum;
+				for (int z = lvlname.find("_")+1; z < lvlname.size(); z++) {
+					lvlNum+=lvlname[z];
+				}
+				return atoi(lvlNum.c_str());
 			}
 		}
 	}

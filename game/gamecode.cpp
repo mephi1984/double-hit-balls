@@ -736,6 +736,32 @@ bool TGameLevel::IsLoaded()
     return (LevelState == CONST_LEVELSTATE_STANDBY);
 }
 
+void TGameLevel::drawOutline() {
+
+	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["black_square"]);
+	Renderer->DrawRect(
+		Vector2f(
+			0.0f,
+			0.0f
+		),
+		Vector2f(
+			(Renderer->GetScreenWidth() - Application->GetGameLevelScreenWidth())*0.5f,
+			Renderer->GetScreenHeight()
+		)
+	);
+
+	Renderer->DrawRect(
+		Vector2f(
+			Renderer->GetScreenWidth() - (Renderer->GetScreenWidth() - Application->GetGameLevelScreenWidth())*0.5f,
+			0.f
+		),
+		Vector2f(
+			Renderer->GetScreenWidth(),
+			Renderer->GetScreenHeight()
+		)
+	);
+}
+
 void TGameLevel::Draw()
 {
 	*SE::Console << "TGameLevel::Draw";
@@ -747,11 +773,11 @@ void TGameLevel::Draw()
 	//float ylOffset = (Renderer->GetScreenHeight() - tSH)*0.5f; // Level Screen y-offset
 	float ylOffset = 0.f;
 	float lrFBO = 4 * tSH / 320.f; // Left/Right Wall Textures offset from bottom
-	float uWTW = tSW * (static_cast<float>(ResourceManager->TexList.GetTextureHeight(CONST_WALL_UP_TEXTURE)) / static_cast<float>(ResourceManager->TexList.GetTextureWidth(CONST_WALL_UP_TEXTURE))); // up Wall Texture Width
-	float lWTW = (static_cast<float>(ResourceManager->TexList.GetTextureWidth(CONST_WALL_LEFT_TEXTURE)) / static_cast<float>(ResourceManager->TexList.GetTextureHeight(CONST_WALL_LEFT_TEXTURE))) * (tSH - uWTW - lrFBO); // left Wall Texture Width
+	float uWTW = tSW * (static_cast<float>(ResourceManager->TexList.GetTextureOriginalHeight(CONST_WALL_UP_TEXTURE)) / static_cast<float>(ResourceManager->TexList.GetTextureOriginalWidth(CONST_WALL_UP_TEXTURE))); // up Wall Texture Width
+	float lWTW = (static_cast<float>(ResourceManager->TexList.GetTextureOriginalWidth(CONST_WALL_LEFT_TEXTURE)) / static_cast<float>(ResourceManager->TexList.GetTextureOriginalHeight(CONST_WALL_LEFT_TEXTURE))) * (tSH - uWTW - lrFBO); // left Wall Texture Width
 	float rWTW = lWTW; // right Wall Texture Width
 	float bWTO = (lWTW + rWTW) * 0.5f; // bonus Wall x-Offset
-	float bWTW = (tSW - bWTO) * (static_cast<float>(ResourceManager->TexList.GetTextureHeight(CONST_WALL_BONUS_TEXTURE)) / static_cast<float>(ResourceManager->TexList.GetTextureWidth(CONST_WALL_BONUS_TEXTURE))); // bonus Wall Texture Width
+	float bWTW = (tSW - bWTO) * (static_cast<float>(ResourceManager->TexList.GetTextureOriginalHeight(CONST_WALL_BONUS_TEXTURE)) / static_cast<float>(ResourceManager->TexList.GetTextureOriginalWidth(CONST_WALL_BONUS_TEXTURE))); // bonus Wall Texture Width
 
     if (LevelState == CONST_LEVELSTATE_NODRAW)
     {
@@ -818,8 +844,8 @@ void TGameLevel::Draw()
     
 	// Level background
 	// :::::::::::
-	float bkgTW = (float)ResourceManager->TexList.GetTextureWidth(BkgTexture);
-	float bkgTH = (float)ResourceManager->TexList.GetTextureHeight(BkgTexture);
+	float bkgTW = (float)ResourceManager->TexList.GetTextureOriginalWidth(BkgTexture);
+	float bkgTH = (float)ResourceManager->TexList.GetTextureOriginalHeight(BkgTexture);
 	float bkgSW; // Background Secreen Width
 	float bkgSH; // Background Secreen Height
 	float bkgSWO; // Background Secreen Width Offset
@@ -841,6 +867,8 @@ void TGameLevel::Draw()
     glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[BkgTexture]);
 	//Renderer->DrawRect(Vector2f(xlOffset, ylOffset), Vector2f(xlOffset+tSW, ylOffset+tSH),Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	Renderer->DrawRect(Vector2f(bkgSWO, bkgSHO), Vector2f(bkgSWO + bkgSW, bkgSHO + bkgSH), Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
+
+	drawOutline();
 	
 	std::list<TBall>::iterator iBall;
     
@@ -891,12 +919,12 @@ void TGameLevel::Draw()
 	Renderer->DrawRect(wallUpPos1, wallUpPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
 	const Vector2f wallLeftPos1(xlOffset, lrFBO+ylOffset);
-	const Vector2f wallLeftPos2(lWTW + xlOffset, tSH-ylOffset-(uWTW*0.8f));
+	const Vector2f wallLeftPos2(lWTW + xlOffset, tSH-ylOffset-(uWTW*0.68f));
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_LEFT_TEXTURE]);
 	Renderer->DrawRect(wallLeftPos1, wallLeftPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
 	const Vector2f wallRightPos1(tSW+xlOffset-rWTW, lrFBO+ylOffset);
-	const Vector2f wallRightPos2(tSW + xlOffset, tSH-ylOffset-(uWTW*0.8f));
+	const Vector2f wallRightPos2(tSW + xlOffset, tSH-ylOffset-(uWTW*0.68f));
 	glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_WALL_RIGHT_TEXTURE]);
 	Renderer->DrawRect(wallRightPos1, wallRightPos2, Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	
@@ -1715,3 +1743,4 @@ void TGameLevel::TryGoToMenu()
         OutScale = 1.f;
     }
 }
+

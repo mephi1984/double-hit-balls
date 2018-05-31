@@ -146,6 +146,8 @@ protected:
     void DrawPauseButtons();
     
     void DrawBallInstancingList();
+
+	void drawOutline();
  
     bool RenderBufferReady;
     
