@@ -169,14 +169,12 @@ void TMyApplication::InnerInit()
 		size_t const threadsCount = 3;
 		size_t const edgesCount = 6;
 		float const angle = pi / 6;
-		size_t const iterationsCount = 60;
 		Vector3f up(0, 1, 0); up.normalize();
 		size_t const step = 5;
-		auto g = [this, findPlaneBasis, R, r, threadsCount, edgesCount, up, angle, step] (Vector3f start, Vector3f end) {
-			size_t iterationsCount = (end - start).norm() / step;
+		auto g = [this, findPlaneBasis, R, r, threadsCount, edgesCount, up, angle, step] (Vector3f start, Vector3f end, const Vector3f &color) {
 			Vector3f direction = (end - start).normalized();
-			start = start + (r + R) * direction;
 			end = end - (r + R) * direction;
+			size_t iterationsCount = (end - start).norm() / step;
 			auto e = findPlaneBasis(up);
 
 			std::vector<Vector3f> threadCenters;
@@ -264,7 +262,6 @@ void TMyApplication::InnerInit()
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk);
-						
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk1);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk);
@@ -272,7 +269,6 @@ void TMyApplication::InnerInit()
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((vk - threadCenter));
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((vk1 - threadCenter));
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((nvk - newThreadCenter));
-
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((vk1 - threadCenter));
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((nvk1 - newThreadCenter));
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((nvk - newThreadCenter));
@@ -280,10 +276,17 @@ void TMyApplication::InnerInit()
 						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.1, 0.1));
 						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.2, 0.1));
 						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.1, 0.2));
-						
 						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.2, 0.1));
 						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.2, 0.2));
 						fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].push_back(Vector2f(0.1, 0.2));
+
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(color);
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(color);
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(color);
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(color);
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(color);
+						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(color);
+
 					}
 				}
 
@@ -299,6 +302,7 @@ void TMyApplication::InnerInit()
 			for(auto line: root.get_child("lines")) {
 				std::vector<int> start;
 				std::vector<int> end;
+				std::vector<float> color;
 
 				for(auto value: line.second.get_child("start")) {
 					start.push_back(value.second.get_value<int>());
@@ -308,7 +312,11 @@ void TMyApplication::InnerInit()
 					end.push_back(value.second.get_value<int>());
 				}
 
-				g(Vector3f(start[0], 0, start[1]), Vector3f(end[0], 0, end[1]));
+				for (auto value : line.second.get_child("color")) {
+					color.push_back(value.second.get_value<float>());
+				}
+
+				g(Vector3f(start[0], 0, start[1]), Vector3f(end[0], 0, end[1]), Vector3f(color[0], color[1], color[2]));
 			}
 
 		}
