@@ -54,8 +54,8 @@ void TMyApplication::InnerInit()
     
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
-	ST::PathToResources = "resources/";
-	//ST::PathToResources = "../../../assets/";
+	//ST::PathToResources = "resources/";
+	ST::PathToResources = "../../../assets/";
 #else
 	ST::PathToResources = "../../../assets/";
 #endif
@@ -134,83 +134,73 @@ void TMyApplication::InnerInit()
 	
 	}
 
+	auto findPlaneBasis = [] (const Vector3f &normal) {
+		std::vector<Vector3f> result;
+
+		Vector3f e0 = Vector3f(1, 0, -normal.x() / normal.z()).normalized();
+		Vector3f e1 = Vector3f(0, 1, -normal.y() / normal.z());
+		e1 = (e1 - (e1.dot(e0) / e0.dot(e0)) * e0).normalized();
+
+		result.push_back(e0);
+		result.push_back(e1);
+
+		return result;
+	};
+
 	{
-		//resolution of linesAll.png
-		float const  texW = 900;
-		float const  texH = 900;
-
-		float const  step = 12;
-		float const  thick = 10;
-
-
 		float const R = 5;
 		float const r = 6;
 		size_t const threadsCount = 5;
-		size_t const verticesCount = 6;
-		//float const angle = pi / 18;
+		size_t const edgesCount = 6;
 		float const angle = pi / 6;
 		size_t const iterationsCount = 20;
-		auto g = [this, R, r, threadsCount, verticesCount, angle, iterationsCount, texW, texH, thick, H, W] (const Vector3f &start, const Vector3f &end) {
+		Vector3f up(0, 1, 0);
+		auto g = [this, findPlaneBasis, R, r, threadsCount, edgesCount, up, angle, iterationsCount] (const Vector3f &start, const Vector3f &end) {
 			Vector3f translate = (end - start) / iterationsCount;
+			auto e = findPlaneBasis(translate);
 
-			Vector3f e0 = Vector3f(1, 0, -translate.x() / translate.z()).normalized();
-			Vector3f e1 = Vector3f(0, 1, -translate.y() / translate.z());
-			e1 = (e1 - (e1.dot(e0) / e0.dot(e0)) * e0).normalized();
-
+			// create thread edges
 			std::vector<Vector3f> threadCenters;
 			std::vector<std::vector<Vector4f>> threads;
 			for(auto i = 0; i < threadsCount; i++) {
-				std::vector<Vector4f> vertices;
-				Vector3f threadCenter = R * (e0 * cosf(i * 2 * pi / threadsCount) + e1 * sinf(i * 2 * pi / threadsCount));
+				std::vector<Vector4f> edges;
+				Vector3f threadCenter = R * (e[0] * cosf(i * 2 * pi / threadsCount) + e[1] * sinf(i * 2 * pi / threadsCount));
 				threadCenters.push_back(threadCenter);
 
-				for(auto j = 0; j < verticesCount; j++) {
-					auto verticeCenter = threadCenter + r * (e0 * cosf(j * 2 * pi / verticesCount) + e1 * sinf(j * 2 * pi / verticesCount));
-					vertices.push_back(Vector4f(verticeCenter.x(), verticeCenter.y(), verticeCenter.z(), 1));
+				for(auto j = 0; j < edgesCount; j++) {
+					auto verticeCenter = threadCenter + r * (e[0] * cosf(j * 2 * pi / edgesCount) + e[1] * sinf(j * 2 * pi / edgesCount));
+					edges.push_back(Vector4f(verticeCenter.x(), verticeCenter.y(), verticeCenter.z(), 1));
 				}
 
-				threads.push_back(vertices);
+				threads.push_back(edges);
 			}
 			
-		    auto transform = Translation3f(translate) * AngleAxis<float>(angle, translate.normalized());
-			auto matrix = transform.matrix();
+		    auto matrix = (Translation3f(translate) * AngleAxis<float>(angle, translate.normalized())).matrix();
 			
 			for(auto i = 0; i < iterationsCount; i++) {
 				std::vector<std::vector<Vector4f>> newThreads;
 
 				for(auto j = 0; j < threadsCount; j++) {
-					auto vertices = threads[j];
-					std::vector<Vector4f> newVertices;
+					auto edges = threads[j];
+					std::vector<Vector4f> newEdges;
 
-					for(auto k = 0; k < verticesCount; k++) {
-						newVertices.push_back(matrix * vertices[k]);
+					for(auto k = 0; k < edgesCount; k++) {
+						newEdges.push_back(matrix * edges[k]);
 					}
 
-					newThreads.push_back(newVertices);
+					newThreads.push_back(newEdges);
 
-					
 					auto threadCenter_ = Vector4f(threadCenters[j].x(), threadCenters[j].y(), threadCenters[j].z(), 1);
 					auto threadCenter = threadCenter_.head(3);
 					auto newThreadCenter = (matrix * threadCenter_).head(3);
 
 					threadCenters[j] = newThreadCenter;
 					
-					/*
-
-					Vector3f threadCenter;
-					Vector3f newThreadCenter;
-					for(auto k = 0; k < verticesCount; k++) {
-						threadCenter += vertices[k].head(3);
-						newThreadCenter += newVertices[k].head(3);
-					}
-					threadCenter = threadCenter / verticesCount;
-					newThreadCenter = newThreadCenter / verticesCount;
-					*/
-					for(auto k = 0; k < verticesCount; k++) {
-						auto vk = vertices[k].head(3);
-						auto vk1 = vertices[(k + 1) % verticesCount].head(3);
-						auto nvk = newVertices[k].head(3);
-						auto nvk1 = newVertices[(k + 1) % verticesCount].head(3);
+					for(auto k = 0; k < edgesCount; k++) {
+						auto vk = edges[k].head(3);
+						auto vk1 = edges[(k + 1) % edgesCount].head(3);
+						auto nvk = newEdges[k].head(3);
+						auto nvk1 = newEdges[(k + 1) % edgesCount].head(3);
 
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1);
@@ -219,11 +209,6 @@ void TMyApplication::InnerInit()
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk1);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk);
-
-						*Console << "k=" + boost::lexical_cast<std::string>(k) + "\n";
-
-						*Console << "tc=" + boost::lexical_cast<std::string>(threadCenter(0))+ " " + boost::lexical_cast<std::string>(threadCenter(1)) + " " + boost::lexical_cast<std::string>(threadCenter(2)) +"\n";
-						*Console << "ntc="+ boost::lexical_cast<std::string>(newThreadCenter(0)) + " "+ boost::lexical_cast<std::string>(newThreadCenter(1))+ " " + boost::lexical_cast<std::string>(newThreadCenter(2))+"\n";
 
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((vk - threadCenter));
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].push_back((vk1 - threadCenter));
@@ -248,7 +233,7 @@ void TMyApplication::InnerInit()
 		};
 
 		Vector3f const stepDirection(18, 0, 0);
-		Vector3f p1(bottomLeft[0], 0, -bottomLeft[1]);
+		Vector3f p1(bottomLeft[0], 100, -bottomLeft[1]);
 		Vector3f p2 = p1 - Vector3f(0, 0, W);
 
 		while(p1[0] < bottomLeft[0] + W)
