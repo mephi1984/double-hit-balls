@@ -9,9 +9,10 @@ varying vec3 fragNormal;
 varying vec3 fragColor;
 
 void main() {
-	vec4 color = texture2D(Texture, texCoord).rgba;
-	float intensity = dot(normalize(LightDirection.xyz), -normalize(fragNormal));
+	vec4 color = vec4((fragColor.rgb * texture2D(Texture, texCoord).rgb), 1.0);
+
+	float intensity = clamp(dot(normalize(LightDirection.xyz), -normalize(fragNormal)), 0, 1);
 	
-	gl_FragColor = vec4(color.rgb * fragColor.rgb * intensity + vec3(0.5, 0.5, 0.5), color.a * Transparency);	
+	gl_FragColor = vec4(color.rgb * intensity + vec3(0.2, 0.2, 0.2), color.a * Transparency);
 	//gl_FragColor = vec4((fragNormal.rgb + vec3(1.0, 1.0, 1.0))*0.5, 1.0);
 }
