@@ -82,6 +82,7 @@ void TMyApplication::InnerInit()
 	ResourceManager->TexList.AddTexture("console_bkg.bmp");
 
 	ResourceManager->TexList.AddTexture("background.jpg");
+	ResourceManager->TexList.AddTexture("pimgpsh.jpg");
 	ResourceManager->TexList.AddTexture("HeightMap.png");
 	ResourceManager->TexList.AddTexture("NormalMap.png");
 	ResourceManager->TexList.AddTexture("linesAll.png");
@@ -137,8 +138,23 @@ void TMyApplication::InnerInit()
 	auto findPlaneBasis = [] (const Vector3f &normal) {
 		std::vector<Vector3f> result;
 
-		Vector3f e0 = Vector3f(1, 0, -normal.x() / normal.z()).normalized();
-		Vector3f e1 = Vector3f(0, 1, -normal.y() / normal.z());
+		Vector3f e0, e1;
+		if(normal.z() != 0)
+		{
+			e0 = Vector3f(1, 0, -normal.x() / normal.z()).normalized();
+			e1 = Vector3f(0, 1, -normal.y() / normal.z());
+		}
+		else if(normal.y() != 0)
+		{
+			e0 = Vector3f(1, -normal.x() / normal.y(), 0).normalized();
+			e1 = Vector3f(0, -normal.z() / normal.y(), 1);
+		}
+		else
+		{
+			e0 = Vector3f(-normal.y() / normal.x(), 1, 0).normalized();
+			e1 = Vector3f(-normal.z() / normal.x(), 0, 1);
+		}
+
 		e1 = (e1 - (e1.dot(e0) / e0.dot(e0)) * e0).normalized();
 
 		result.push_back(e0);
@@ -148,18 +164,21 @@ void TMyApplication::InnerInit()
 	};
 
 	{
-		float const R = 5;
-		float const r = 6;
-		size_t const threadsCount = 5;
+		float const R = 3;
+		float const r = 4;
+		size_t const threadsCount = 3;
 		size_t const edgesCount = 6;
 		float const angle = pi / 6;
-		size_t const iterationsCount = 20;
-		Vector3f up(0, 1, 0);
-		auto g = [this, findPlaneBasis, R, r, threadsCount, edgesCount, up, angle, iterationsCount] (const Vector3f &start, const Vector3f &end) {
-			Vector3f translate = (end - start) / iterationsCount;
-			auto e = findPlaneBasis(translate);
+		size_t const iterationsCount = 60;
+		Vector3f up(0, 1, 0); up.normalize();
+		size_t const step = 5;
+		auto g = [this, findPlaneBasis, R, r, threadsCount, edgesCount, up, angle, step] (Vector3f start, Vector3f end) {
+			size_t iterationsCount = (end - start).norm() / step;
+			Vector3f direction = (end - start).normalized();
+			start = start + (r + R) * direction;
+			end = end - (r + R) * direction;
+			auto e = findPlaneBasis(up);
 
-			// create thread edges
 			std::vector<Vector3f> threadCenters;
 			std::vector<std::vector<Vector4f>> threads;
 			for(auto i = 0; i < threadsCount; i++) {
@@ -174,10 +193,36 @@ void TMyApplication::InnerInit()
 
 				threads.push_back(edges);
 			}
-			
-		    auto matrix = (Translation3f(translate) * AngleAxis<float>(angle, translate.normalized())).matrix();
-			
-			for(auto i = 0; i < iterationsCount; i++) {
+
+			auto rotateMatrix1 = (
+				Translation3f((r + R) * direction) *
+				AngleAxis<float>(
+					-pi / 8,
+					direction.cross(up).normalized()
+				) *
+				Translation3f(-(r + R) * direction)
+			).matrix();
+			auto matrix = (
+				Translation3f((r + R) * up) *
+				AngleAxis<float>(
+					angle,
+					direction
+				) *
+				Translation3f(-(r + R) * up) *
+				Translation3f(static_cast<int>(step) * direction)
+			).matrix();
+			auto rotateMatrix2 = (
+				Translation3f(static_cast<int>(step) * direction * iterationsCount) *
+				Translation3f((r + R) * direction) *	
+				AngleAxis<float>(
+					-pi / 8,
+					direction.cross(up).normalized()
+					) *
+				Translation3f(-(r + R) * direction) *
+				Translation3f(-static_cast<int>(step) * direction * iterationsCount)
+			).matrix();
+
+			for(int i = -4; i < static_cast<int>(iterationsCount) + 4; i++) {
 				std::vector<std::vector<Vector4f>> newThreads;
 
 				for(auto j = 0; j < threadsCount; j++) {
@@ -185,14 +230,28 @@ void TMyApplication::InnerInit()
 					std::vector<Vector4f> newEdges;
 
 					for(auto k = 0; k < edgesCount; k++) {
-						newEdges.push_back(matrix * edges[k]);
+						if(i < 0) {
+							newEdges.push_back(rotateMatrix1 * edges[k]);
+						} else if(i < iterationsCount) {
+							newEdges.push_back(matrix * edges[k]);
+						} else {
+							newEdges.push_back(rotateMatrix2 * edges[k]);
+						}
 					}
 
 					newThreads.push_back(newEdges);
 
 					auto threadCenter_ = Vector4f(threadCenters[j].x(), threadCenters[j].y(), threadCenters[j].z(), 1);
 					auto threadCenter = threadCenter_.head(3);
-					auto newThreadCenter = (matrix * threadCenter_).head(3);
+
+					Vector3f newThreadCenter;
+					if (i < 0) {
+						newThreadCenter = (rotateMatrix1 * threadCenter_).head(3);
+					} else if (i < iterationsCount) {
+						newThreadCenter = (matrix * threadCenter_).head(3);
+					} else {
+						newThreadCenter = (rotateMatrix2 * threadCenter_).head(3);
+					}
 
 					threadCenters[j] = newThreadCenter;
 					
@@ -232,15 +291,26 @@ void TMyApplication::InnerInit()
 			}
 		};
 
-		Vector3f const stepDirection(18, 0, 0);
-		Vector3f p1(bottomLeft[0], 100, -bottomLeft[1]);
-		Vector3f p2 = p1 - Vector3f(0, 0, W);
-
-		while(p1[0] < bottomLeft[0] + W)
 		{
-			g(p1, p2);
-			p1 += stepDirection;
-			p2 += stepDirection;
+			namespace pt = boost::property_tree;
+			pt::ptree root;
+			pt::read_json(ST::PathToResources + "lines.json", root);
+
+			for(auto line: root.get_child("lines")) {
+				std::vector<int> start;
+				std::vector<int> end;
+
+				for(auto value: line.second.get_child("start")) {
+					start.push_back(value.second.get_value<int>());
+				}
+
+				for (auto value : line.second.get_child("end")) {
+					end.push_back(value.second.get_value<int>());
+				}
+
+				g(Vector3f(start[0], 0, start[1]), Vector3f(end[0], 0, end[1]));
+			}
+
 		}
 	}
 
@@ -252,7 +322,7 @@ void TMyApplication::InnerInit()
 	 */
 	std::string const CONST_STRING_HEIGHTMAP_UNIFORM = "HeightMap";
 
-	background.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "background.jpg";
+	background.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "pimgpsh.jpg";
 
 	fabricRender.first.SamplerMap[CONST_STRING_NORMALMAP_UNIFORM] = "NormalMap.png";
 	fabricRender.first.SamplerMap[CONST_STRING_HEIGHTMAP_UNIFORM] = "HeightMap.png";

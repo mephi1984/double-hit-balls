@@ -20,6 +20,9 @@
 #include "boost/assign.hpp"
 #include "boost/bind.hpp"
 
+#include "boost/property_tree/ptree.hpp"
+#include "boost/property_tree/json_parser.hpp"
+
 #include "include/Engine.h"
 
 #include "boost/signals2.hpp"//Signal must be included after asio
