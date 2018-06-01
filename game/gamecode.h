@@ -3,6 +3,7 @@
 
 #include "include/Engine.h"
 #include "game_area_interface.h"
+//#include "galaxy_menu.h"
 
 #include <list>
 
@@ -60,6 +61,7 @@ public:
     void Disappear();
     int GetLocked();
     bool CanReact();
+	bool IsAppear();
 };
 
 class TBonusFalling
@@ -120,6 +122,7 @@ struct TBallInstancingList
 class TGameLevel : public TGameAreaAncestor
 {
 	friend class TMyApplication;
+	friend class GalaxyMenu;
 protected:
 	float lvlWidth;
 	float lvlHeight;

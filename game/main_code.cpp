@@ -81,7 +81,8 @@ void TMyApplication::InnerInit()
 	StateTimer = 0.f;
 
 	/*
-	ResourceManager->ShaderManager.AddShader("DefaultShader", "shader1vertex.txt", "shader1fragment.txt");
+	ResourceManager->ShaderManager.AddShader("DefaultShader", "shader1vertex
+	", "shader1fragment.txt");
 	ResourceManager->ShaderManager.AddShader("FrameShader", "frameshader_vertex.txt", "frameshader_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("BrickShader", "brickshader_vertex.txt", "brickshader_fragment.txt");
 	Renderer->PushShader("DefaultShader");
@@ -511,7 +512,7 @@ void TMyApplication::GoFromMenuToGame(int level)
 //#endif
 
     GameLevel.FillWithFile(ST::PathToResources + "level"+tostr(level+1)+".txt");
-    GameLevel.SetLoading("shutterstock" + tostr(level+1), "levelshot"+tostr(level+1));    
+    GameLevel.SetLoading("shutterstock" + tostr(level+1), "shutterstock" + tostr(level + 1));
     GameState = CONST_GAMESTATE_FROM_MENU_TO_LEVEL;
     OnDrawSignal.connect(1, boost::bind(&TGameLevel::Draw, boost::ref(GameLevel)));
     

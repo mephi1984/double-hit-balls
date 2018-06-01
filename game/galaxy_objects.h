@@ -4,10 +4,17 @@
 #include "include/Engine.h"
 #include <string>
 
+#include "gamecode.h" // tmp
+#include "level_interior.h"
+
 class LevelSelection {
 public:
 
-	std::vector<std::string> levels;
+	/*..LEVELS..*/
+	std::vector<std::string> levels; // levels names, uses gameLevels init
+	/*..levels interior info..*/
+	std::vector<TGameLevel> gameLevels;
+	std::vector<std::vector<GameLevelInterior>> levelInterior;
 
 	// #params
 	//float buttons_plane_Yoffset = 0.2f; // relative to the screen
@@ -52,6 +59,7 @@ public:
 	std::string name;
 	Eigen::Vector2f position;
 	float scale;
+
 
 private:
 

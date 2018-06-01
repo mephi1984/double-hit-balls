@@ -74,5 +74,8 @@
     <ClInclude Include="..\..\..\game\galaxy_menu.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\game\level_interior.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

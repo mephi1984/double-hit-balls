@@ -5,6 +5,7 @@
 #include <string>
 
 #include "galaxy.h"
+#include "level_interior.h"
 
 #include "include/Engine.h"
 
@@ -47,6 +48,7 @@ public:
 
 private:
 
+
 	void readSaveData(); // inner init method
 
 	/*..calc methodes..*/
@@ -83,6 +85,7 @@ private:
 	/*..draw methodes..*/
 	void drawSelectionMenu(int index);
 	void drawBorder(Eigen::Vector2f lb_, Eigen::Vector2f rt_, float scale, std::string mode);
+	void drawLevelInterior(int star = -1, int button = -1);
 
 };
 

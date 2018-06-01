@@ -182,6 +182,7 @@
     <ClInclude Include="..\..\..\game\galaxy_objects.h" />
     <ClInclude Include="..\..\..\game\gamecode.h" />
     <ClInclude Include="..\..\..\game\game_area_interface.h" />
+    <ClInclude Include="..\..\..\game\level_interior.h" />
     <ClInclude Include="..\..\..\game\loadingcode.h" />
     <ClInclude Include="..\..\..\game\main_code.h" />
     <ClInclude Include="..\..\..\game\menucode.h" />

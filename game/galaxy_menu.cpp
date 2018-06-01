@@ -6,6 +6,7 @@
 
 GalaxyMenu::GalaxyMenu()
 {
+
 }
 
 GalaxyMenu::~GalaxyMenu()
@@ -46,7 +47,12 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 			/*..Levels..*/
 			BOOST_FOREACH(auto levels_pt, stars_pt.second.get_child("levels")) {
 
-				star.selectionMenu.levels.push_back(levels_pt.second.get<std::string>("name", "empty"));
+				std::string levelName = levels_pt.second.get<std::string>("name", "empty");
+				star.selectionMenu.levels.push_back(levelName);
+				
+				TGameLevel lvl;
+				lvl.FillWithFile(ST::PathToResources + "level" + levelName.substr(levelName.find("_") + 1) + ".txt");
+				star.selectionMenu.gameLevels.push_back(lvl);
 
 			}
 			galax.Stars.push_back(star);
@@ -158,8 +164,15 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 
 			// buttons
 			std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>> buttons_params;
-			buttons_params.resize(galaxies[i].Stars[j].selectionMenu.levels.size());
-			for (int y = 0; y < buttons_params.size(); y++) {
+			std::vector<std::vector<GameLevelInterior>> interior_params;
+			int levelsCount = galaxies[i].Stars[j].selectionMenu.levels.size();
+			buttons_params.resize(levelsCount);
+			interior_params.resize(levelsCount);
+			for (int v = 0; v < interior_params.size(); v++) {
+				interior_params[v].resize(CONST_BRICKMATRIX_HEIGHT*CONST_BRICKMATRIX_WIDTH);
+			}
+			for (int y = 0; y < levelsCount; y++) {
+				GameLevelInterior levelInter;
 				
 				float x_rpos = (galaxies[i].Stars[j].selectionMenu.border_x_offset + (y - floor((float)y / (float)galaxies[i].Stars[j].selectionMenu.columns)*(float)galaxies[i].Stars[j].selectionMenu.columns)*(button_x_dim + galaxies[i].Stars[j].selectionMenu.buttons_offset) + button_x_dim/2);
 				//float y_rpos = (/**/ galaxies[i].Stars[j].selectionMenu.border_y_offset + (floor((float)y / (float)galaxies[i].Stars[j].selectionMenu.columns))*(/*..*/ galaxies[i].Stars[j].selectionMenu.buttons_offset + button_x_dim / galaxies[i].Stars[j].selectionMenu.buttons_ratio /*..*/) + button_x_dim/galaxies[i].Stars[j].selectionMenu.buttons_ratio/2 /**/);
@@ -176,7 +189,46 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 
 					)
 				);
+
+				/*..Interior params..*/
+				/*.matrix init.*/
+				int brickMatr[CONST_BRICKMATRIX_WIDTH][CONST_BRICKMATRIX_HEIGHT];
+				for (int w = 0; w < CONST_BRICKMATRIX_WIDTH; w++)
+				{
+					for (int h = 0; h < CONST_BRICKMATRIX_HEIGHT; h++)
+					{
+						if (galaxies[i].Stars[j].selectionMenu.gameLevels[y].BlockMatrix[w][h].IsAppear()) {
+							brickMatr[w][h] = 1;
+						}
+						else {
+							brickMatr[w][h] = 0;
+						}
+					}
+				}
+				/*.params init.*/
+				float brick_w = 0.06f;
+				float brick_ratio = 1.6f;
+				float brick_h = brick_w / brick_ratio;
+				float xb_offset = 0.01f; // x border offset * 0.5
+				float yb_offset = 0.01f; // offset from top
+				int loop_itr = 0;
+				for (int w = 0; w < CONST_BRICKMATRIX_WIDTH; w++) {
+					for (int h = 0; h < CONST_BRICKMATRIX_HEIGHT; h++) {
+						levelInter.position = Eigen::Vector2f(
+							(buttons_params[y].first(0) - buttons_params[y].second(0)*0.5f) + (xb_offset + brick_w * w + brick_w * 0.5f) * buttons_params[y].second(0),
+							(buttons_params[y].first(1) + buttons_params[y].second(1)*0.5f) - (yb_offset + brick_h * h + brick_h * 0.5f)*buttons_params[y].second(1)
+						);
+						levelInter.dimensions = Eigen::Vector2f(
+							buttons_params[y].second(0)*brick_w/* * brickMatr[w][h]*/, //drawable block coefficient - #NOW NEED TO BE FIXED AT (matrix init) sections#
+							buttons_params[y].second(1)*brick_h/* * brickMatr[w][h]*/
+						);
+						//inited
+						interior_params[y][loop_itr++] = levelInter;
+					}
+				}
+				
 			}
+			galaxies[i].Stars[j].selectionMenu.levelInterior = interior_params;
 			galaxies[i].Stars[j].selectionMenu.buttons = buttons_params;
 		}
 	}
@@ -618,6 +670,18 @@ void GalaxyMenu::drawSelectionMenu(int index) {
 					galaxies[0].Stars[i].selectionMenu.buttons[j].first(1) + galaxies[0].Stars[i].selectionMenu.buttons[j].second(1) / 2
 				)
 			); // DrawRect
+
+			/*..draw level interior..*/
+			drawLevelInterior(i,j);
+
+			/*std::list<std::pair<PairColorTexture, TTriangleList>>::iterator colorBlockIterator;
+			for (colorBlockIterator = galaxies[0].Stars[i].selectionMenu.levelInterior[j].BlockInstansingList.ColorBlockList.begin(); colorBlockIterator != galaxies[0].Stars[i].selectionMenu.levelInterior[j].BlockInstansingList.ColorBlockList.end(); ++colorBlockIterator)
+			{
+				RenderUniform4fv("BrickColor", colorBlockIterator->first.first.data());
+				glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList[colorBlockIterator->first.second]);
+
+				Renderer->DrawTriangleList(colorBlockIterator->second);
+			}*/
 		}
 
 	}
@@ -722,4 +786,21 @@ void GalaxyMenu::drawBorder(Eigen::Vector2f lb_, Eigen::Vector2f rt_, float scal
 			Eigen::Vector2f(rt_(0) + width * scale*0.5f, lb_(1) + width * scale*0.5f)
 		); // bottom
 	}
+}
+
+void GalaxyMenu::drawLevelInterior(int star, int button) {
+	glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[CONST_BLOCK_TEXTURE1]);
+	for (int i = 0; i < galaxies[0].Stars[star].selectionMenu.levelInterior[button].size(); i++) {
+		Renderer->DrawRect(
+			Eigen::Vector2f(
+				galaxies[0].Stars[star].selectionMenu.levelInterior[button][i].position(0) - galaxies[0].Stars[star].selectionMenu.levelInterior[button][i].dimensions(0)*0.5f,
+				galaxies[0].Stars[star].selectionMenu.levelInterior[button][i].position(1) - galaxies[0].Stars[star].selectionMenu.levelInterior[button][i].dimensions(1)*0.5f
+			),
+			Eigen::Vector2f(
+				galaxies[0].Stars[star].selectionMenu.levelInterior[button][i].position(0) + galaxies[0].Stars[star].selectionMenu.levelInterior[button][i].dimensions(0)*0.5f,
+				galaxies[0].Stars[star].selectionMenu.levelInterior[button][i].position(1) + galaxies[0].Stars[star].selectionMenu.levelInterior[button][i].dimensions(1)*0.5f
+			)
+		);
+	}
+	
 }

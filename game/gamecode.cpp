@@ -1744,3 +1744,13 @@ void TGameLevel::TryGoToMenu()
     }
 }
 
+bool TBrick::IsAppear() {
+	if (State == CONST_BRICKSTATE_DISAPPEAR)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
