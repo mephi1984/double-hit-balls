@@ -44,21 +44,22 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 			star.scale = stars_pt.second.get<float>("scale", 0.0f);
 			star.texture = stars_pt.second.get<std::string>("texture", "error");
 			star.position = Eigen::Vector2f(stars_pt.second.get<float>("position.x_coord", 0.0f), stars_pt.second.get<float>("position.y_coord", 0.0f));
+			
 			/*..Levels..*/
 			BOOST_FOREACH(auto levels_pt, stars_pt.second.get_child("levels")) {
 
 				std::string levelName = levels_pt.second.get<std::string>("name", "empty");
-				star.selectionMenu.levels.push_back(levelName);
 				
 				TGameLevel lvl;
-				lvl.FillWithFile(ST::PathToResources + "level" + levelName.substr(levelName.find("_") + 1) + ".txt");
-				star.selectionMenu.gameLevels.push_back(lvl);
+				lvl.FillWithFile(ST::PathToResources + levelName + ".txt");
 
+				star.selectionMenu.gameLevels.push_back(lvl);
 			}
 			galax.Stars.push_back(star);
 		} 
 		galaxies.push_back(galax);
 	}
+
 	return true;
 	}
 	catch (boost::property_tree::ptree_error) {
@@ -137,7 +138,7 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 	for (int i = 0; i < galaxies.size(); i++) {
 		for (int j = 0; j < galaxies[i].Stars.size(); j++) {
 			float button_x_dim = ((1.f - (galaxies[i].Stars[j].selectionMenu.border_x_offset * 2 + (galaxies[i].Stars[j].selectionMenu.columns - 1)*galaxies[i].Stars[j].selectionMenu.buttons_offset)) / galaxies[i].Stars[j].selectionMenu.columns); // relative size
-			int rows_count = (int)ceil((float)galaxies[i].Stars[j].selectionMenu.levels.size() / (float)galaxies[i].Stars[j].selectionMenu.columns);
+			int rows_count = (int)ceil((float)galaxies[i].Stars[j].selectionMenu.gameLevels.size() / (float)galaxies[i].Stars[j].selectionMenu.columns);
 			galaxies[i].Stars[j].selectionMenu.params = std::make_pair(
 				Eigen::Vector2f(
 					gameScreenCenter(0) + (galaxies[i].Stars[j].selectionMenu.offset(0) * gameScreenWidth / 2),
@@ -165,7 +166,7 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 			// buttons
 			std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>> buttons_params;
 			std::vector<std::vector<GameLevelInterior>> interior_params;
-			int levelsCount = galaxies[i].Stars[j].selectionMenu.levels.size();
+			int levelsCount = galaxies[i].Stars[j].selectionMenu.gameLevels.size();
 			buttons_params.resize(levelsCount);
 			interior_params.resize(levelsCount);
 			for (int v = 0; v < interior_params.size(); v++) {
@@ -426,13 +427,13 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 				if (totalTapShift(0) == 0.f && totalTapShift(1) == 0.f) {
 					// OnTapDown->OnTapUp
 
-					int lvl = findLevelButtonByPos(lastTapPos);
-					if (lvl != -1) {
+					auto lvl = findLevelByButtonPos(lastTapPos);
+					if (lvl != nullptr) {
 						// then if level is available, load it
 						starIndex = -1;
 						menuState = 0;
 						planetHoverIndex = -1;
-						Application->GoFromMenuToGame(lvl-1);
+						Application->GoFromMenuToGame(lvl);
 					}
 					else if (!checkMenuBound(lastTapPos)) {
 						// back to state 0
@@ -653,26 +654,32 @@ void GalaxyMenu::drawSelectionMenu(int index) {
 		);
 		
 		// buttons
-		for (int j = 0; j < galaxies[0].Stars[i].selectionMenu.buttons.size(); j++) {
-			std::string levelNum;
-			size_t itr = galaxies[0].Stars[i].selectionMenu.levels[j].find("_");
-			for (int z = itr + 1; z < galaxies[0].Stars[i].selectionMenu.levels[j].size(); z++) {
-				levelNum += galaxies[0].Stars[i].selectionMenu.levels[j][z];
-			}
-			glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["shutterstock" + levelNum]);
+		int j = 0;
+		for (auto &button : galaxies[0].Stars[i].selectionMenu.buttons)
+		{
+
+			//std::string levelName = "shutterstock" + galaxies[0].Stars[i].selectionMenu.levels[j].substr(itr + 1);
+
+			//glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[levelName]);
+
+			std::string &levelName = galaxies[0].Stars[i].selectionMenu.gameLevels[j].levelName;
+			std::string levelPrerender = galaxies[0].Stars[i].selectionMenu.gameLevels[j].levelName + "_prerender";
+
+			glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[levelPrerender]);
+
 			SE::Renderer->DrawRect(
 				Eigen::Vector2f(
-					galaxies[0].Stars[i].selectionMenu.buttons[j].first(0) - galaxies[0].Stars[i].selectionMenu.buttons[j].second(0) / 2,
-					galaxies[0].Stars[i].selectionMenu.buttons[j].first(1) - galaxies[0].Stars[i].selectionMenu.buttons[j].second(1) / 2
+					button.first(0) - button.second(0) / 2,
+					button.first(1) - button.second(1) / 2
 				),
 				Eigen::Vector2f(
-					galaxies[0].Stars[i].selectionMenu.buttons[j].first(0) + galaxies[0].Stars[i].selectionMenu.buttons[j].second(0) / 2,
-					galaxies[0].Stars[i].selectionMenu.buttons[j].first(1) + galaxies[0].Stars[i].selectionMenu.buttons[j].second(1) / 2
+					button.first(0) + button.second(0) / 2,
+					button.first(1) + button.second(1) / 2
 				)
 			); // DrawRect
 
 			/*..draw level interior..*/
-			drawLevelInterior(i,j);
+			//drawLevelInterior(i,j);
 
 			/*std::list<std::pair<PairColorTexture, TTriangleList>>::iterator colorBlockIterator;
 			for (colorBlockIterator = galaxies[0].Stars[i].selectionMenu.levelInterior[j].BlockInstansingList.ColorBlockList.begin(); colorBlockIterator != galaxies[0].Stars[i].selectionMenu.levelInterior[j].BlockInstansingList.ColorBlockList.end(); ++colorBlockIterator)
@@ -682,12 +689,14 @@ void GalaxyMenu::drawSelectionMenu(int index) {
 
 				Renderer->DrawTriangleList(colorBlockIterator->second);
 			}*/
+
+			++j;
 		}
 
 	}
 }
 
-int GalaxyMenu::findLevelButtonByPos(Eigen::Vector2f pos) {
+TGameLevel* GalaxyMenu::findLevelByButtonPos(Eigen::Vector2f pos) {
 	for (int i = 0; i < galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons.size(); i++) {
 		float x_l = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].first(0) - galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].second(0)*0.5f;
 		float x_r = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].first(0) + galaxies[galaxyIndex].Stars[starIndex].selectionMenu.buttons[i].second(0)*0.5f;
@@ -696,16 +705,11 @@ int GalaxyMenu::findLevelButtonByPos(Eigen::Vector2f pos) {
 
 		if (pos(0) >= x_l && pos(0) <= x_r) {
 			if (pos(1) >= y_b && pos(1) <= y_t) {
-				std::string lvlname = galaxies[galaxyIndex].Stars[starIndex].selectionMenu.levels[i];
-				std::string lvlNum;
-				for (int z = lvlname.find("_")+1; z < lvlname.size(); z++) {
-					lvlNum+=lvlname[z];
-				}
-				return atoi(lvlNum.c_str());
+				return &galaxies[galaxyIndex].Stars[starIndex].selectionMenu.gameLevels[i];
 			}
 		}
 	}
-	return -1;
+	return nullptr;
 }
 
 bool GalaxyMenu::checkMenuBound(Eigen::Vector2f pos) {

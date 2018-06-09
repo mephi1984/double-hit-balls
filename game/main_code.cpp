@@ -282,19 +282,26 @@ void TMyApplication::LoadResources()
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("shutterstock12.png", "shutterstock12"));
 	*/
 
+#ifdef NDEBUG
+	bool useDebugBackgrounds = false;
+#else
+	bool useDebugBackgrounds = Textures_pt.get<bool>("useDebugBackgrounds", false);
+#endif
+
+	std::string backgroundPath = useDebugBackgrounds ? "level_background/debug/" : "level_background/";
 	
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock1"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_2") + bg_ext, "shutterstock2"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_3") + bg_ext, "shutterstock3"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_4") + bg_ext, "shutterstock4"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_5") + bg_ext, "shutterstock5"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_6") + bg_ext, "shutterstock6"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_7") + bg_ext, "shutterstock7"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_8") + bg_ext, "shutterstock8"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_9") + bg_ext, "shutterstock9"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_10") + bg_ext, "shutterstock10"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_11") + bg_ext, "shutterstock11"));
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("level_background/" + Textures_pt.get<std::string>("TextureList.bg_12") + bg_ext, "shutterstock12"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_1") + bg_ext, "shutterstock1"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_2") + bg_ext, "shutterstock2"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_3") + bg_ext, "shutterstock3"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_4") + bg_ext, "shutterstock4"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_5") + bg_ext, "shutterstock5"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_6") + bg_ext, "shutterstock6"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_7") + bg_ext, "shutterstock7"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_8") + bg_ext, "shutterstock8"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_9") + bg_ext, "shutterstock9"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_10") + bg_ext, "shutterstock10"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_11") + bg_ext, "shutterstock11"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>(backgroundPath + Textures_pt.get<std::string>("TextureList.bg_12") + bg_ext, "shutterstock12"));
 	
 	/*..galaxies and stars/planets Init..*/ // tmp
 	std::vector<int> galaxies;
@@ -436,6 +443,21 @@ void TMyApplication::InnerUpdate(size_t dt)
         }
         else
         {
+
+			Renderer->SwitchToFrameBuffer("LevelBuffer");
+
+			int levelIndex = 1;
+
+			for (auto &star : Menu.GalaxMenu.galaxies[0].Stars)
+			{
+				for (auto &level : star.selectionMenu.gameLevels)
+				{
+					level.DrawSnapshot("shutterstock" + std::to_string(levelIndex++), "LevelBuffer");
+				}
+			}
+
+			Renderer->SwitchToScreen();
+
             GameState = CONST_GAMESTATE_MENU;
             ApplySignalsToMenu();
             OnDrawSignal.disconnect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
@@ -447,7 +469,7 @@ void TMyApplication::InnerUpdate(size_t dt)
     else if (GameState == CONST_GAMESTATE_LEVEL)
 	{
 		*SE::Console << "3CONST_GAMESTATE_LEVEL";
-        GameLevel.Update(dt);
+        GameLevel->Update(dt);
 		EffectsUpdate(dt);
     }
     else if (GameState == CONST_GAMESTATE_MENU)
@@ -459,8 +481,8 @@ void TMyApplication::InnerUpdate(size_t dt)
     else if (GameState == CONST_GAMESTATE_FROM_MENU_TO_LEVEL)
 	{
 		*SE::Console << "5CONST_GAMESTATE_FROM_MENU_TO_LEVEL";
-        GameLevel.Update(dt);
-        if (GameLevel.IsLoaded())
+        GameLevel->Update(dt);
+        if (GameLevel->IsLoaded())
         {
 			//*SE::Console << "5CONST_GAMESTATE_FROM_MENU_TO_LEVEL";
             GameState = CONST_GAMESTATE_LEVEL;
@@ -505,16 +527,15 @@ void TMyApplication::InnerUpdate(size_t dt)
 }
 
 
-void TMyApplication::GoFromMenuToGame(int level)
+void TMyApplication::GoFromMenuToGame(TGameLevel* level)
 {
 //#ifndef TARGET_IOS
 //	ResourceManager->SoundManager.PlayMusicLooped("level1ogg.ogg");
 //#endif
-
-    GameLevel.FillWithFile(ST::PathToResources + "level"+tostr(level+1)+".txt");
-    GameLevel.SetLoading("shutterstock" + tostr(level+1), "shutterstock" + tostr(level + 1));
+	GameLevel = level;
+    GameLevel->SetLoading(level->BkgTexture, level->LevelScreenTexture);
     GameState = CONST_GAMESTATE_FROM_MENU_TO_LEVEL;
-    OnDrawSignal.connect(1, boost::bind(&TGameLevel::Draw, boost::ref(GameLevel)));
+    OnDrawSignal.connect(1, boost::bind(&TGameLevel::Draw, boost::ref(*GameLevel)));
     
     DisapplySignalsToMenu();
  
@@ -709,8 +730,8 @@ void TMyApplication::SetButtonsAction () {
 	auto backBtn = ResourceManager->newGuiManager.findWidgetByName("backButton");
 	if (backBtn) {
 		backBtn->onMouseDownSignal.connect([this, backBtn](Vector2f pos, int touchNumber) {
-			this->GameLevel.SetPause();
-			this->GameLevel.PrevLevelStateIsStandby = true;
+			this->GameLevel->SetPause();
+			this->GameLevel->PrevLevelStateIsStandby = true;
 		});
 	}
 }

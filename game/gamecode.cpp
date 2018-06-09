@@ -15,6 +15,7 @@ const int CONST_LEVELSTATE_LOADING = 4;
 const int CONST_LEVELSTATE_NODRAW = 5;
 const int CONST_LEVELSTATE_FINISH_FREEZE = 6;
 const int CONST_LEVELSTATE_FINISHED = 7;
+const int CONST_LEVELSTATE_SNAPSHOTTING = 8;
 
 const float CONST_TIMER_LOADING = 150.f;
 
@@ -681,6 +682,9 @@ void TGameLevel::ReloadLevel()
 void TGameLevel::FillWithFile(const std::string& filename)
 {
 	*SE::Console << "TGameLevel::FillWithFile";
+
+	levelName = GetFileNameWithoutExt(filename);
+
     LevelFileName = filename;
     ReloadLevel();
 }
@@ -760,6 +764,21 @@ void TGameLevel::drawOutline() {
 			Renderer->GetScreenHeight()
 		)
 	);
+}
+
+void TGameLevel::DrawSnapshot(const std::string& assignedShutterstock, const std::string& assignedSnapshotFrameBuffer)
+{
+	BkgTexture = assignedShutterstock;
+	LevelScreenTexture = assignedShutterstock;
+	InitLevel();
+
+	int prevState = LevelState;
+	LevelState = CONST_LEVELSTATE_SNAPSHOTTING;
+	Draw();
+	LevelState = prevState;
+
+	prerenderedImage =
+		ResourceManager->FrameManager.GetFrameTextureCopy(assignedSnapshotFrameBuffer, levelName + "_prerender");
 }
 
 void TGameLevel::Draw()
@@ -942,7 +961,7 @@ void TGameLevel::Draw()
     }
 	
     
-    if (!pause)
+    if (!pause && LevelState != CONST_LEVELSTATE_SNAPSHOTTING)
     {
         RenderUniform1f("Transparency", 1.f);
         glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_BACK_BTN_TEXTURE]);

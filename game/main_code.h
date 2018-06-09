@@ -98,7 +98,7 @@ protected:
 	ParticleEffect lvlFirework; // Level finished effect
 
 	TGameMenu Menu;
-	TGameLevel GameLevel;
+	TGameLevel* GameLevel;
 	TGameCredits GameCredits;
 	TGameLoading GameLoading;
 
@@ -139,7 +139,7 @@ public:
 
 	virtual void InnerUpdate(size_t dt);
 
-	void GoFromMenuToGame(int level);
+	void GoFromMenuToGame(TGameLevel* level);
 	void GoFromGameToMenu();
 	void GoFromMenuToCredits();
 	void GoFromCreditsToMenu();

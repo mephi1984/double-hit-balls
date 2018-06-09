@@ -79,7 +79,7 @@ private:
 	void takeInFocus(int g_index, int s_index = -1);
 	int findGalaxyByPos(Eigen::Vector2f pos);
 	int findPlanetByPos(Eigen::Vector2f pos);
-	int findLevelButtonByPos(Eigen::Vector2f pos);
+	TGameLevel* findLevelByButtonPos(Eigen::Vector2f pos);
 	bool checkMenuBound(Eigen::Vector2f pos);
 
 	/*..draw methodes..*/

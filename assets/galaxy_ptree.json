@@ -19,19 +19,19 @@
 					"scale": 0.1,
 					"levels": [
 						{
-							"name": "level_1"
+							"name": "level1"
 						},
 						{
-							"name": "level_2"
+							"name": "level2"
 						},
 						{
-							"name": "level_3"
+							"name": "level3"
 						},
 						{
-							"name": "level_4"
+							"name": "level4"
 						},
 						{
-							"name": "level_5"
+							"name": "level5"
 						}
 					]
 				},
@@ -45,10 +45,10 @@
 					"scale": 0.18,
 					"levels": [
 						{
-							"name": "level_6"
+							"name": "level6"
 						},
 						{
-							"name": "level_7"
+							"name": "level7"
 						}
 					]
 				},
@@ -62,19 +62,19 @@
 					"scale": 0.12,
 					"levels": [
 						{
-							"name": "level_8"
+							"name": "level8"
 						},
 						{
-							"name": "level_9"
+							"name": "level9"
 						},
 						{
-							"name": "level_10"
+							"name": "level10"
 						},
 						{
-							"name": "level_11"
+							"name": "level11"
 						},
 						{
-							"name": "level_12"
+							"name": "level12"
 						}
 					]
 				}

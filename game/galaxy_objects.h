@@ -11,7 +11,6 @@ class LevelSelection {
 public:
 
 	/*..LEVELS..*/
-	std::vector<std::string> levels; // levels names, uses gameLevels init
 	/*..levels interior info..*/
 	std::vector<TGameLevel> gameLevels;
 	std::vector<std::vector<GameLevelInterior>> levelInterior;

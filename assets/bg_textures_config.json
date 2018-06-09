@@ -1,4 +1,6 @@
 {
+"useDebugBackgrounds": "true",
+
 "TextureList": 
 {
 "bg_1": "022259762-alien-world",

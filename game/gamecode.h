@@ -129,8 +129,12 @@ protected:
     std::string BkgTexture;
     std::string LevelScreenTexture;
     std::string LevelFileName;
+
+	GLuint prerenderedImage;
     
     Vector2f ReflectorPos;
+
+	std::string levelName;
     
     int LevelState;
     bool PrevLevelStateIsStandby;
@@ -199,6 +203,7 @@ public:
     bool IsLoaded();
     
 	virtual void Draw();
+	void DrawSnapshot(const std::string& assignedShutterstock, const std::string& assignedSnapshotFrameBuffer);
 	
 	void SetPause();
 	bool IsPaused();
