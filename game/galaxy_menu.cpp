@@ -28,6 +28,8 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 	boost::property_tree::ptree error_pt;
 	error_pt.put("error", "something goes wrong at InitGalaxyMenu");
 
+	int levelIndex = 1;
+
 	/*..Init Menu..*/
 	BOOST_FOREACH(auto menu_pt, config_pt.get_child("Space", error_pt)) {
 		Galaxy galax;
@@ -52,6 +54,7 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 				
 				TGameLevel lvl;
 				lvl.FillWithFile(ST::PathToResources + levelName + ".txt");
+				lvl.setBackground("shutterstock" + std::to_string(levelIndex++));
 
 				star.selectionMenu.gameLevels.push_back(lvl);
 			}

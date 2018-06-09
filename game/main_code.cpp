@@ -446,13 +446,11 @@ void TMyApplication::InnerUpdate(size_t dt)
 
 			Renderer->SwitchToFrameBuffer("LevelBuffer");
 
-			int levelIndex = 1;
-
 			for (auto &star : Menu.GalaxMenu.galaxies[0].Stars)
 			{
 				for (auto &level : star.selectionMenu.gameLevels)
 				{
-					level.DrawSnapshot("shutterstock" + std::to_string(levelIndex++), "LevelBuffer");
+					level.DrawSnapshot("LevelBuffer");
 				}
 			}
 
@@ -533,7 +531,7 @@ void TMyApplication::GoFromMenuToGame(TGameLevel* level)
 //	ResourceManager->SoundManager.PlayMusicLooped("level1ogg.ogg");
 //#endif
 	GameLevel = level;
-    GameLevel->SetLoading(level->BkgTexture, level->LevelScreenTexture);
+    GameLevel->SetLoading();
     GameState = CONST_GAMESTATE_FROM_MENU_TO_LEVEL;
     OnDrawSignal.connect(1, boost::bind(&TGameLevel::Draw, boost::ref(*GameLevel)));
     

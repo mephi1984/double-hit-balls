@@ -194,16 +194,17 @@ public:
     ~TGameLevel();
     
     void FillWithFile(const std::string& filename);
+	void setBackground(const std::string& assignedShutterstock);
     
 	//void SetLevelScale();
 	//Vector2f GetLevelScale();
 
     void SetStandBy();
-    void SetLoading(const std::string& bkg, const std::string& levelscreen);
+    void SetLoading();
     bool IsLoaded();
     
 	virtual void Draw();
-	void DrawSnapshot(const std::string& assignedShutterstock, const std::string& assignedSnapshotFrameBuffer);
+	void DrawSnapshot(const std::string& assignedSnapshotFrameBuffer);
 	
 	void SetPause();
 	bool IsPaused();

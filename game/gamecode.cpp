@@ -679,6 +679,12 @@ void TGameLevel::ReloadLevel()
 
 }
 
+void TGameLevel::setBackground(const std::string& textureName)
+{
+	BkgTexture = textureName;
+	LevelScreenTexture = textureName;
+}
+
 void TGameLevel::FillWithFile(const std::string& filename)
 {
 	*SE::Console << "TGameLevel::FillWithFile";
@@ -697,11 +703,9 @@ void TGameLevel::SetStandBy()
     LevelState = CONST_LEVELSTATE_STANDBY;
 }
 
-void TGameLevel::SetLoading(const std::string& bkg, const std::string& levelscreen)    
+void TGameLevel::SetLoading()    
 {
 	*SE::Console << "TGameLevel::SetLoading";
-    BkgTexture = bkg;
-    LevelScreenTexture = levelscreen;
     InitLevel();
     StateTimer = CONST_TIMER_LOADING;
     LevelState = CONST_LEVELSTATE_LOADING;
@@ -766,10 +770,8 @@ void TGameLevel::drawOutline() {
 	);
 }
 
-void TGameLevel::DrawSnapshot(const std::string& assignedShutterstock, const std::string& assignedSnapshotFrameBuffer)
+void TGameLevel::DrawSnapshot(const std::string& assignedSnapshotFrameBuffer)
 {
-	BkgTexture = assignedShutterstock;
-	LevelScreenTexture = assignedShutterstock;
 	InitLevel();
 
 	int prevState = LevelState;
