@@ -1,0 +1,16 @@
+precision mediump float;
+
+
+uniform float Transparency;
+uniform vec4 LightDirection;
+
+varying vec3 fragNormal;
+varying vec3 fragColor;
+
+void main() {
+	vec4 color = vec4(fragColor.rgb, 1.0);
+
+	float intensity = clamp(dot(normalize(LightDirection.xyz), -normalize(fragNormal)), 0, 1);
+	
+	gl_FragColor = vec4(color.rgb * intensity + vec3(0.2, 0.2, 0.2), color.a * Transparency);
+}

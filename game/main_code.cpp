@@ -12,6 +12,24 @@
 TMyApplication* Application;
 
 
+std::vector<SE::Vector3f> posArr;
+std::vector<SE::Vector3f> normArr;
+std::vector<SE::Vector3f> colorArr;
+std::vector<SE::Vector2f> texCoordArr;
+
+
+GLuint posBuffer;
+GLuint normBuffer;
+GLuint colorBuffer;
+GLuint texCoordBuffer;
+
+
+size_t posArrIndex = 0;
+size_t normArrIndex = 0;
+size_t colorArrIndex = 0;
+size_t texCoordArrIndex = 0;
+
+
 
 Matrix3f quatToMatrix(Vector4f q) {
 
@@ -76,6 +94,7 @@ void TMyApplication::InnerInit()
 	ResourceManager->ShaderManager.AddShader("ColorShader", "color_vertex.txt", "color_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("SSAA_4X", "SSAA_4X.vertex", "SSAA_4X.frag");
 	ResourceManager->ShaderManager.AddShader("ParallaxShader", "parallax_vertex.txt", "parallax_fragment.txt");
+	//ResourceManager->ShaderManager.AddShader("SimpleShadingNoTex", "simple_shading_no_tex.vertex", "simple_shading_no_tex.fragment");
 	ResourceManager->ShaderManager.AddShader("SimpleShading", "simple_shading.vertex", "simple_shading.fragment");
 	Renderer->PushShader("DefaultShader");
 
@@ -88,7 +107,23 @@ void TMyApplication::InnerInit()
 	ResourceManager->TexList.AddTexture("linesAll.png");
 	ResourceManager->TexList.AddTexture("clean-fabric-texture-4-780x585.jpg");
 
+	ResourceManager->TexList.AddTexture("free-detailed-tiled-rope-texture-3d-model-low-poly-blend.png");
+
+
+	/*
+	fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].reserve(90000000);
+	fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].reserve(90000000);
+	fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].reserve(90000000);
+	fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].reserve(90000000);
+
+	*/
 	
+	posArr.resize(20000000);
+	normArr.resize(20000000);
+	texCoordArr.resize(20000000);
+	colorArr.resize(20000000);
+
+
 
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
 
@@ -96,14 +131,18 @@ void TMyApplication::InnerInit()
 	float const W = 1000;
 	float const H = 1000;
 
-	Vector2f const backgroundBottomLeft(-1000, -1000);
-	float const backgroundW = 2000;
-	float const backgroundH = 2000;
+	Vector2f const backgroundBottomLeft(-3000, -3000);
+	float const backgroundW = 6000;
+	float const backgroundH = 6000;
 	
 	{
 		//resolution of background image
-		float const imageW = 512;
-		float const imageH = 512;
+		//float const imageW = 512;
+		//float const imageH = 512;
+
+		float const imageW = 2048;
+		float const imageH = 2048;
+
 
 
 		background.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].emplace_back(Vector3f(backgroundBottomLeft[0], 0, backgroundBottomLeft[1]));
@@ -164,17 +203,28 @@ void TMyApplication::InnerInit()
 	};
 
 	{
-		float const R = 3;
-		float const r = 4;
-		size_t const threadsCount = 3;
+		//float const R = 3;
+		float const R = 0;
+		//float const r = 4;
+		//float const r = 16;
+		float const r = 18;
+		//size_t const threadsCount = 3;
+		size_t const threadsCount = 1;
 		size_t const edgesCount = 6;
-		float const angle = pi / 6;
+		//float const angle = pi / 6;
+		float const angle = 0;
 		Vector3f up(0, 1, 0); up.normalize();
-		size_t const step = 5;
-		auto g = [this, findPlaneBasis, R, r, threadsCount, edgesCount, up, angle, step] (Vector3f start, Vector3f end, const Vector3f &color) {
+		
+		//size_t const step = 5;
+		float const step = 60;
+
+		const Vector3f vshift = Vector3f(0.f, 0.002f, 0.f);
+		int vShiftVal = 0;
+		
+		auto g = [&] (Vector3f start, Vector3f end, const Vector3f &color, int x) {
 			Vector3f direction = (end - start).normalized();
 			end = end - (r + R) * direction;
-			size_t iterationsCount = (end - start).norm() / step;
+			float iterationsCount = (end - start).norm() / step;
 			auto e = findPlaneBasis(up);
 
 			std::vector<Vector3f> threadCenters;
@@ -220,7 +270,7 @@ void TMyApplication::InnerInit()
 				Translation3f(-static_cast<int>(step) * direction * iterationsCount)
 			).matrix();
 
-			for(int i = -4; i < static_cast<int>(iterationsCount) + 4; i++) {
+			for(int i = -2; i < static_cast<int>(iterationsCount) + 2; i++) {
 				std::vector<std::vector<Vector4f>> newThreads;
 
 				for(auto j = 0; j < threadsCount; j++) {
@@ -259,6 +309,87 @@ void TMyApplication::InnerInit()
 						auto nvk = newEdges[k].head(3);
 						auto nvk1 = newEdges[(k + 1) % edgesCount].head(3);
 
+						posArr[posArrIndex] = start + vk + vshift*x;
+						posArrIndex++;
+
+						posArr[posArrIndex] = start + vk1 + vshift * x;
+						posArrIndex++;
+
+						//posArr[posArrIndex] = start + nvk;
+						//posArrIndex++;
+
+						//posArr[posArrIndex] = start + vk1;
+						//posArrIndex++;
+
+						posArr[posArrIndex] = start + nvk1 + vshift * x;
+						posArrIndex++;
+
+						posArr[posArrIndex] = start + nvk + vshift*x;
+						posArrIndex++;
+
+
+						normArr[normArrIndex] = vk - threadCenter;
+						normArrIndex++;
+
+						normArr[normArrIndex] = vk1 - threadCenter;
+						normArrIndex++;
+
+						//normArr[normArrIndex] = nvk - newThreadCenter;
+						//normArrIndex++;
+
+						//normArr[normArrIndex] = vk1 - threadCenter;
+						//normArrIndex++;
+
+						normArr[normArrIndex] = nvk1 - newThreadCenter;
+						normArrIndex++;
+
+						normArr[normArrIndex] = nvk - newThreadCenter;
+						normArrIndex++;
+
+
+
+						
+						texCoordArr[texCoordArrIndex] = Vector2f((float)(k) / (edgesCount), (i + 2) / 4.f);
+						texCoordArrIndex++;
+
+						texCoordArr[texCoordArrIndex] = Vector2f((float)(k+1) / (edgesCount), (i + 2) / 4.f);
+						texCoordArrIndex++;
+
+						//texCoordArr[texCoordArrIndex] = Vector2f(0.1, 0.2);
+						//texCoordArrIndex++;
+
+						//texCoordArr[texCoordArrIndex] = Vector2f(0.2, 0.1);
+						//texCoordArrIndex++;
+
+						texCoordArr[texCoordArrIndex] = Vector2f((float)(k + 1) / (edgesCount), (i + 3) / 4.f);
+						texCoordArrIndex++;
+
+						texCoordArr[texCoordArrIndex] = Vector2f((float)k / (edgesCount), (i + 3) / 4.f);
+						texCoordArrIndex++;
+						
+
+						colorArr[colorArrIndex] = color;
+						colorArrIndex++;
+
+						colorArr[colorArrIndex] = color;
+						colorArrIndex++;
+
+						colorArr[colorArrIndex] = color;
+						colorArrIndex++;
+
+						//colorArr[colorArrIndex] = color;
+						//colorArrIndex++;
+
+						colorArr[colorArrIndex] = color;
+						colorArrIndex++;
+
+						//colorArr[colorArrIndex] = color;
+						//colorArrIndex++;
+
+
+
+
+						/*
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + vk1);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].push_back(start + nvk);
@@ -286,7 +417,7 @@ void TMyApplication::InnerInit()
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(color);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(color);
 						fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].push_back(color);
-
+						*/
 					}
 				}
 
@@ -297,7 +428,11 @@ void TMyApplication::InnerInit()
 		{
 			namespace pt = boost::property_tree;
 			pt::ptree root;
-			pt::read_json(ST::PathToResources + "lines.json", root);
+			//pt::read_json(ST::PathToResources + "lines.json", root);
+			//pt::read_json(ST::PathToResources + "lines100500.json", root);
+			pt::read_json(ST::PathToResources + "lines100500.json", root);
+
+			int x = 0;
 
 			for(auto line: root.get_child("lines")) {
 				std::vector<int> start;
@@ -316,7 +451,8 @@ void TMyApplication::InnerInit()
 					color.push_back(value.second.get_value<float>());
 				}
 
-				g(Vector3f(start[0], 0, start[1]), Vector3f(end[0], 0, end[1]), Vector3f(color[0], color[1], color[2]));
+				g(Vector3f(start[0], 0, start[1]), Vector3f(end[0], 0, end[1]), Vector3f(color[0], color[1], color[2]), x);
+				x++;
 			}
 
 		}
@@ -324,6 +460,7 @@ void TMyApplication::InnerInit()
 
 	background.first.ShaderName ="DefaultShader";
 	fabricRender.first.ShaderName = "SimpleShading";
+	//fabricRender.first.ShaderName = "SimpleShadingNoTex";
 	
 	/*
 	 *	Line below should be in tes-engine/include/ShaderManager/ShaderManager.h
@@ -334,13 +471,51 @@ void TMyApplication::InnerInit()
 
 	fabricRender.first.SamplerMap[CONST_STRING_NORMALMAP_UNIFORM] = "NormalMap.png";
 	fabricRender.first.SamplerMap[CONST_STRING_HEIGHTMAP_UNIFORM] = "HeightMap.png";
-	fabricRender.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "clean-fabric-texture-4-780x585.jpg";
+	//fabricRender.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "clean-fabric-texture-4-780x585.jpg";
+	fabricRender.first.SamplerMap[CONST_STRING_TEXTURE_UNIFORM] = "free-detailed-tiled-rope-texture-3d-model-low-poly-blend.png";
 	fabricRender.first.Vec4Map[CONST_STRING_LIGHT_DIRECTION_UNIFORM] = Vector4f(0, -1, 0, 0);
 
 	background.second.RefreshBuffer();
-	fabricRender.second.RefreshBuffer();
+	//fabricRender.second.RefreshBuffer();
 
-	glEnable(GL_DEPTH_TEST);
+
+	fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].clear();
+	fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].clear();
+	fabricRender.second.Data.Vec3CoordArr[CONST_STRING_COLOR_ATTRIB].clear();
+	fabricRender.second.Data.Vec2CoordArr[CONST_STRING_TEXCOORD_ATTRIB].clear();
+
+	glGenBuffers(1, &posBuffer);
+
+	glBindBuffer(GL_ARRAY_BUFFER, posBuffer);
+
+	glBufferData(GL_ARRAY_BUFFER, posArr.size() * 12, &posArr[0], GL_STATIC_DRAW);
+
+
+
+	glGenBuffers(1, &normBuffer);
+
+	glBindBuffer(GL_ARRAY_BUFFER, normBuffer);
+
+	glBufferData(GL_ARRAY_BUFFER, normArr.size() * 12, &normArr[0], GL_STATIC_DRAW);
+
+
+
+	glGenBuffers(1, &colorBuffer);
+
+	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+
+	glBufferData(GL_ARRAY_BUFFER, colorArr.size() * 12, &colorArr[0], GL_STATIC_DRAW);
+
+
+
+	glGenBuffers(1, &texCoordBuffer);
+
+	glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+
+	glBufferData(GL_ARRAY_BUFFER, texCoordArr.size() * 8, &texCoordArr[0], GL_STATIC_DRAW);
+
+
+	glDisable(GL_DEPTH_TEST);
 	
 	Inited = true;
 }
@@ -358,7 +533,12 @@ void TMyApplication::InnerDeinit()
 
 void TMyApplication::InnerOnTapDown(Vector2f p)
 {
-
+	posArr.clear();
+	normArr.clear();
+	colorArr.clear();
+	
+	//fabricRender.second.Data.Vec2CoordArr.clear();
+	//fabricRender.second.Data.Vec3CoordArr.clear();
 }
 
 void TMyApplication::InnerOnTapUp(Vector2f p)
@@ -396,10 +576,10 @@ void TMyApplication::OnMouseWheel(short int delta)
 {
 	distance += delta;
 
-	if (distance > 2500)
+	/*if (distance > 2500)
 	{
 		distance = 2500;
-	}
+	}*/
 
 	if (distance < 100)
 	{
@@ -410,7 +590,7 @@ void TMyApplication::OnMouseWheel(short int delta)
 void TMyApplication::InnerDraw()
 {
 
-	Renderer->SetPerspectiveProjection(pi / 6, 10.f, 10000.f);
+	Renderer->SetPerspectiveProjection(pi / 6, 100.f, 40000.f);
 
 	Renderer->SetFullScreenViewport();
 
@@ -454,7 +634,12 @@ void TMyApplication::InnerDraw()
 		Renderer->DrawTriangleList(background.second);
 	}
 
+
+
+
 	//glEnable(GL_CULL_FACE);
+
+	
 	{
 		TRenderParamsSetter params(fabricRender.first);
 
@@ -467,7 +652,24 @@ void TMyApplication::InnerDraw()
 		RenderUniformMatrix4fv("ModelViewMatrix", false, Renderer->GetModelviewMatrix().data());
 		RenderUniformMatrix3fv("ModelViewMatrix3x3", false, Renderer->GetModelviewMatrix().block<3,3>(0,0).data());
 
-		Renderer->DrawTriangleList(fabricRender.second);		
+
+		glBindBuffer(GL_ARRAY_BUFFER, posBuffer);
+		VertexAttribPointer3fv(CONST_STRING_POSITION_ATTRIB, 0, NULL);
+
+		glBindBuffer(GL_ARRAY_BUFFER, normBuffer);
+		VertexAttribPointer3fv(CONST_STRING_NORMAL_ATTRIB, 0, NULL);
+
+		glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+		VertexAttribPointer3fv(CONST_STRING_COLOR_ATTRIB, 0, NULL);
+
+		glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+		VertexAttribPointer2fv(CONST_STRING_TEXCOORD_ATTRIB, 0, NULL);
+
+
+		glDrawArrays(GL_QUADS, 0, posArrIndex);
+
+
+		//Renderer->DrawTriangleList(fabricRender.second);		
 	}
 
 
