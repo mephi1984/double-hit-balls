@@ -72,8 +72,8 @@ void TMyApplication::InnerInit()
     
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
-	//ST::PathToResources = "resources/";
-	ST::PathToResources = "../../../assets/";
+	ST::PathToResources = "resources/";
+	//ST::PathToResources = "../../../assets/";
 #else
 	ST::PathToResources = "../../../assets/";
 #endif
@@ -109,7 +109,7 @@ void TMyApplication::InnerInit()
 
 	ResourceManager->TexList.AddTexture("free-detailed-tiled-rope-texture-3d-model-low-poly-blend.png");
 
-
+	//
 	/*
 	fabricRender.second.Data.Vec3CoordArr[CONST_STRING_POSITION_ATTRIB].reserve(90000000);
 	fabricRender.second.Data.Vec3CoordArr[CONST_STRING_NORMAL_ATTRIB].reserve(90000000);
@@ -207,7 +207,7 @@ void TMyApplication::InnerInit()
 		float const R = 0;
 		//float const r = 4;
 		//float const r = 16;
-		float const r = 18;
+		float const r = 19;
 		//size_t const threadsCount = 3;
 		size_t const threadsCount = 1;
 		size_t const edgesCount = 6;
@@ -216,7 +216,7 @@ void TMyApplication::InnerInit()
 		Vector3f up(0, 1, 0); up.normalize();
 		
 		//size_t const step = 5;
-		float const step = 60;
+		float const step = 20;
 
 		const Vector3f vshift = Vector3f(0.f, 0.002f, 0.f);
 		int vShiftVal = 0;
@@ -352,7 +352,7 @@ void TMyApplication::InnerInit()
 						texCoordArr[texCoordArrIndex] = Vector2f((float)(k) / (edgesCount), (i + 2) / 4.f);
 						texCoordArrIndex++;
 
-						texCoordArr[texCoordArrIndex] = Vector2f((float)(k+1) / (edgesCount), (i + 2) / 4.f);
+						texCoordArr[texCoordArrIndex] = Vector2f((float)(k+10) / (edgesCount), (i + 2) / 4.f);
 						texCoordArrIndex++;
 
 						//texCoordArr[texCoordArrIndex] = Vector2f(0.1, 0.2);
@@ -361,7 +361,7 @@ void TMyApplication::InnerInit()
 						//texCoordArr[texCoordArrIndex] = Vector2f(0.2, 0.1);
 						//texCoordArrIndex++;
 
-						texCoordArr[texCoordArrIndex] = Vector2f((float)(k + 1) / (edgesCount), (i + 3) / 4.f);
+						texCoordArr[texCoordArrIndex] = Vector2f((float)(k + 10) / (edgesCount), (i + 3) / 4.f);
 						texCoordArrIndex++;
 
 						texCoordArr[texCoordArrIndex] = Vector2f((float)k / (edgesCount), (i + 3) / 4.f);
