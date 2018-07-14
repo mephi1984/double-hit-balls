@@ -89,7 +89,7 @@ void TBrick::SetInvisible()
 
 void TBrick::TryDrawAppear(int ipos, int jpos)
 {
-	*SE::Console << "TBrick::TryDrawAppear";
+
     Vector2f centerPos = GetPosFrom(ipos, jpos);
     float LEVEL_VIEWPORT_WIDTH = Application->GetGameLevelScreenWidth();
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
@@ -132,7 +132,7 @@ void TBrick::Update(size_t dt)
 {
     if (State == CONST_BRICKSTATE_DISAPPEAR)
 	{
-		*SE::Console << "TBrick::Update - CONST_BRICKSTATE_DISAPPEAR";
+
         StateTimer -= dt;
         if (StateTimer < 0.f)
         {
@@ -143,7 +143,6 @@ void TBrick::Update(size_t dt)
     
     if (State == CONST_BRICKSTATE_APPEAR)
 	{
-		*SE::Console << "TBrick::Update - CONST_BRICKSTATE_APPEAR";
         StateTimer -= dt;
         if (StateTimer < 0.f)
         {
@@ -155,13 +154,12 @@ void TBrick::Update(size_t dt)
 
 Vector4f TBrick::GetColor()
 {
-	*SE::Console << "TBrick::GetColor";
+
     return Color;
 }
 
 Vector2f TBrick::GetPosFrom(int ipos, int jpos)
 {
-	*SE::Console << "TBrick::GetPosFrom";
 	float LEVEL_VIEWPORT_WIDTH  = Application->GetGameLevelScreenWidth();
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
 
@@ -174,7 +172,7 @@ Vector2f TBrick::GetPosFrom(int ipos, int jpos)
 
 void TBrick::Disappear()
 {
-	*SE::Console << "TBrick::Disappear";
+
     StateTimer = CONST_BRICK_DISAPPEAR_TIME;
     State = CONST_BRICKSTATE_DISAPPEAR;
 }
@@ -183,19 +181,16 @@ void TBrick::Hit()
 {
     if (Locked == 0)
 	{
-		*SE::Console << "TBrick::Hit == 0";
         Disappear();
     }
     else
 	{
-		*SE::Console << "TBrick::Hit else";
         Locked--;
     }
 }
 
 void TBrick::Appear(Vector4f color, int locked)
 {
-	*SE::Console << "TBrick::Appear";
     StateTimer = CONST_BRICK_APPEAR_TIME;
     State = CONST_BRICKSTATE_APPEAR;
     Color = color;
@@ -205,19 +200,18 @@ void TBrick::Appear(Vector4f color, int locked)
 
 void TBrick::Appear()
 {
-	*SE::Console << "TBrick::Appear";
+
     Appear(Color, InitialLocked);
 }
 
 int TBrick::GetLocked()
 {
-	*SE::Console << "TBrick::GetLocked";
+
     return Locked;
 }
 
 bool TBrick::CanReact()
 {
-	*SE::Console << "TBrick::CanReact";
     return (State == CONST_BRICKSTATE_VISIBLE) || (State == CONST_BRICKSTATE_APPEAR);
 }
 
@@ -250,20 +244,20 @@ TBonusFalling::TBonusFalling(Vector2f pos)
 
 Vector2f TBonusFalling::GetPos()
 {
-	*SE::Console << "TBrick::GetPos";
+
     return Pos;
 }
 
 int TBonusFalling::GetType()
 {
-	*SE::Console << "TBonusFalling::GetType";
+
     return BonusType;
 }
 
 
 void TBonusFalling::Draw()
 {
-	*SE::Console << "TBonusFalling::Draw";
+
     Vector2f BonusHalfSize = Vector2f(16.f, 16.f);
     
     float transparency = min_t(Lifetime/CONST_BONUS_APPEAR_TIME , 1.f);
@@ -279,7 +273,7 @@ void TBonusFalling::Draw()
 
 void TBonusFalling::Update(size_t dt)
 {
-	*SE::Console << "TBonusFalling::Update";
+
     Lifetime += dt;
     Pos(1) -= dt * CONST_BONUS_FALL_SPEED / 1000.f;
 }
@@ -304,26 +298,23 @@ TBall::TBall(Vector2f pos, Vector2f velocity, Vector4f color)
 
 Vector2f TBall::GetPos()
 {
-	*SE::Console << "TBall::GetPos";
     return Pos;
 }
 
 Vector2f TBall::GetVelocityVector()
 {
-	*SE::Console << "TBall::GetVelocityVector";
     return Velocity;
 }
 
 void TBall::Go()
 {
-	*SE::Console << "TBall::Go";
+
 //    Velocity = Normalize(Vector2f(2.f, 1.f));
 	Velocity = Vector2f(2.f, 1.f).normalized();
 }
 
 void TBall::ReflectToLeft()
 {
-	*SE::Console << "TBall::ReflectToLeft";
 
 	Application->hitSpark("left",Pos);
 
@@ -335,7 +326,6 @@ void TBall::ReflectToLeft()
 
 void TBall::ReflectToRight()
 {
-	*SE::Console << "TBall::ReflectToRight";
 
 	Application->hitSpark("right", Pos);
 
@@ -347,7 +337,6 @@ void TBall::ReflectToRight()
 
 void TBall::ReflectToUp()
 {
-	*SE::Console << "TBall::ReflectToUp";
 
 	Application->hitSpark("up", Pos);
 
@@ -359,7 +348,6 @@ void TBall::ReflectToUp()
 
 void TBall::ReflectToDown()
 {
-	*SE::Console << "TBall::ReflectToDown";
 
 	Application->hitSpark("down", Pos);
 
@@ -372,7 +360,7 @@ void TBall::ReflectToDown()
 //function for reflector surface.
 float ReflectorPlaneFunction(float shift)
 {
-	*SE::Console << "ReflectorPlaneFunction(float shift)";
+
     /*   _______
         /       \
         |       |
@@ -401,7 +389,7 @@ float ReflectorPlaneFunction(float shift)
 
 void TBall::TryReflectOnReflector(Vector2f refPos)
 {
-	*SE::Console << "TBall::TryReflectOnReflector(Vector2f refPos)";
+
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
     const float reflectionShiftY = 13.f;
     const float reflectionMaxHeight = CONST_REFLECTOR_HEIGHT*LEVEL_VIEWPORT_HEIGHT/480.f;
@@ -435,7 +423,7 @@ void TBall::TryReflectOnReflector(Vector2f refPos)
 
 void TBall::Update(size_t dt)
 {
-	*SE::Console << "TBall::Update(size_t dt)";
+
     Pos += Velocity * (CONST_BALL_VELOCITY * dt / 1000.f);
     
     TalePos.push_back(Pos);
@@ -453,7 +441,7 @@ void TBall::Update(size_t dt)
 
 TGameLevel::TGameLevel()
 {
-	*SE::Console << "TGameLevel::TGameLevel";
+
     BkgTexture = "bkg";
     
     RenderBufferReady = false;
@@ -479,7 +467,7 @@ TGameLevel::~TGameLevel()
 
 void TGameLevel::ReloadBlockInstansingList()
 {
-	*SE::Console << "TGameLevel::ReloadBlockInstansingList";
+
 	float LEVEL_VIEWPORT_WIDTH = Application->GetGameLevelScreenWidth();
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
     std::map<int, std::string> ConstTextureBlockMap = boost::assign::map_list_of (0,CONST_BLOCK_TEXTURE1) (1,CONST_BLOCK_TEXTURE2) (2,CONST_BLOCK_TEXTURE3);
@@ -532,7 +520,7 @@ void TGameLevel::ReloadBlockInstansingList()
 
 Vector2f TGameLevel::GetBlock(const Vector2f& pos)
 {    
-	*SE::Console << "TGameLevel::GetBlock";
+
 	float LEVEL_VIEWPORT_WIDTH = Application->GetGameLevelScreenWidth();
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
 	int x = static_cast<int>((pos(0) - CONST_BRICK_SHIFT_X*(LEVEL_VIEWPORT_WIDTH /480.f) - ((Renderer->GetScreenWidth() - LEVEL_VIEWPORT_WIDTH)*0.5f)) / (CONST_BRICK_WIDTH*(LEVEL_VIEWPORT_WIDTH /480.f)));
@@ -557,7 +545,7 @@ Vector2f TGameLevel::GetBlock(const Vector2f& pos)
 
 bool TGameLevel::TapInBackBtnArea(const Vector2f& pos)
 {
-	*SE::Console << "TGameLevel::TapInBackBtnArea";
+
 	const float yRatio = Application->GetGameLevelScreenHeight() / 320.f;
 	const float backBtnWidth = CONST_BACK_BTN_WIDTH*Application->GetGameLevelScreenWidth()/480.f;
 	const float backBtnHeight = CONST_BACK_BTN_HEIGHT*yRatio;
@@ -566,7 +554,7 @@ bool TGameLevel::TapInBackBtnArea(const Vector2f& pos)
 
 void TGameLevel::SetFinishFreeze()
 {
-	*SE::Console << "TGameLevel::SetFinishFreeze";
+
     StateTimer = CONST_FINISH_FREEZE_TIME; // Firework timeline timer
     
     LevelState = CONST_LEVELSTATE_FINISH_FREEZE;
@@ -575,7 +563,7 @@ void TGameLevel::SetFinishFreeze()
 
 void TGameLevel::SetFinished()
 {
-	*SE::Console << "TGameLevel::SetFinished";
+
     StateTimer = CONST_FINISHING_TIME;
     
     LevelState = CONST_LEVELSTATE_FINISHED;
@@ -585,7 +573,7 @@ void TGameLevel::SetFinished()
 
 Vector4f TGameLevel::ParseColor(const std::string& s)
 {
-	*SE::Console << "TGameLevel::ParseColor";
+
     Vector4f r;
     std::string ss(s);
     
@@ -616,7 +604,7 @@ Vector4f TGameLevel::ParseColor(const std::string& s)
 
 void TGameLevel::ReloadLevel()
 {
-	*SE::Console << "TGameLevel::ReloadLevel";
+
     size_t byteCount;
     boost::shared_array<char> file = CreateMemFromFile<char>(LevelFileName, byteCount);
     std::string fileString(&file[0]);
@@ -687,7 +675,6 @@ void TGameLevel::setBackground(const std::string& textureName)
 
 void TGameLevel::FillWithFile(const std::string& filename)
 {
-	*SE::Console << "TGameLevel::FillWithFile";
 
 	levelName = GetFileNameWithoutExt(filename);
 
@@ -697,7 +684,7 @@ void TGameLevel::FillWithFile(const std::string& filename)
 
 void TGameLevel::SetStandBy()
 {
-	*SE::Console << "TGameLevel::SetStandBy";
+
     ReloadLevel();
     InitLevel();
     LevelState = CONST_LEVELSTATE_STANDBY;
@@ -705,7 +692,7 @@ void TGameLevel::SetStandBy()
 
 void TGameLevel::SetLoading()    
 {
-	*SE::Console << "TGameLevel::SetLoading";
+
     InitLevel();
     StateTimer = CONST_TIMER_LOADING;
     LevelState = CONST_LEVELSTATE_LOADING;
@@ -713,7 +700,7 @@ void TGameLevel::SetLoading()
 
 void TGameLevel::InitLevel()
 {
-	*SE::Console << "TGameLevel::InitLevel";
+
 	float LEVEL_VIEWPORT_WIDTH = Application->GetGameLevelScreenWidth();
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
     ReflectorPos = Vector2f(Renderer->GetScreenWidth()*0.5f, 16* LEVEL_VIEWPORT_HEIGHT/320.f + 13 * LEVEL_VIEWPORT_HEIGHT / 320.f);
@@ -740,7 +727,6 @@ void TGameLevel::InitLevel()
 
 bool TGameLevel::IsLoaded()
 {
-	*SE::Console << "TGameLevel::IsLoaded" ;
     return (LevelState == CONST_LEVELSTATE_STANDBY);
 }
 
@@ -785,7 +771,6 @@ void TGameLevel::DrawSnapshot(const std::string& assignedSnapshotFrameBuffer)
 
 void TGameLevel::Draw()
 {
-	*SE::Console << "TGameLevel::Draw";
 
 	// Scaling math
 	float tSW = Application->GetGameLevelScreenWidth(); // Screen Width
@@ -1001,7 +986,7 @@ void TGameLevel::Draw()
 
 void TGameLevel::DrawPauseButtons() //continue from
 {
-	*SE::Console << "TGameLevel::DrawPauseButtons";
+
         glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_SLIDE_UP_BTN_TEXTURE]);
         Renderer->DrawRect(Vector2f(-128.f, -64.f)+CONST_SLIDE_UP_POS, Vector2f(128.f, 64.f)+CONST_SLIDE_UP_POS);
         
@@ -1012,7 +997,7 @@ void TGameLevel::DrawPauseButtons() //continue from
 
 void TGameLevel::DrawBallInstancingList()
 {
-	*SE::Console << "TGameLevel::DrawBallInstancingList";
+
     RenderUniform1f("Transparency", 1.f);
     RenderUniform4fv("BrickColor", BallColor.data());
     
@@ -1031,7 +1016,7 @@ void TGameLevel::DrawBallInstancingList()
 
 void TGameLevel::DrawBuffer()
 {
-	*SE::Console << "TGameLevel::DrawBuffer";
+
     Renderer->PushShader("FrameShader");
     float brightness;
     if (CONST_LEVELSTATE_GO_TO_PAUSE)
@@ -1063,7 +1048,7 @@ void TGameLevel::DrawBuffer()
 
 void TGameLevel::SetPause()
 {
-	*SE::Console << "TGameLevel::SetPause";
+
     OutScaleVelocity = 0.f;
     OutScale = 1.f;
     RenderBufferReady = false;
@@ -1074,7 +1059,7 @@ void TGameLevel::SetPause()
 
 void TGameLevel::ReleasePause()
 {
-	*SE::Console << "TGameLevel::ReleasePause";
+
     RenderBufferReady = false;
     
     if (PrevLevelStateIsStandby)
@@ -1091,14 +1076,13 @@ void TGameLevel::ReleasePause()
 
 bool TGameLevel::IsPaused()
 {
-	*SE::Console << "TGameLevel::IsPaused";
+
     return ((LevelState == CONST_LEVELSTATE_PAUSE) || (LevelState == CONST_LEVELSTATE_GO_TO_PAUSE) || (LevelState == CONST_LEVELSTATE_FINISHED));
 }
 
 void TGameLevel::Update(size_t dt)
 {
-	*SE::Console << "TGameLevel::Update";
-	*SE::Console << "before_upd LEVEL_STATE::== " << tostr(LevelState);
+
     if (LevelState == CONST_LEVELSTATE_NODRAW)
     {
         return;
@@ -1280,14 +1264,14 @@ void TGameLevel::Update(size_t dt)
     {
         SetStandBy();
     }
-	*SE::Console << "after_upd LEVEL_STATE::== " << tostr(LevelState);
+
 }
 
 
 
 void TGameLevel::ReloadBallInstancingList()
 {
-	*SE::Console << "TGameLevel::ReloadBallInstancingList";
+
     //Changing this function? Don't forget to change next one!
     
     BallInstancingList.BallAndGlowList.clear();
@@ -1388,7 +1372,7 @@ void TGameLevel::ReloadBallInstancingList()
 
 void TGameLevel::RefreshBallInstancingList()
 {
-	*SE::Console << "TGameLevel::RefreshBallInstancingList";
+
     //Changing this function? Don't forget to change previous one!
     /*
     Vector3f p1;
@@ -1487,7 +1471,7 @@ void TGameLevel::RefreshBallInstancingList()
 
 void TGameLevel::UpdateBallList(size_t dt)
 {
-	*SE::Console << "TGameLevel::UpdateBallList";
+
     std::list<TBall>::iterator iBall;
 
 	float LEVEL_VIEWOPRT_WIDTH = Application->GetGameLevelScreenWidth();
@@ -1653,7 +1637,7 @@ void TGameLevel::UpdateBallList(size_t dt)
 
 void TGameLevel::MultiplyBalls(Vector2f pos, Vector2f velocity)
 {
-	*SE::Console << "TGameLevel::MultiplyBalls";
+
     //mat2 r;
 	Matrix2f r;
     Vector2f v;
@@ -1680,7 +1664,7 @@ void TGameLevel::MultiplyBalls(Vector2f pos, Vector2f velocity)
 
 void TGameLevel::OnTapDown(Vector2f pos)
 {
-	*SE::Console << "TGameLevel::OnTapDown";
+
     if (LevelState == CONST_LEVELSTATE_STANDBY)
     {
         if (TapInBackBtnArea(pos))
@@ -1720,12 +1704,12 @@ void TGameLevel::OnTapDown(Vector2f pos)
 
 void TGameLevel::OnTapUp(Vector2f pos)
 {
-	*SE::Console << "TGameLevel::OnTapUp";
+
 }
 
 void TGameLevel::OnFling(Vector2f slideSpeed)
 {
-	*SE::Console << "TBrick::TryDrawAppear";
+
     if (LevelState == CONST_LEVELSTATE_PAUSE)
     {
         OutScaleVelocity = slideSpeed(1)/320.f;
@@ -1734,7 +1718,7 @@ void TGameLevel::OnFling(Vector2f slideSpeed)
 
 void TGameLevel::OnScroll(Vector2f shift)
 {
-	*SE::Console << "TGameLevel::OnScroll";
+
     const float CONST_SCROLL_SCALE = 1.1f;
     if (LevelState == CONST_LEVELSTATE_PLAYING || LevelState == CONST_LEVELSTATE_STANDBY)
     {
@@ -1752,7 +1736,7 @@ void TGameLevel::OnScroll(Vector2f shift)
 
 void TGameLevel::TryGoToMenu()
 {
-	*SE::Console << "TGameLevel::TryGoToMenu";
+
     if (OutScale < 0.5f)
     {
         OutScale = 0.5f;

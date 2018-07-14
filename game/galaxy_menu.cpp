@@ -97,7 +97,7 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 
 	/*..Galaxies geometry..*/
 	for (int i = 0; i < galaxies.size(); i++) {
-		*SE::Console << "galaxy_" + std::to_string(i);
+
 		Eigen::Vector2f tex_size = textureSizeNormalize(
 			Eigen::Vector2f(
 				((float)SE::ResourceManager->TexList.GetTextureOriginalWidth("galaxy_" + std::to_string(i))),
@@ -112,12 +112,11 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 				(tex_size(1)*galaxies[i].scale)*menuScale
 			)
 		));
-		*SE::Console << "dimensions: " << std::to_string(((tex_size(0)*galaxies[i].scale)*menuScale)) << " " << std::to_string(((tex_size(1)*galaxies[i].scale)*menuScale));
 
 		/*..Stars geometry..*/
 		std::vector<std::pair<Eigen::Vector2f, Eigen::Vector2f>> star_params;
 		for (int j = 0; j < galaxies[i].Stars.size(); j++) {
-			*SE::Console << "star_" + std::to_string(i) + "_" + std::to_string(j);
+
 			tex_size = textureSizeNormalize(
 				Eigen::Vector2f(
 				((float)SE::ResourceManager->TexList.GetTextureWidth("star_" + std::to_string(i) + "_" + std::to_string(j))),
@@ -267,11 +266,7 @@ Eigen::Vector2f GalaxyMenu::textureSizeNormalize(Eigen::Vector2f texVec, int t_t
 		y_dim = val_clamp(texVec(1), Ymin, Ymax);
 		x_dim = y_dim * tex_ratio;
 	} 
-	*SE::Console << "==============";
-	*SE::Console << std::to_string(texVec(0));
-	*SE::Console << std::to_string(texVec(1));
-	*SE::Console << "if value 0.0000 - must be textures not inited at main_code.cpp or texture-name is wrong";
-	*SE::Console << "--------------";
+
 	return Eigen::Vector2f(x_dim, y_dim);
 }
 
@@ -485,8 +480,7 @@ void GalaxyMenu::tapUp(Eigen::Vector2f pos) {
 
 void GalaxyMenu::tapMove(Eigen::Vector2f shift) {
 	if (timer_active) {
-		//*SE::Console << "shift = " + std::to_string(shift(0)) + " " + std::to_string(shift(1)); // mt issue
-		//currentTapShift = shift; // shift need to be fixed
+
 		totalTapShift += shift;
 	}
 }

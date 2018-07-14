@@ -156,7 +156,7 @@ void TGameMenu::Update(size_t dt)
 
 void TGameMenu::OnTapDown(Vector2f pos)
 {
-	*SE::Console << "TGameMenu::OnTapDown";
+
 #ifndef GALAX_MENU_UPDATE
     HoldToTap = true;
 
@@ -193,7 +193,7 @@ void TGameMenu::OnTapDown(Vector2f pos)
 
 void TGameMenu::OnTapUp(Vector2f pos)
 {
-	*SE::Console << "TGameMenu::OnTapUp";
+
 #ifndef GALAX_MENU_UPDATE
 	HoldToTap = false;
 
@@ -214,7 +214,7 @@ void TGameMenu::OnTapUpAfterMove(Vector2f pos)
 
 void TGameMenu::OnFling(Vector2f slideSpeed)
 {
-	*SE::Console << "TGameMenu::OnFling";
+
 #ifndef GALAX_MENU_UPDATE
 	HoldToTap = false;
 	MenuSpeed = slideSpeed(0);
@@ -230,7 +230,6 @@ void TGameMenu::OnScroll(Vector2f shift)
 
 void TGameMenu::OpenNextLevel()
 {
-	*SE::Console << "TGameMenu::OpenNextLevel";
 #ifndef GALAX_MENU_UPDATE
     if (MenuItemCount < 12)
     {
@@ -241,12 +240,10 @@ void TGameMenu::OpenNextLevel()
 
 int TGameMenu::GetMenuItemCount()
 {
-	*SE::Console << "TGameMenu::GetMenuItemCount";
     return MenuItemCount;
 }
 
 void TGameMenu::SetMenuItemCount(int menuItemCount)
 {
-	*SE::Console << "TGameMenu::SetMenuItemCount";
     MenuItemCount = menuItemCount;
 }

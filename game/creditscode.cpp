@@ -45,7 +45,6 @@ void TGameCredits::Update(size_t dt)
 {
     if (State == CONST_STATE_APPEARING)
 	{
-		*SE::Console << "TGameCredits::Update - CONST_STATE_APPEARING";
         StateTimer += dt;
         if (StateTimer >= CONST_APPEAR_TIME)
         {
@@ -66,18 +65,15 @@ void TGameCredits::Update(size_t dt)
 
 void TGameCredits::OnTapDown(Vector2f p)
 {
-	*SE::Console << "TGameCredits::OnTapDown";
     Application->GoFromCreditsToMenu();
 }
 
 void TGameCredits::StartAppear()
 {
-	*SE::Console << "TGameCredits::StartAppear";
     State = CONST_STATE_APPEARING;
 }
 
 void TGameCredits::StartDisappear()
 {
-	*SE::Console << "TGameCredits::StartDisappear";
     State = CONST_STATE_DISAPPEARING;
 }

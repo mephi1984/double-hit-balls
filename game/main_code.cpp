@@ -72,7 +72,9 @@ void TMyApplication::InnerInit()
     ST::PathToResources = "assets/";
 #endif
 
+#ifdef TARGET_ANDROID
     ST::PathToResources = "";
+#endif
 
     if (Console != NULL)
     {
@@ -421,7 +423,6 @@ void TMyApplication::InnerUpdate(size_t dt)
 
     if (GameState == CONST_GAMESTATE_PRELOADING)
     {
-		*SE::Console << "1CONST_GAMESTATE_PRELOADING";
         StateTimer += dt/1000.f;
         if (StateTimer >= 1.f)
         {
@@ -432,7 +433,6 @@ void TMyApplication::InnerUpdate(size_t dt)
     }
     else if (GameState == CONST_GAMESTATE_LOADING)
 	{
-		*SE::Console << "2CONST_GAMESTATE_LOADING";
         StateTimer += dt/1000.f;
         if (StateTimer >= 1.f)
         {
@@ -441,7 +441,6 @@ void TMyApplication::InnerUpdate(size_t dt)
         
         if (TextureNamesToLoad.size() != 0)
         {
-            *SE::Console << "LOADING: " + TextureNamesToLoad.begin()->first;
             ResourceManager->TexList.AddTexture(TextureNamesToLoad.begin()->first, TextureNamesToLoad.begin()->second);
 
             TextureNamesToLoad.erase(TextureNamesToLoad.begin());
@@ -472,7 +471,6 @@ void TMyApplication::InnerUpdate(size_t dt)
     }
     else if (GameState == CONST_GAMESTATE_LEVEL)
 	{
-		*SE::Console << "3CONST_GAMESTATE_LEVEL";
         GameLevel->Update(dt);
 		EffectsUpdate(dt);
     }
@@ -484,7 +482,6 @@ void TMyApplication::InnerUpdate(size_t dt)
     }
     else if (GameState == CONST_GAMESTATE_FROM_MENU_TO_LEVEL)
 	{
-		*SE::Console << "5CONST_GAMESTATE_FROM_MENU_TO_LEVEL";
         GameLevel->Update(dt);
         if (GameLevel->IsLoaded())
         {
@@ -498,7 +495,6 @@ void TMyApplication::InnerUpdate(size_t dt)
     }
     else if (GameState == CONST_GAMESTATE_FROM_MENU_TO_CREDITS)
 	{
-		*SE::Console << "6CONST_GAMESTATE_FROM_MENU_TO_CREDITS";
         Menu.Update(dt);
         GameCredits.Update(dt);
         StateTimer -= dt;
@@ -512,7 +508,6 @@ void TMyApplication::InnerUpdate(size_t dt)
     }
     else if (GameState == CONST_GAMESTATE_CREDITS)
 	{
-		//*SE::Console << "7CONST_GAMESTATE_CREDITS";
         GameCredits.Update(dt);
     }
     else if (GameState == CONST_GAMESTATE_FROM_CREDITS_TO_MENU)
@@ -646,7 +641,7 @@ void TMyApplication::InnerOnMouseMove(TMouseState& mouseState) {
 void TMyApplication::EffectsInit() {
 
 	boost::property_tree::ptree JSONsource;
-	boost::property_tree::ptree JSONconfig = SE::ReadJsonFile("config.json");
+	boost::property_tree::ptree JSONconfig = SE::ReadJsonFile(ST::PathToResources + "config.json");
 	std::string effectJSON;
 
 	// LEFT
