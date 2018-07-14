@@ -72,6 +72,8 @@ void TMyApplication::InnerInit()
     ST::PathToResources = "assets/";
 #endif
 
+    ST::PathToResources = "";
+
     if (Console != NULL)
     {
         *Console<<"APP INIT\n";
@@ -257,8 +259,9 @@ void TMyApplication::LoadResources()
 	// :::::::::::::::::::::::::::::::::::::
 	// :::::::::::::PTREE LOAD::::::::::::::
     
-	boost::property_tree::ptree Textures_pt;
-	boost::property_tree::json_parser::read_json(ST::PathToResources + "bg_textures_config.json", Textures_pt);
+	boost::property_tree::ptree Textures_pt = SE::ReadJsonFile(ST::PathToResources + "bg_textures_config.json");
+	//boost::property_tree::json_parser::read_json(ST::PathToResources + "bg_textures_config.json", Textures_pt);
+
 	std::string bg_ext = ".jpeg";
 
 	// :::::::::::::::::::::::::::::::::::::
@@ -307,12 +310,12 @@ void TMyApplication::LoadResources()
 	std::vector<int> galaxies;
 	galaxies.resize(1);
 	galaxies[0] = 3;
-	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/matte_screen.png", "matte_screen"));
+	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/matte_screen.png", "matte_screen"));
 	for (int i = 0; i < galaxies.size(); i++) {
-		TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/galaxies/galaxy_" + std::to_string(i) + ".png", "galaxy_" + std::to_string(i)));
+		TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/galaxies/galaxy_" + std::to_string(i) + ".png", "galaxy_" + std::to_string(i)));
 		for (int j = 0; j < galaxies[i]; j++) {
-			TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j)));
-			TextureNamesToLoad.push_back(std::pair<std::string, std::string>("/galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover" + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover"));
+			TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j)));
+			TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover" + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover"));
 		}
 	}
 
@@ -438,8 +441,11 @@ void TMyApplication::InnerUpdate(size_t dt)
         
         if (TextureNamesToLoad.size() != 0)
         {
+            *SE::Console << "LOADING: " + TextureNamesToLoad.begin()->first;
             ResourceManager->TexList.AddTexture(TextureNamesToLoad.begin()->first, TextureNamesToLoad.begin()->second);
+
             TextureNamesToLoad.erase(TextureNamesToLoad.begin());
+
         }
         else
         {
@@ -640,33 +646,33 @@ void TMyApplication::InnerOnMouseMove(TMouseState& mouseState) {
 void TMyApplication::EffectsInit() {
 
 	boost::property_tree::ptree JSONsource;
-	boost::property_tree::ptree JSONconfig;
+	boost::property_tree::ptree JSONconfig = SE::ReadJsonFile("config.json");
 	std::string effectJSON;
-	boost::property_tree::json_parser::read_json(ST::PathToResources + "config.json", JSONconfig);
 
 	// LEFT
 	effectJSON = JSONconfig.get<std::string>("lefteffect");
-	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+	//boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+    JSONsource = SE::ReadJsonFile(ST::PathToResources + effectJSON);
 	lsparkler.parse(JSONsource); // parse JSON
 	lsparkler.load(); // load textures
 	// RIGHT
 	effectJSON = JSONconfig.get<std::string>("righteffect");
-	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+    JSONsource = SE::ReadJsonFile(ST::PathToResources + effectJSON);
 	rsparkler.parse(JSONsource);
 	rsparkler.load();
 	// TOP
 	effectJSON = JSONconfig.get<std::string>("topeffect");
-	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+    JSONsource = SE::ReadJsonFile(ST::PathToResources + effectJSON);
 	tsparkler.parse(JSONsource);
 	tsparkler.load();
 	// BOTTOM
 	effectJSON = JSONconfig.get<std::string>("boteffect");
-	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+    JSONsource = SE::ReadJsonFile(ST::PathToResources + effectJSON);
 	bsparkler.parse(JSONsource);
 	bsparkler.load();
 	// Level finish
 	effectJSON = JSONconfig.get<std::string>("lvlFinish");
-	boost::property_tree::json_parser::read_json(ST::PathToResources + effectJSON, JSONsource);
+    JSONsource = SE::ReadJsonFile(ST::PathToResources + effectJSON);
 	lvlFirework.parse(JSONsource);
 	lvlFirework.load();
 

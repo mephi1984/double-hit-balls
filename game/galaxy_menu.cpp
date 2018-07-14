@@ -20,9 +20,9 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 		menuScale = scale;
 
 	/*...Read ptree from config...*/
-	std::string res_path = "../../../assets/";
-	boost::property_tree::ptree config_pt;
-	boost::property_tree::json_parser::read_json(res_path + config_json, config_pt);
+
+	boost::property_tree::ptree config_pt = SE::ReadJsonFile(ST::PathToResources + config_json);
+	//boost::property_tree::json_parser::read_json(res_path + config_json, config_pt);
 
 	/*..error ptree..*/
 	boost::property_tree::ptree error_pt;
