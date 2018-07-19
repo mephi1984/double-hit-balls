@@ -12,6 +12,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
+
+                abiFilters  "armeabi-v7a", "x86"
+
+                arguments "-DANDROID_STL=c++_shared"
+
                 cppFlags "-std=c++17 -frtti -fexceptions -fsigned-char -Wno-c++11-narrowing"
             }
         }
