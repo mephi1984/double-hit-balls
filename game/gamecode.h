@@ -32,7 +32,7 @@ const float CONST_BONUS_CATCH_DISTANCE_X = 65.f;
 const float CONST_BONUS_CATCH_DISTANCE_Y = 20.f;
 
 const float CONST_BONUS_FLOOR_TIME = 8000.f;
-const float CONST_BONUS_FLOOR_APPEAR_SPEED = 50.f;
+const float CONST_BONUS_FLOOR_APPEAR_SPEED = 80.f;
 
 const int CONST_BONUS_TYPE_MULTIPLIER = 0;
 const int CONST_BONUS_TYPE_GOTHROUGH = 1;
@@ -127,7 +127,7 @@ protected:
 	float lvlWidth;
 	float lvlHeight;
     std::string BkgTexture;
-    std::string LevelScreenTexture;
+    //std::string LevelScreenTexture;
     std::string LevelFileName;
 
 	GLuint prerenderedImage;
@@ -152,7 +152,7 @@ protected:
     void DrawBuffer();
     void DrawPauseButtons();
     
-    void DrawBallInstancingList();
+    void DrawBallInstancingList(bool blackAndWhite);
 
 	void drawOutline(int screenWidth, int screenHeight);
  
@@ -194,7 +194,7 @@ public:
     ~TGameLevel();
     
     void FillWithFile(const std::string& filename);
-	void setBackground(const std::string& assignedShutterstock);
+	//void setBackground(const std::string& assignedShutterstock);
     
 	//void SetLevelScale();
 	//Vector2f GetLevelScale();
@@ -204,8 +204,8 @@ public:
     bool IsLoaded();
     
 	virtual void Draw();
-	void InnerDraw(int screenWidth, int screenHeight, int matrixWidth, int matrixHeight);
-	void DrawSnapshot(const std::string& assignedSnapshotFrameBuffer);
+	void InnerDraw(int screenWidth, int screenHeight, int matrixWidth, int matrixHeight, bool blackAndWhite);
+	void DrawSnapshot(const std::string& assignedSnapshotFrameBuffer, bool blackAndWhite);
 	
 	void SetPause();
 	bool IsPaused();

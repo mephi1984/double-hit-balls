@@ -12,7 +12,7 @@ public:
 
 	/*..LEVELS..*/
 	/*..levels interior info..*/
-	std::vector<TGameLevel> gameLevels;
+	std::vector<std::shared_ptr<TGameLevel>> gameLevels;
 	std::vector<std::vector<GameLevelInterior>> levelInterior;
 
 	// #params

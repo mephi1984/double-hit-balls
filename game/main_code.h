@@ -98,7 +98,7 @@ protected:
 	ParticleEffect lvlFirework; // Level finished effect
 
 	TGameMenu Menu;
-	TGameLevel* GameLevel;
+	std::shared_ptr<TGameLevel> GameLevel;
 	TGameCredits GameCredits;
 	TGameLoading GameLoading;
 
@@ -119,13 +119,20 @@ protected:
 	void ApplySignalsToCredits();
 	void DisapplySignalsToCredits();
 
+	
+
 	void EffectsInit();
+
+	
 
 	// Mouse new methods
 	virtual void InnerOnMouseDown(TMouseState& mouseState);
 	virtual void InnerOnMouseMove(TMouseState& mouseState);
 
+	bool IsLevelOpened(int levelStar, int levelIndex);
 
+
+	
 public:
 	bool Loaded;
 
@@ -139,7 +146,7 @@ public:
 
 	virtual void InnerUpdate(size_t dt);
 
-	void GoFromMenuToGame(TGameLevel* level);
+	void GoFromMenuToGame(std::shared_ptr<TGameLevel> gameLevel);
 	void GoFromGameToMenu();
 	void GoFromMenuToCredits();
 	void GoFromCreditsToMenu();
@@ -180,7 +187,9 @@ public:
 	float GetGameLevelScreenHeight();
 	void SetGameLevelScreenScale();
 
-	void SetButtonsAction();
+
+	void LoadGalaxyUi();
+	void SetupGalaxyUi(size_t levelStar);
 };
 
 

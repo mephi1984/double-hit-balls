@@ -61,8 +61,8 @@ void TMyApplication::InnerInit()
     
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
-	//ST::PathToResources = "resources/";
-	ST::PathToResources = "../../../assets/";
+	ST::PathToResources = "resources/";
+	//ST::PathToResources = "../../../assets/";
 #else
 	ST::PathToResources = "../../../assets/";
 #endif
@@ -93,6 +93,7 @@ void TMyApplication::InnerInit()
 
 	//ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/texture-shader.vertex", "shaders/texture-shader.fragment");
 	ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/gui_transparent.vertex", "shaders/gui_transparent.fragment");
+	ResourceManager->ShaderManager.AddShader("BlackAndWhiteShader", "shaders/gui_transparent_blackandwhite.vertex", "shaders/gui_transparent_blackandwhite.fragment");
 	ResourceManager->ShaderManager.AddShader("ColorShader", "shaders/color-shader.vertex", "shaders/color-shader.fragment");
 	ResourceManager->ShaderManager.AddShader("FrameShader", "shaders/frameshader_vertex.txt", "shaders/frameshader_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("BrickShader", "shaders/brickshader_vertex.txt", "shaders/brickshader_fragment.txt");
@@ -107,7 +108,7 @@ void TMyApplication::InnerInit()
 	ResourceManager->TexList.AddTexture("white.bmp");
 
 
-	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
+	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 256, 256);
 	
 	//OnDrawSignal.connect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
 	Inited = true;
@@ -125,7 +126,7 @@ void TMyApplication::InnerInit()
 	ResourceManager->FontManager.PushFont("lucon12");
 	//ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
 	ResourceManager->newGuiManager.LoadFromConfig("gui_loading.json");
-	//SetButtonsAction();
+
 	// ------- UI -------
 
 	// TESTS of menu
@@ -266,7 +267,7 @@ void TMyApplication::LoadResources()
 	boost::property_tree::ptree Textures_pt = SE::ReadJsonFile(ST::PathToResources + "bg_textures_config.json");
 	//boost::property_tree::json_parser::read_json(ST::PathToResources + "bg_textures_config.json", Textures_pt);
 
-	std::string bg_ext = ".jpeg";
+	std::string bg_ext = ".jpg";
 
 	// :::::::::::::::::::::::::::::::::::::
 
@@ -450,8 +451,8 @@ void TMyApplication::InnerUpdate(size_t dt)
             TextureNamesToLoad.erase(TextureNamesToLoad.begin());
 
         }
-        else
-        {
+		else
+		{
 
 			Renderer->SwitchToFrameBuffer("LevelBuffer");
 
@@ -461,23 +462,27 @@ void TMyApplication::InnerUpdate(size_t dt)
 
 			for (auto &star : Menu.GalaxMenu.galaxies[0].Stars)
 			{
-				for (auto &level : star.selectionMenu.gameLevels)
+				for (auto level : star.selectionMenu.gameLevels)
 				{
-					level.DrawSnapshot("LevelBuffer");
-					break;
+					level->DrawSnapshot("LevelBuffer", false);
+
+					Renderer->PushShader("BlackAndWhiteShader");
+
+					level->DrawSnapshot("LevelBuffer", true);
+
+					Renderer->PopShader();
 				}
-				break;
 			}
 
 			Renderer->SwitchToScreen();
 
 			Renderer->SetOrthoProjection();
 
-            GameState = CONST_GAMESTATE_MENU;
-            ApplySignalsToMenu();
-			ResourceManager->newGuiManager.Clear();
-			ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
-            //OnDrawSignal.disconnect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
+			GameState = CONST_GAMESTATE_MENU;
+			ApplySignalsToMenu();
+
+			LoadGalaxyUi();	
+		
             OnDrawSignal.connect(0, boost::bind(&TGameMenu::Draw, boost::ref(Menu)));
             StateTimer = 0.f;
             Loaded = true;
@@ -540,7 +545,122 @@ void TMyApplication::InnerUpdate(size_t dt)
 }
 
 
-void TMyApplication::GoFromMenuToGame(TGameLevel* level)
+
+void TMyApplication::LoadGalaxyUi()
+{
+	ResourceManager->newGuiManager.Clear();
+	ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
+
+	std::shared_ptr<WidgetAncestor> modal_background = ResourceManager->newGuiManager.findWidgetByName("modal_background");
+
+	modal_background->onMouseUpSignal.connect(
+		[modal_background](Vector2f v, int i) {
+		modal_background->visible = false;
+	});
+
+}
+
+
+void TMyApplication::SetupGalaxyUi(size_t levelStar)
+{
+	std::shared_ptr<WidgetAncestor> modal_background = ResourceManager->newGuiManager.findWidgetByName("modal_background");
+
+
+	std::shared_ptr<WidgetAncestor> row2 = ResourceManager->newGuiManager.findWidgetByName("row2");
+	std::shared_ptr<WidgetAncestor> row3 = ResourceManager->newGuiManager.findWidgetByName("row3");
+	std::shared_ptr<WidgetAncestor> row4 = ResourceManager->newGuiManager.findWidgetByName("row4");
+
+	size_t levelCount = this->Menu.GalaxMenu.galaxies[0].Stars[levelStar].selectionMenu.gameLevels.size();
+
+	if (levelCount <= 3)
+	{
+		row2->setVisibility(false);
+	}
+	else
+	{
+		row2->setVisibility(true);
+	}
+
+	if (levelCount <= 6)
+	{
+		row3->setVisibility(false);
+	}
+	else
+	{
+		row3->setVisibility(true);
+	}
+
+
+	if (levelCount <= 9)
+	{
+		row4->setVisibility(false);
+	}
+	else
+	{
+		row4->setVisibility(true);
+	}
+
+
+	std::string levelStarString = boost::lexical_cast<std::string>(levelStar);
+
+	
+	for (size_t levelIndex = 0; levelIndex < 12; levelIndex++)
+	{
+
+		std::string levelIndexString = boost::lexical_cast<std::string>(levelIndex);
+
+		std::shared_ptr<WidgetAncestor> currentLevelButton = ResourceManager->newGuiManager.findWidgetByName("button" + levelIndexString);
+
+
+		currentLevelButton->onMouseUpSignal.disconnect_all_slots();
+
+
+		
+		if (levelIndex < levelCount)
+		{
+			
+			std::string levelName = this->Menu.GalaxMenu.galaxies[0].Stars[levelStar].selectionMenu.gameLevels[levelIndex]->levelName;
+
+			
+			if (IsLevelOpened(levelStar, levelIndex))
+			{
+
+				currentLevelButton->setVisibility(true);
+								
+				currentLevelButton->setBackground(levelName + "_prerender");
+				
+				currentLevelButton->onMouseUpSignal.connect(
+					[this, modal_background, levelStar, levelIndex](Vector2f v, int i) {
+					modal_background->visible = false;
+
+					std::shared_ptr<TGameLevel> lvl = this->Menu.GalaxMenu.galaxies[0].Stars[levelStar].selectionMenu.gameLevels[levelIndex];
+					lvl->ReloadLevel();
+					this->GoFromMenuToGame(lvl);
+				});
+
+			}
+			else
+			{
+				currentLevelButton->setBackground(levelName + "_prerender_blackandwhite");
+			}
+
+			//currentLevelButton->OnMouseUp(Vector2f(), 0);
+
+		}
+		else
+		{
+			currentLevelButton->setVisibility(false);
+		}
+		
+	}
+	
+
+
+}
+
+
+
+void TMyApplication::GoFromMenuToGame(std::shared_ptr<TGameLevel> level)
 {
 //#ifndef TARGET_IOS
 //	ResourceManager->SoundManager.PlayMusicLooped("level1ogg.ogg");
@@ -637,20 +757,29 @@ float TMyApplication::GetGameLevelScreenHeight()
 }
 
 void TMyApplication::InnerOnMouseDown(TMouseState& mouseState) {
-	/*
-	if (mouseState.LeftButtonPressed) {
-		if ((float)mouseState.X >= (Renderer->GetScreenWidth())*0.25f && (float)mouseState.X <= (Renderer->GetScreenWidth())*0.75f && (float)mouseState.Y >= (Renderer->GetScreenHeight())*0.25f && (float)mouseState.Y <= (Renderer->GetScreenHeight())*0.75f) {
-			// some tmp code
-			Application->GoFromMenuToGame(1);
-		}
-	}
-	*/
+
 	OnTapDownSignal(Vector2f(mouseState.X, ((Renderer->GetScreenHeight()) - mouseState.Y))); // Temp mouse down action for WIN32
 }
 
 void TMyApplication::InnerOnMouseMove(TMouseState& mouseState) {
 	
 }
+
+bool TMyApplication::IsLevelOpened(int levelStar, int levelIndex)
+{
+	if (levelStar == 0)
+	{
+		return true;
+	}
+
+	if (levelStar == 1 && levelIndex < 3)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 
 void TMyApplication::EffectsInit() {
 
@@ -737,14 +866,4 @@ void TMyApplication::hitSpark(std::string direct,Vector2f Pos) {
 void TMyApplication::fireworkEffect() {
 	lvlFirework.stopSpawn();
 	lvlFirework.startSpawn();
-}
-
-void TMyApplication::SetButtonsAction () {
-	auto backBtn = ResourceManager->newGuiManager.findWidgetByName("backButton");
-	if (backBtn) {
-		backBtn->onMouseDownSignal.connect([this, backBtn](Vector2f pos, int touchNumber) {
-			this->GameLevel->SetPause();
-			this->GameLevel->PrevLevelStateIsStandby = true;
-		});
-	}
 }

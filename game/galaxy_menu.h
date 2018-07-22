@@ -27,6 +27,8 @@ public:
 	bool InitGalaxyMenu(std::string config_json, float scale = 1.f);
 	void DrawGalaxyMenu();
 	void UpdateGalaxyMenu(float s_width, float s_height, size_t dt);
+
+	
 	// ======== Main Methods ========
 
 	void InteractWithGalaxy(size_t dt); // Prototype for mouse/tap events
@@ -79,11 +81,10 @@ private:
 	void takeInFocus(int g_index, int s_index = -1);
 	int findGalaxyByPos(Eigen::Vector2f pos);
 	int findPlanetByPos(Eigen::Vector2f pos);
-	TGameLevel* findLevelByButtonPos(Eigen::Vector2f pos);
+
 	bool checkMenuBound(Eigen::Vector2f pos);
 
 	/*..draw methodes..*/
-	void drawSelectionMenu(int index);
 	void drawBorder(Eigen::Vector2f lb_, Eigen::Vector2f rt_, float scale, std::string mode);
 	void drawLevelInterior(int star = -1, int button = -1);
 
