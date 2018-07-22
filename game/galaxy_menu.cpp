@@ -318,7 +318,7 @@ void GalaxyMenu::DrawGalaxyMenu() {
 		}
 
 		/*..Draw level selection menu..*/
-		drawSelectionMenu(starIndex);
+		//drawSelectionMenu(starIndex);
 		
 	}
 
@@ -380,7 +380,7 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 		// ::::::::::::: timer inactive ::::::::::::::
 		if (lastTapPos != Eigen::Vector2f(-9999.9f, -9999.9f)) {
 			if (menuState == 0) {// main view
-				if (totalTapShift(0) == 0.f && totalTapShift(1) == 0.f) {
+
 					// OnTapDown->OnTapUp
 
 					/*..level select menu open..*/
@@ -393,21 +393,12 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 						planetHoverIndex = -1;
 					}
 
-				}
-				else {
-					// OnTapDown->OnMove->OnTapUp
-
-					/*..level select menu open..*/
-					starIndex = findPlanetByPos(lastTapPos - totalTapShift);
-					if (starIndex != -1) {
-						planetHoverIndex = starIndex;
-						menuState = 2;
-					}
-					else {
-						planetHoverIndex = -1;
+					if (starIndex != -1)
+					{
+						ResourceManager->newGuiManager.findWidgetByName("modal_background")->setVisibility(true);
 					}
 
-				}
+				
 
 			}
 			else if (menuState == 1) { // zoomed galaxy

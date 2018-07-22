@@ -87,10 +87,10 @@ void TBrick::SetInvisible()
     State = CONST_BRICKSTATE_INVISIBLE;
 }
 
-void TBrick::TryDrawAppear(int ipos, int jpos)
+void TBrick::TryDrawAppear(int ipos, int jpos, int screenWidth)
 {
 
-    Vector2f centerPos = GetPosFrom(ipos, jpos);
+    Vector2f centerPos = GetPosFrom(ipos, jpos, screenWidth);
     float LEVEL_VIEWPORT_WIDTH = Application->GetGameLevelScreenWidth();
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
 
@@ -158,14 +158,14 @@ Vector4f TBrick::GetColor()
     return Color;
 }
 
-Vector2f TBrick::GetPosFrom(int ipos, int jpos)
+Vector2f TBrick::GetPosFrom(int ipos, int jpos, int screenWidth)
 {
 	float LEVEL_VIEWPORT_WIDTH  = Application->GetGameLevelScreenWidth();
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
 
     const Vector2f BorderShift(CONST_BRICK_SHIFT_X * (LEVEL_VIEWPORT_WIDTH/480.f), CONST_BRICK_SHIFT_Y * (LEVEL_VIEWPORT_HEIGHT/320.f));
     
-	Vector2f outlineShift = Vector2f(((Renderer->GetScreenWidth() - LEVEL_VIEWPORT_WIDTH)*0.5f),0.f);
+	Vector2f outlineShift = Vector2f(((screenWidth - LEVEL_VIEWPORT_WIDTH)*0.5f),0.f);
 
     return outlineShift+BorderShift+Vector2f(CONST_BRICK_WIDTH*(LEVEL_VIEWPORT_WIDTH/480.f)*ipos + 0.5f*CONST_BRICK_WIDTH*(LEVEL_VIEWPORT_WIDTH/480.f), LEVEL_VIEWPORT_HEIGHT - CONST_BRICK_HEIGHT*(LEVEL_VIEWPORT_HEIGHT/320.f)*(jpos)-0.5f*CONST_BRICK_HEIGHT*(LEVEL_VIEWPORT_HEIGHT/320.f));
 }
@@ -465,11 +465,12 @@ TGameLevel::~TGameLevel()
 
 
 
-void TGameLevel::ReloadBlockInstansingList()
+void TGameLevel::ReloadBlockInstansingList(int screenWidth)
 {
 
 	float LEVEL_VIEWPORT_WIDTH = Application->GetGameLevelScreenWidth();
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
+
     std::map<int, std::string> ConstTextureBlockMap = boost::assign::map_list_of (0,CONST_BLOCK_TEXTURE1) (1,CONST_BLOCK_TEXTURE2) (2,CONST_BLOCK_TEXTURE3);
     
     std::pair<Vector4f, std::string> tempPair;
@@ -502,8 +503,8 @@ void TGameLevel::ReloadBlockInstansingList()
                     itr--;
                 }
                 
-                Vector2f posFrom = BlockMatrix[i][j].GetPosFrom(i,j) + Vector2f(-0.5f*CONST_BRICK_WIDTH*(LEVEL_VIEWPORT_WIDTH/480.f), -0.5f*CONST_BRICK_HEIGHT*(LEVEL_VIEWPORT_HEIGHT/320.f));
-                Vector2f posTo = BlockMatrix[i][j].GetPosFrom(i,j) + Vector2f(+0.5f*CONST_BRICK_WIDTH*(LEVEL_VIEWPORT_WIDTH/480.f), +0.5f*CONST_BRICK_HEIGHT*(LEVEL_VIEWPORT_HEIGHT/320.f));
+                Vector2f posFrom = BlockMatrix[i][j].GetPosFrom(i,j, screenWidth) + Vector2f(-0.5f*CONST_BRICK_WIDTH*(LEVEL_VIEWPORT_WIDTH/480.f), -0.5f*CONST_BRICK_HEIGHT*(LEVEL_VIEWPORT_HEIGHT/320.f));
+                Vector2f posTo = BlockMatrix[i][j].GetPosFrom(i,j, screenWidth) + Vector2f(+0.5f*CONST_BRICK_WIDTH*(LEVEL_VIEWPORT_WIDTH/480.f), +0.5f*CONST_BRICK_HEIGHT*(LEVEL_VIEWPORT_HEIGHT/320.f));
                 
                 itr->second.Data += MakeDataTriangleList(posFrom, posTo);
                 
@@ -663,7 +664,7 @@ void TGameLevel::ReloadLevel()
         rowColorIterator++;
     }
 
-    ReloadBlockInstansingList();
+    ReloadBlockInstansingList(Renderer->GetScreenWidth());
 
 }
 
@@ -686,25 +687,25 @@ void TGameLevel::SetStandBy()
 {
 
     ReloadLevel();
-    InitLevel();
+    InitLevel(Renderer->GetScreenWidth(), Renderer->GetScreenHeight());
     LevelState = CONST_LEVELSTATE_STANDBY;
 }
 
 void TGameLevel::SetLoading()    
 {
 
-    InitLevel();
+    InitLevel(Renderer->GetScreenWidth(), Renderer->GetScreenHeight());
     StateTimer = CONST_TIMER_LOADING;
     LevelState = CONST_LEVELSTATE_LOADING;
 }
 
-void TGameLevel::InitLevel()
+void TGameLevel::InitLevel(int screenWidth, int screenHeight)
 {
 
 	float LEVEL_VIEWPORT_WIDTH = Application->GetGameLevelScreenWidth();
 	float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
-    ReflectorPos = Vector2f(Renderer->GetScreenWidth()*0.5f, 16* LEVEL_VIEWPORT_HEIGHT/320.f + 13 * LEVEL_VIEWPORT_HEIGHT / 320.f);
-    Vector2f ballPos = Vector2f(Renderer->GetScreenWidth()*0.5f, 80* LEVEL_VIEWPORT_HEIGHT/320.f);
+    ReflectorPos = Vector2f(screenWidth*0.5f, 16* LEVEL_VIEWPORT_HEIGHT/320.f + 13 * LEVEL_VIEWPORT_HEIGHT / 320.f);
+    Vector2f ballPos = Vector2f(screenWidth*0.5f, 80* LEVEL_VIEWPORT_HEIGHT/320.f);
     
     BallList.clear();
     BallList.push_back(TBall(ballPos, Vector2f(0, 0), BallColor));
@@ -723,6 +724,8 @@ void TGameLevel::InitLevel()
 
 	BonusFloorPosY = 0.f;
 
+	ReloadBlockInstansingList(screenWidth);
+
 }
 
 bool TGameLevel::IsLoaded()
@@ -730,7 +733,7 @@ bool TGameLevel::IsLoaded()
     return (LevelState == CONST_LEVELSTATE_STANDBY);
 }
 
-void TGameLevel::drawOutline() {
+void TGameLevel::drawOutline(int screenWidth, int screenHeight) {
 
 	glBindTexture(GL_TEXTURE_2D, ResourceManager->TexList["black_square"]);
 	Renderer->DrawRect(
@@ -739,44 +742,51 @@ void TGameLevel::drawOutline() {
 			0.0f
 		),
 		Vector2f(
-			(Renderer->GetScreenWidth() - Application->GetGameLevelScreenWidth())*0.5f,
-			Renderer->GetScreenHeight()
+			(screenWidth - Application->GetGameLevelScreenWidth())*0.5f,
+			screenHeight
 		)
 	);
 
 	Renderer->DrawRect(
 		Vector2f(
-			Renderer->GetScreenWidth() - (Renderer->GetScreenWidth() - Application->GetGameLevelScreenWidth())*0.5f,
+			screenWidth - (screenWidth - Application->GetGameLevelScreenWidth())*0.5f,
 			0.f
 		),
 		Vector2f(
-			Renderer->GetScreenWidth(),
-			Renderer->GetScreenHeight()
+			screenWidth,
+			screenHeight
 		)
 	);
 }
 
 void TGameLevel::DrawSnapshot(const std::string& assignedSnapshotFrameBuffer)
 {
-	InitLevel();
+	InitLevel(768, 480);
 
 	int prevState = LevelState;
 	LevelState = CONST_LEVELSTATE_SNAPSHOTTING;
-	Draw();
+	InnerDraw(768, 480, 768, 480);
 	LevelState = prevState;
 
 	prerenderedImage =
 		ResourceManager->FrameManager.GetFrameTextureCopy(assignedSnapshotFrameBuffer, levelName + "_prerender");
 }
 
+
 void TGameLevel::Draw()
+{
+	InnerDraw(Renderer->GetScreenWidth(), Renderer->GetScreenHeight(), Renderer->GetMatrixWidth(), Renderer->GetMatrixHeight());
+}
+
+
+void TGameLevel::InnerDraw(int screenWidth, int screenHeight, int matrixWidth, int matrixHeight)
 {
 
 	// Scaling math
 	float tSW = Application->GetGameLevelScreenWidth(); // Screen Width
 	float tSH = Application->GetGameLevelScreenHeight(); // Screen Height
-	float xlOffset = (Renderer->GetScreenWidth() - tSW)*0.5f; // Level Screen x-offset
-	//float ylOffset = (Renderer->GetScreenHeight() - tSH)*0.5f; // Level Screen y-offset
+	float xlOffset = (screenWidth - tSW)*0.5f; // Level Screen x-offset
+
 	float ylOffset = 0.f;
 	float lrFBO = 4 * tSH / 320.f; // Left/Right Wall Textures offset from bottom
 	float uWTW = tSW * (static_cast<float>(ResourceManager->TexList.GetTextureOriginalHeight(CONST_WALL_UP_TEXTURE)) / static_cast<float>(ResourceManager->TexList.GetTextureOriginalWidth(CONST_WALL_UP_TEXTURE))); // up Wall Texture Width
@@ -791,6 +801,7 @@ void TGameLevel::Draw()
         return;
     }
     
+
     if (LevelState == CONST_LEVELSTATE_LOADING)
     {
         Renderer->PushMatrix();
@@ -801,9 +812,9 @@ void TGameLevel::Draw()
         if (scale > 1.f)
             scale = 1.f;
 
-		Renderer->TranslateMatrix(Vector3f(Renderer->GetMatrixWidth() * 0.5f, Renderer->GetMatrixHeight() * 0.5f, 0));
+		Renderer->TranslateMatrix(Vector3f(matrixWidth * 0.5f, matrixHeight * 0.5f, 0));
         Renderer->ScaleMatrix(scale);
-		Renderer->TranslateMatrix(-Vector3f(Renderer->GetMatrixWidth() * 0.5f, Renderer->GetMatrixHeight() * 0.5f, 0));
+		Renderer->TranslateMatrix(-Vector3f(matrixWidth * 0.5f, matrixHeight * 0.5f, 0));
         glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[LevelScreenTexture]);
         Renderer->DrawRect(Vector2f(xlOffset, ylOffset), Vector2f(xlOffset+tSW, ylOffset+tSH), Vector2f (0.f,0.f), Vector2f(1.f,1.f)); // Game Screen Scale
         Renderer->PopMatrix();
@@ -819,14 +830,15 @@ void TGameLevel::Draw()
     
     bool renderBufferReady = RenderBufferReady;
     
+	/*
     if (pause && renderBufferReady)
     {
         
 		//See also below (same method)
         Renderer->PushMatrix();
-		Renderer->TranslateMatrix(Vector3f(Renderer->GetMatrixWidth() * 0.5f, Renderer->GetMatrixHeight() * 0.5f, 0));
+		Renderer->TranslateMatrix(Vector3f(matrixWidth * 0.5f, matrixHeight * 0.5f, 0));
         Renderer->ScaleMatrix(OutScale);
-		Renderer->TranslateMatrix(-Vector3f(Renderer->GetMatrixWidth() * 0.5f, Renderer->GetMatrixHeight() * 0.5f, 0));
+		Renderer->TranslateMatrix(-Vector3f(matrixWidth * 0.5f, matrixHeight * 0.5f, 0));
         DrawBuffer();
         
         if (mustShowButtons)
@@ -837,16 +849,16 @@ void TGameLevel::Draw()
         CheckGlError();
     	return;
     }
-    
+
     if (pause && !renderBufferReady)
     {
        
         Renderer->SwitchToFrameBuffer("LevelBuffer");
-        Renderer->SetProjectionMatrix(Renderer->GetScreenWidth(), Renderer->GetScreenHeight());
+        Renderer->SetProjectionMatrix(screenWidth, screenHeight);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         CheckGlError();
-    }
+    }*/
     
 	// Level background
 	// :::::::::::
@@ -860,7 +872,7 @@ void TGameLevel::Draw()
 	if ((bkgTW/bkgTH) >= 1.6f/*screen ratio*/) {
 		bkgSW = (tSH/bkgTH) * bkgTW;
 		bkgSH = tSH;
-		bkgSWO = (((float)Renderer->GetScreenWidth()) - bkgSW) * 0.5f;
+		bkgSWO = (((float)screenWidth) - bkgSW) * 0.5f;
 		bkgSHO = ylOffset;
 	} else {
 		bkgSH = (tSW / bkgTW) * bkgTH;
@@ -873,8 +885,9 @@ void TGameLevel::Draw()
     glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[BkgTexture]);
 	//Renderer->DrawRect(Vector2f(xlOffset, ylOffset), Vector2f(xlOffset+tSW, ylOffset+tSH),Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 	Renderer->DrawRect(Vector2f(bkgSWO, bkgSHO), Vector2f(bkgSWO + bkgSW, bkgSHO + bkgSH), Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
+	//Renderer->DrawRect(Vector2f(0,0), Vector2f(100,100), Vector2f(0.f, 0.f), Vector2f(1.f, 1.f));
 
-	drawOutline();
+
 	
 	std::list<TBall>::iterator iBall;
     
@@ -885,7 +898,7 @@ void TGameLevel::Draw()
     {
         for (int j=0; j<CONST_BRICKMATRIX_HEIGHT; j++)
         {
-            BlockMatrix[i][j].TryDrawAppear(i,j); //Draws only appearing/disappearing blocks
+            BlockMatrix[i][j].TryDrawAppear(i,j, screenWidth); //Draws only appearing/disappearing blocks
         }
     }
     
@@ -899,6 +912,7 @@ void TGameLevel::Draw()
         
         Renderer->DrawTriangleList(colorBlockIterator->second);
     }
+	
     
     std::list<TBonusFalling>::iterator iBonus;
     
@@ -948,11 +962,12 @@ void TGameLevel::Draw()
     }
 	
     
+	/*/
     if (!pause && LevelState != CONST_LEVELSTATE_SNAPSHOTTING)
     {
         RenderUniform1f("Transparency", 1.f);
         glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_BACK_BTN_TEXTURE]);
-        const Vector2f BackBtnPos(Renderer->GetScreenWidth()*0.5f, Application->GetGameLevelScreenHeight() - 52.f*(Application->GetGameLevelScreenHeight()/320.f));
+        const Vector2f BackBtnPos(screenWidth*0.5f, Application->GetGameLevelScreenHeight() - 52.f*(Application->GetGameLevelScreenHeight()/320.f));
 		const float const_backBtnWidth = CONST_BACK_BTN_WIDTH * Application->GetGameLevelScreenWidth()/480.f;
 		const float const_backBtnHeight  = CONST_BACK_BTN_HEIGHT * Application->GetGameLevelScreenHeight()/320.f;
         Renderer->DrawRect(Vector2f(-const_backBtnWidth*0.5f, -const_backBtnHeight*0.5f)+BackBtnPos, Vector2f(const_backBtnWidth*0.5f, const_backBtnHeight*0.5f)+BackBtnPos);
@@ -968,10 +983,10 @@ void TGameLevel::Draw()
         
         Renderer->PushMatrix();
 		//Renderer->LoadIdentity();
-		Renderer->TranslateMatrix(Vector3f(Renderer->GetMatrixWidth() * 0.5f, Renderer->GetMatrixHeight() * 0.5f, 0));
+		Renderer->TranslateMatrix(Vector3f(matrixWidth * 0.5f, matrixHeight * 0.5f, 0));
 		//Renderer->TranslateMatrix(Vector3f(Application->GetGameLevelScreenWidth(), Application->GetGameLevelScreenHeight(), 0));
         Renderer->ScaleMatrix(OutScale);
-		Renderer->TranslateMatrix(-Vector3f(Renderer->GetMatrixWidth() * 0.5f, Renderer->GetMatrixHeight() * 0.5f, 0));
+		Renderer->TranslateMatrix(-Vector3f(matrixWidth * 0.5f, matrixHeight * 0.5f, 0));
         DrawBuffer();
         if (mustShowButtons)
         {
@@ -980,7 +995,13 @@ void TGameLevel::Draw()
         Renderer->PopMatrix();
         RenderBufferReady = true;
         CheckGlError();
-    }
+    }*/
+
+
+
+	drawOutline(screenWidth, screenHeight);
+
+
     CheckGlError();
 }
 
@@ -1581,7 +1602,7 @@ void TGameLevel::UpdateBallList(size_t dt)
                 
             }
             
-			Vector2f blockPos = BlockMatrix[i][j].GetPosFrom(i, j);
+			Vector2f blockPos = BlockMatrix[i][j].GetPosFrom(i, j, Renderer->GetScreenWidth());
 		
 			
 			if (canThrowBonus && rand() % 20 == 0)
@@ -1622,7 +1643,7 @@ void TGameLevel::UpdateBallList(size_t dt)
     
     if (blockListChanged)
     {
-        ReloadBlockInstansingList();
+        ReloadBlockInstansingList(Renderer->GetScreenWidth());
     }
     
     if (mustReloadBalls)

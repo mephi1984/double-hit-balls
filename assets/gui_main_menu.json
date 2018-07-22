@@ -1,23 +1,205 @@
 {
 	"widgets": [{
 		"type": "FrameLayout",
-		"name": "menu_background",
-		"background": "#00000000",
+		"name": "modal_background",
+		"background": "#80808080",
 		"width": "match_parent",
 		"height": "match_parent",
+		"visible" : 0,
+		"horizontalAlignment": "HA_CENTER",
+		"verticalAlignment": "VA_CENTER",
 		"children": [{
-			"type": "FrameLayout",
-			"name": "stars_plane",
-			"background": "#00000000",
-			"width": "wrap_content",
-			"height": "wrap_content",
-			"children": [{
-				"type": "ImageView",
-				"name": "galaxy",
-				"background": "024863276-illustration-spiral-galaxy-vec.png",
-				"width": 700,
-				"height": 480
-			}]
-		}]
+					"type": "VerticalScrollLayout",
+					"name": "leftSidePanel",
+					"background": "#faf0ffFF",
+					"borderType": "line",
+					"borderColor": "#808080FF",
+					"width": "wrap_content",
+					"height": "match_parent",
+					"touchTransparency": 0,
+					"zLevel": 10,
+					"marginTop" : 40,
+					"marginBottom" : 40,
+					"paddingTop": 60,
+					"paddingBottom": 10,
+					"paddingLeft": 10,
+					"paddingRight": 10,
+					"itemSpacing": 20,
+					"children" : [{
+							"type": "HorizontalLinearLayout",
+							"name": "embroiderySettings",
+							"itemSpacing": 30,
+							"paddingBottom": 15,
+							"paddingTop": 15,
+							"paddingLeft": 15,
+							"paddingRight": 15,
+							"background": "#faf0ffFF",
+							"borderType": "line",
+							"borderColor": "#808080FF",
+							"width": "wrap_content",
+							"height": "wrap_content",
+							"touchTransparency": 0,
+							"itemSpacing": 20,
+							"visible": 1,
+							"children": [{
+						"type": "Button",
+						"name": "button6",
+						"width": 128,
+						"height": 80,
+						"background": "level1_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					},
+					{
+						"type": "Button",
+						"name": "button7",
+						"width": 128,
+						"height": 80,
+						"background": "level2_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					},
+					{
+						"type": "Button",
+						"name": "button8",
+						"width": 128,
+						"height": 80,
+						"background": "level3_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					}]
+				},
+				{
+							"type": "HorizontalLinearLayout",
+							"name": "embroiderySettings",
+							"itemSpacing": 30,
+							"paddingBottom": 15,
+							"paddingTop": 15,
+							"paddingLeft": 15,
+							"paddingRight": 15,
+							"background": "#faf0ffFF",
+							"borderType": "line",
+							"borderColor": "#808080FF",
+							"width": "wrap_content",
+							"height": "wrap_content",
+							"touchTransparency": 0,
+							"visible": 1,
+							"children": [{
+						"type": "Button",
+						"name": "button6",
+						"width": 128,
+						"height": 80,
+						"background": "level4_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					},
+					{
+						"type": "Button",
+						"name": "button7",
+						"width": 128,
+						"height": 80,
+						"background": "level5_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					},
+					{
+						"type": "Button",
+						"name": "button8",
+						"width": 128,
+						"height": 80,
+						"background": "level6_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					}]
+				},
+				{
+							"type": "HorizontalLinearLayout",
+							"name": "embroiderySettings",
+							"itemSpacing": 30,
+							"paddingBottom": 15,
+							"paddingTop": 15,
+							"paddingLeft": 15,
+							"paddingRight": 15,
+							"background": "#faf0ffFF",
+							"borderType": "line",
+							"borderColor": "#808080FF",
+							"width": "wrap_content",
+							"height": "wrap_content",
+							"touchTransparency": 1,
+							"visible": 1,
+							"children": [{
+						"type": "Button",
+						"name": "button6",
+						"width": 128,
+						"height": 80,
+						"background": "level7_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					},
+					{
+						"type": "Button",
+						"name": "button7",
+						"width": 128,
+						"height": 80,
+						"background": "level8_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					},
+					{
+						"type": "Button",
+						"name": "button8",
+						"width": 128,
+						"height": 80,
+						"background": "level9_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					}]
+				},
+				{
+							"type": "HorizontalLinearLayout",
+							"name": "embroiderySettings",
+							"itemSpacing": 30,
+							"paddingBottom": 15,
+							"paddingTop": 15,
+							"paddingLeft": 15,
+							"paddingRight": 15,
+							"background": "#faf0ffFF",
+							"borderType": "line",
+							"borderColor": "#808080FF",
+							"width": "wrap_content",
+							"height": "wrap_content",
+							"touchTransparency": 0,
+							"visible": 1,
+							"children": [{
+						"type": "Button",
+						"name": "button6",
+						"width": 128,
+						"height": 80,
+						"background": "level10_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					},
+					{
+						"type": "Button",
+						"name": "button7",
+						"width": 128,
+						"height": 80,
+						"background": "level11_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					},
+					{
+						"type": "Button",
+						"name": "button8",
+						"width": 128,
+						"height": 80,
+						"background": "level12_prerender",
+						"pressedDrawable": "#60606060",
+						"hoverDrawable": "#60606060"
+					}]
+				}]
+			}
+
+		]
 	}]
 }

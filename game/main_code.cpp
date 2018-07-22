@@ -85,30 +85,31 @@ void TMyApplication::InnerInit()
 	StateTimer = 0.f;
 
 	/*
-	ResourceManager->ShaderManager.AddShader("DefaultShader", "shader1vertex
-	", "shader1fragment.txt");
+	ResourceManager->ShaderManager.AddShader("DefaultShader", "shader1vertex", "shader1fragment.txt");
 	ResourceManager->ShaderManager.AddShader("FrameShader", "frameshader_vertex.txt", "frameshader_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("BrickShader", "brickshader_vertex.txt", "brickshader_fragment.txt");
 	Renderer->PushShader("DefaultShader");
 	*/
 
-	ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/texture-shader.vertex", "shaders/texture-shader.fragment");
+	//ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/texture-shader.vertex", "shaders/texture-shader.fragment");
+	ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/gui_transparent.vertex", "shaders/gui_transparent.fragment");
 	ResourceManager->ShaderManager.AddShader("ColorShader", "shaders/color-shader.vertex", "shaders/color-shader.fragment");
 	ResourceManager->ShaderManager.AddShader("FrameShader", "shaders/frameshader_vertex.txt", "shaders/frameshader_fragment.txt");
 	ResourceManager->ShaderManager.AddShader("BrickShader", "shaders/brickshader_vertex.txt", "shaders/brickshader_fragment.txt");
 	ResourceManager->ShaderManager.AddShader(ParticleEffect::PARTICLE_SHADER, "shaders/particle-shader.vertex", "shaders/particle-shader.fragment");
 	Renderer->PushShader("DefaultShader");
 
-	ResourceManager->TexList.AddTexture(CONST_LOADING_BACKGROUND_BLACK + ".png", CONST_LOADING_BACKGROUND_BLACK);
-	ResourceManager->TexList.AddTexture(CONST_LOADING_TEXTURE + ".png", CONST_LOADING_TEXTURE);
-	ResourceManager->TexList.AddTexture(CONST_LOGO_SMALL_TEXTURE + ".png", CONST_LOGO_SMALL_TEXTURE);
+	//ResourceManager->TexList.AddTexture(CONST_LOADING_BACKGROUND_BLACK + ".png", CONST_LOADING_BACKGROUND_BLACK);
+	//ResourceManager->TexList.AddTexture(CONST_LOADING_TEXTURE + ".png", CONST_LOADING_TEXTURE);
+	//ResourceManager->TexList.AddTexture(CONST_LOGO_SMALL_TEXTURE + ".png", CONST_LOGO_SMALL_TEXTURE);
 
 	ResourceManager->TexList.AddTexture("console_bkg.bmp");
+	ResourceManager->TexList.AddTexture("white.bmp");
 
 
 	ResourceManager->FrameManager.AddFrameRenderBuffer("LevelBuffer", 512, 512);
 	
-	OnDrawSignal.connect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
+	//OnDrawSignal.connect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
 	Inited = true;
 
 	Renderer->SetOrthoProjection();
@@ -123,6 +124,7 @@ void TMyApplication::InnerInit()
 	ResourceManager->FontManager.AddFont("lucon12", "lucon12.png", "lucon12.txt");
 	ResourceManager->FontManager.PushFont("lucon12");
 	//ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
+	ResourceManager->newGuiManager.LoadFromConfig("gui_loading.json");
 	//SetButtonsAction();
 	// ------- UI -------
 
@@ -163,7 +165,7 @@ void TMyApplication::InnerDeinit()
     OnTapDownSignal.disconnect(boost::bind(&TGameCredits::OnTapDown, boost::ref(GameCredits), _1));
     
     
-    OnDrawSignal.disconnect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
+    //OnDrawSignal.disconnect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
     OnDrawSignal.disconnect(boost::bind(&TGameMenu::Draw, boost::ref(Menu)));
     OnDrawSignal.disconnect(boost::bind(&TGameLevel::Draw, boost::ref(GameLevel)));
     OnDrawSignal.disconnect(boost::bind(&TGameCredits::Draw, boost::ref(GameCredits)));
@@ -410,9 +412,11 @@ void TMyApplication::TrySaveGame()
 	
 void TMyApplication::InnerDraw()
 {
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 
+	Renderer->PushShader("DefaultShader");
     OnDrawSignal();
+	Renderer->PopShader();
 
 
 }
@@ -451,19 +455,29 @@ void TMyApplication::InnerUpdate(size_t dt)
 
 			Renderer->SwitchToFrameBuffer("LevelBuffer");
 
+			Renderer->SetProjectionMatrix(768, 480);
+
+			Renderer->LoadIdentity();
+
 			for (auto &star : Menu.GalaxMenu.galaxies[0].Stars)
 			{
 				for (auto &level : star.selectionMenu.gameLevels)
 				{
 					level.DrawSnapshot("LevelBuffer");
+					break;
 				}
+				break;
 			}
 
 			Renderer->SwitchToScreen();
 
+			Renderer->SetOrthoProjection();
+
             GameState = CONST_GAMESTATE_MENU;
             ApplySignalsToMenu();
-            OnDrawSignal.disconnect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
+			ResourceManager->newGuiManager.Clear();
+			ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
+            //OnDrawSignal.disconnect(boost::bind(&TGameLoading::Draw, boost::ref(GameLoading)));
             OnDrawSignal.connect(0, boost::bind(&TGameMenu::Draw, boost::ref(Menu)));
             StateTimer = 0.f;
             Loaded = true;

@@ -1,0 +1,26 @@
+{
+	"widgets": [{
+		"type": "FrameLayout",
+		"name": "Loading",
+		"background": "#000000FF",
+		"width": "match_parent",
+		"height": "match_parent",
+		"horizontalAlignment": "HA_CENTER",
+		"verticalAlignment": "VA_CENTER",
+		"children": [
+		{
+		"type": "VerticalLinearLayout",
+		"name": "holder",
+		"background": "#000000FF",
+		"width": "wrap_content",
+		"height": "wrap_content",
+		"children":[{
+						"type": "ImageView",
+						"name": "logo",
+						"height" : "400",
+						"width" : "400",
+						"background": "logo.png"
+					}]
+				}]
+	}]
+}

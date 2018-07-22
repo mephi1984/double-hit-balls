@@ -51,9 +51,9 @@ public:
     TBrick();
     void SetVisible(Vector4f color, int locked);
     void SetInvisible();
-    void TryDrawAppear(int ipos, int jpos);
+    void TryDrawAppear(int ipos, int jpos, int screenWidth);
     void Update(size_t dt);
-    Vector2f GetPosFrom(int ipos, int jpos);
+    Vector2f GetPosFrom(int ipos, int jpos, int screenWidth);
     Vector4f GetColor();
     void Appear(Vector4f color, int locked);
     void Appear();
@@ -145,7 +145,7 @@ protected:
     
     bool TapInBackBtnArea(const Vector2f& pos);
     
-    void ReloadBlockInstansingList();
+    void ReloadBlockInstansingList(int screenWidth);
     void SetFinished();
     void SetFinishFreeze();
     
@@ -154,7 +154,7 @@ protected:
     
     void DrawBallInstancingList();
 
-	void drawOutline();
+	void drawOutline(int screenWidth, int screenHeight);
  
     bool RenderBufferReady;
     
@@ -180,7 +180,7 @@ protected:
     void MultiplyBalls(Vector2f pos, Vector2f velocity);
     
     Vector2f GetBlock(const Vector2f& pos);
-    void InitLevel();
+    void InitLevel(int screenWidth, int screenHeight);
     
     float BonusGothroughTimer;
     float BonusFloorTimer;
@@ -204,6 +204,7 @@ public:
     bool IsLoaded();
     
 	virtual void Draw();
+	void InnerDraw(int screenWidth, int screenHeight, int matrixWidth, int matrixHeight);
 	void DrawSnapshot(const std::string& assignedSnapshotFrameBuffer);
 	
 	void SetPause();
