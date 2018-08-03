@@ -1,0 +1,2 @@
+These files are made special for debugging, as they are smaller and their width and height are power of two,
+so then they are being loading, it doesn't call TTextureListClass::NormalizeTexData(), which is very slow in debugging.
