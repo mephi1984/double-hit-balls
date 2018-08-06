@@ -626,8 +626,8 @@ void TMyApplication::SetupGalaxyUi(size_t levelStar)
 			{
 
 				currentLevelButton->setVisibility(true);
-								
-				currentLevelButton->setBackground(levelName + "_prerender");
+
+                currentLevelButton->setBackground(ResourceManager->newGuiManager.layoutBackgroundFromConfigValue(levelName + "_prerender"));
 				
 				currentLevelButton->onMouseUpSignal.connect(
 					[this, modal_background, levelStar, levelIndex](Vector2f v, int i) {

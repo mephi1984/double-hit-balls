@@ -75,3 +75,4 @@ iOSInjectionProject/
 /windows/DoubleHitBalls-win/DoubleHitBalls-win/resources
 *.db
 *.opendb
+/proj.android-studio/app/release/
