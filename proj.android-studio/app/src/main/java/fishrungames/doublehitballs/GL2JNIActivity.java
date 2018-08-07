@@ -94,6 +94,9 @@ public class GL2JNIActivity extends Activity
 	}
 
 	public static GL2JNIActivity getInstance() {
+		if (instance == null) {
+			throw new RuntimeException("error GL2JNIActivity getInstance() - you are trying to get activity instance when it is not created or already destroyed");
+		}
 		return instance;
 	}
 
