@@ -42,6 +42,7 @@ add_library(DoubleHitBalls SHARED
     ${CMAKE_CURRENT_SOURCE_DIR}/../../game/gamecode.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../game/loadingcode.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../game/menucode.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../game/Sounds.cpp
 
 )
 
