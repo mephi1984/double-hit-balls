@@ -31,7 +31,4 @@ void stopGameSoundGunshot() {
 JNIEXPORT void JNICALL Java_fishrungames_doublehitballs_sounds_JniSoundCalls_initJniSounds(JNIEnv *pEnv, jobject pThis) {
     env = pEnv;
     jSounds = env->FindClass("fishrungames/doublehitballs/sounds/JniSoundCalls");
-    playBackgroundSound();
-    playGameSoundGunshot();
-    stopBackgroundSound();
 }
