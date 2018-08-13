@@ -36,6 +36,7 @@
 		AC67C87F211C8DE3003AA164 /* NativeSoundCallsImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC67C87E211C8DE3003AA164 /* NativeSoundCallsImpl.swift */; };
 		AC67C882211C8E24003AA164 /* gunshot_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AC67C880211C8E24003AA164 /* gunshot_sound.mp3 */; };
 		AC67C883211C8E24003AA164 /* background_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AC67C881211C8E24003AA164 /* background_sound.mp3 */; };
+		ACC6F8382121E8DF00CEDC5C /* SoundCalls.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC6F8372121E8DF00CEDC5C /* SoundCalls.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +112,8 @@
 		AC67C87E211C8DE3003AA164 /* NativeSoundCallsImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeSoundCallsImpl.swift; sourceTree = "<group>"; };
 		AC67C880211C8E24003AA164 /* gunshot_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gunshot_sound.mp3; sourceTree = "<group>"; };
 		AC67C881211C8E24003AA164 /* background_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background_sound.mp3; sourceTree = "<group>"; };
+		ACC6F8372121E8DF00CEDC5C /* SoundCalls.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SoundCalls.m; sourceTree = "<group>"; };
+		ACC6F8392121E8ED00CEDC5C /* SoundCalls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundCalls.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +259,8 @@
 			children = (
 				AC67C87C211C8DD3003AA164 /* NativeSoundCalls.swift */,
 				AC67C87E211C8DE3003AA164 /* NativeSoundCallsImpl.swift */,
+				ACC6F8372121E8DF00CEDC5C /* SoundCalls.m */,
+				ACC6F8392121E8ED00CEDC5C /* SoundCalls.h */,
 			);
 			name = sounds;
 			sourceTree = "<group>";
@@ -365,6 +370,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74EEBAEF1E2D13A6004C6C65 /* AppDelegate.swift in Sources */,
+				ACC6F8382121E8DF00CEDC5C /* SoundCalls.m in Sources */,
 				74C3AE2E1E2E2A40003C07F2 /* creditscode.cpp in Sources */,
 				74C3AE2F1E2E2A40003C07F2 /* gamecode.cpp in Sources */,
 				AC67C87D211C8DD3003AA164 /* NativeSoundCalls.swift in Sources */,
