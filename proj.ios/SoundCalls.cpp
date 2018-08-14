@@ -3,7 +3,7 @@
 
 void SoundCalls::playBackgroundSound()
 {
-    BridgeDelegate::playGunshotSound();
+    BridgeDelegate::playBackgroundSound();
 }
 
 void SoundCalls::stopBackgroundSound()
