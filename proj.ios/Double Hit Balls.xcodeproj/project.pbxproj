@@ -115,9 +115,9 @@
 		AC67C880211C8E24003AA164 /* gunshot_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gunshot_sound.mp3; sourceTree = "<group>"; };
 		AC67C881211C8E24003AA164 /* background_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background_sound.mp3; sourceTree = "<group>"; };
 		AC8032242122F8B100DEA5AC /* SoundCalls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundCalls.cpp; sourceTree = "<group>"; };
-		AC8032252122F8B100DEA5AC /* SoundCalls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SoundCalls.h; path = ../../../../ios/MediaPlayerC/MediaPlayerC/SoundCalls.h; sourceTree = "<group>"; };
 		AC8032282122F8DC00DEA5AC /* BridgeDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BridgeDelegate.mm; sourceTree = "<group>"; };
 		AC8032292122F8DD00DEA5AC /* BridgeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgeDelegate.h; sourceTree = "<group>"; };
+		AC80322B2122FBC100DEA5AC /* SoundCalls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundCalls.h; sourceTree = "<group>"; };
 		ACC6F8372121E8DF00CEDC5C /* Sounds.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Sounds.m; sourceTree = "<group>"; };
 		ACC6F8392121E8ED00CEDC5C /* Sounds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sounds.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -250,7 +250,7 @@
 				84D0FECA1E274EBC00EC3FE5 /* main_code.cpp */,
 				84D0FECB1E274EBC00EC3FE5 /* main_code.h */,
 				AC8032242122F8B100DEA5AC /* SoundCalls.cpp */,
-				AC8032252122F8B100DEA5AC /* SoundCalls.h */,
+				AC80322B2122FBC100DEA5AC /* SoundCalls.h */,
 			);
 			name = Game;
 			sourceTree = "<group>";
