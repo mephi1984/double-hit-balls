@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
-#define ShareSoundCalls [SoundCalls shareInstance]
+#define ShareSounds [Sounds shareInstance]
 
-@interface SoundCalls : NSObject
+@interface Sounds : NSObject
 
 + (instancetype)shareInstance;
 

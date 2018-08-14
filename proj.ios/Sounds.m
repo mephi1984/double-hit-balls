@@ -1,6 +1,6 @@
-#import "SoundCalls.h"
+#import "Sounds.h"
 
-@interface SoundCalls ()
+@interface Sounds ()
 
 @property (nonatomic, strong) AVAudioPlayer* backgroundPlayer;
 
@@ -8,9 +8,9 @@
 
 @end
 
-@implementation SoundCalls
+@implementation Sounds
 
-static SoundCalls *_shareInstance;
+static Sounds *_shareInstance;
 
 +(instancetype)shareInstance {
     _shareInstance = [[super allocWithZone:NULL] init];
