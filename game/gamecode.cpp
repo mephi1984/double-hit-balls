@@ -631,7 +631,11 @@ void TGameLevel::ReloadLevel()
 	}
 	BkgTexture = *rowIterator;
 	
+#ifdef NDEBUG
 	ResourceManager->TexList.AddTexture("level_background/" + BkgTexture);
+#else
+	ResourceManager->TexList.AddTexture("level_background/debug/" + BkgTexture);
+#endif
 
 	++rowIterator;
 

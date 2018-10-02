@@ -45,6 +45,10 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 			star.name = stars_pt.second.get<std::string>("name", "error");
 			star.scale = stars_pt.second.get<float>("scale", 0.0f);
 			star.texture = stars_pt.second.get<std::string>("texture", "error");
+
+			star.textureName = GetFileName(star.texture);
+			ResourceManager->TexList.AddTexture(star.texture);
+
 			star.position = Eigen::Vector2f(stars_pt.second.get<float>("position.x_coord", 0.0f), stars_pt.second.get<float>("position.y_coord", 0.0f));
 			
 			/*..Levels..*/
@@ -122,8 +126,8 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 
 			tex_size = textureSizeNormalize(
 				Eigen::Vector2f(
-				((float)SE::ResourceManager->TexList.GetTextureWidth("star_" + std::to_string(i) + "_" + std::to_string(j))),
-				((float)SE::ResourceManager->TexList.GetTextureHeight("star_" + std::to_string(i) + "_" + std::to_string(j))))
+				((float)SE::ResourceManager->TexList.GetTextureWidth(galaxies[i].Stars[j].textureName)),
+				((float)SE::ResourceManager->TexList.GetTextureHeight(galaxies[i].Stars[j].textureName)))
 			); // normalized
 			star_params.push_back(std::make_pair(
 				Eigen::Vector2f(
@@ -202,10 +206,10 @@ void GalaxyMenu::DrawGalaxyMenu() {
 		if (stars_params.size() >= i) {
 			for (int j = 0; j < stars_params[i].size(); j++) {
 				if (planetHoverIndex == j) {
-					glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover"]);
+					glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[galaxies[i].Stars[j].textureName]);
 				}
 				else {
-					glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList["star_" + std::to_string(i) + "_" + std::to_string(j)]);
+					glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[galaxies[i].Stars[j].textureName]);
 				}
 				SE::Renderer->DrawRect(
 					Eigen::Vector2f(

@@ -55,6 +55,7 @@ public:
 
 	// ::#Params#::
 	std::string texture;
+	std::string textureName;
 	std::string name;
 	Eigen::Vector2f position;
 	float scale;

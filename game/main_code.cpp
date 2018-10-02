@@ -130,7 +130,7 @@ void TMyApplication::InnerInit()
 	// ------- UI -------
 
 	// TESTS of menu
-	if (Menu.GalaxMenu.InitGalaxyMenu("galaxy_ptree.json")) {
+	if (Menu.GalaxMenu.InitGalaxyMenu("levels/galaxy_ptree.json")) {
 		std::cout << "ok" << std::endl;
 	}
 	else {
@@ -318,10 +318,10 @@ void TMyApplication::LoadResources()
 	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/matte_screen.png", "matte_screen"));
 	for (int i = 0; i < galaxies.size(); i++) {
 		TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/galaxies/galaxy_" + std::to_string(i) + ".png", "galaxy_" + std::to_string(i)));
-		for (int j = 0; j < galaxies[i]; j++) {
-			TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j)));
-			TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover" + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover"));
-		}
+		//for (int j = 0; j < galaxies[i]; j++) {
+		//	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j)));
+		//	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("galax_menu/planets/star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover" + ".png", "star_" + std::to_string(i) + "_" + std::to_string(j) + "_hover"));
+		//}
 	}
 
 	/*..buttons and level list plane textures..*/
@@ -329,18 +329,6 @@ void TMyApplication::LoadResources()
 	TextureNamesToLoad.push_back(std::pair<std::string, std::string>("black_square.png", "black_square"));
 
 
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot1.png", "levelshot1"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot2.png", "levelshot2"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot3.png", "levelshot3"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot4.png", "levelshot4"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot5.png", "levelshot5"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot6.png", "levelshot6"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot7.png", "levelshot7"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot8.png", "levelshot8"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot9.png", "levelshot9"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot10.png", "levelshot10"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot11.png", "levelshot11"));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>("levelshot12.png", "levelshot12"));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>("game_end.png", "game_end"));
     
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_BLOCK_TEXTURE1 + ".png", CONST_BLOCK_TEXTURE1));

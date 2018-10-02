@@ -15,38 +15,38 @@
 						"x_coord": -0.45,
 						"y_coord": 0.45
 					},
-					"texture": "star_0_0.png",
+					"texture": "galax_menu/planets/star_0_0.png",
 					"scale": 0.1,
 					"levels": [
 						{
-							"name": "level1"
+							"name": "levels/old/level1"
 						},
 						{
-							"name": "level2"
+							"name": "levels/old/level2"
 						},
 						{
-							"name": "level3"
+							"name": "levels/old/level3"
 						},
 						{
-							"name": "level4"
+							"name": "levels/old/level4"
 						},
 						{
-							"name": "level5"
+							"name": "levels/old/level5"
 						},
 						{
-							"name": "level1"
+							"name": "levels/old/level1"
 						},
 						{
-							"name": "level2"
+							"name": "levels/old/level2"
 						},
 						{
-							"name": "level3"
+							"name": "levels/old/level3"
 						},
 						{
-							"name": "level4"
+							"name": "levels/old/level4"
 						},
 						{
-							"name": "level5"
+							"name": "levels/old/level5"
 						}
 					]
 				},
@@ -56,23 +56,23 @@
 						"x_coord": 0.28,
 						"y_coord": 0.31
 					},
-					"texture": "star_0_1.png",
+					"texture": "galax_menu/planets/star_0_1.png",
 					"scale": 0.18,
 					"levels": [
 						{
-							"name": "level6"
+							"name": "levels/old/level6"
 						},
 						{
-							"name": "level7"
+							"name": "levels/old/level7"
 						},
 						{
-							"name": "level3"
+							"name": "levels/old/level3"
 						},
 						{
-							"name": "level4"
+							"name": "levels/old/level4"
 						},
 						{
-							"name": "level5"
+							"name": "levels/old/level5"
 						}
 					]
 				},
@@ -82,23 +82,23 @@
 						"x_coord": 0.35,
 						"y_coord": -0.25
 					},
-					"texture": "star_0_2.png",
+					"texture": "galax_menu/planets/star_0_2.png",
 					"scale": 0.12,
 					"levels": [
 						{
-							"name": "level8"
+							"name": "levels/old/level8"
 						},
 						{
-							"name": "level9"
+							"name": "levels/old/level9"
 						},
 						{
-							"name": "level10"
+							"name": "levels/old/level10"
 						},
 						{
-							"name": "level11"
+							"name": "levels/old/level11"
 						},
 						{
-							"name": "level12"
+							"name": "levels/old/level12"
 						}
 					]
 				}
