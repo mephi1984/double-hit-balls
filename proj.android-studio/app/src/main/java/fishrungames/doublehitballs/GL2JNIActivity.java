@@ -20,6 +20,8 @@ import android.view.MotionEvent;
 
 public class GL2JNIActivity extends Activity
 {
+
+	private static GL2JNIActivity instance;
 	
 	GLView mView;
 	
@@ -28,7 +30,9 @@ public class GL2JNIActivity extends Activity
 	{
 		
 		super.onCreate(icicle);
-		
+
+		instance = this;
+
 		EngineWrapper.LoadSalmonEngineLibrary();
 		EngineWrapper.SetActivityInstance(this);
 		EngineWrapper.SetupEnviroment();
@@ -88,4 +92,12 @@ public class GL2JNIActivity extends Activity
 		EngineWrapper.ProcessKeyDown(keyCode, event);
 		return super.onKeyDown(keyCode, event);
 	}
+
+	public static GL2JNIActivity getInstance() {
+		if (instance == null) {
+			throw new RuntimeException("error GL2JNIActivity getInstance() - you are trying to get activity instance when it is not created or already destroyed");
+		}
+		return instance;
+	}
+
 }

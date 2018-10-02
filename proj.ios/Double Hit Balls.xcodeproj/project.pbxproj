@@ -32,6 +32,13 @@
 		84D0FEBE1E274DDD00EC3FE5 /* libSalmon Engine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C902A7815C5735700FBC901 /* libSalmon Engine.a */; };
 		84D0FEC91E274E4A00EC3FE5 /* libvorbis-tremor-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D0FEC61E274E3700EC3FE5 /* libvorbis-tremor-ios.a */; };
 		84D0FECC1E274EBC00EC3FE5 /* main_code.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84D0FECA1E274EBC00EC3FE5 /* main_code.cpp */; };
+		AC67C87D211C8DD3003AA164 /* NativeSoundCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC67C87C211C8DD3003AA164 /* NativeSoundCalls.swift */; };
+		AC67C87F211C8DE3003AA164 /* NativeSoundCallsImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC67C87E211C8DE3003AA164 /* NativeSoundCallsImpl.swift */; };
+		AC67C882211C8E24003AA164 /* gunshot_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AC67C880211C8E24003AA164 /* gunshot_sound.mp3 */; };
+		AC67C883211C8E24003AA164 /* background_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AC67C881211C8E24003AA164 /* background_sound.mp3 */; };
+		AC8032262122F8B100DEA5AC /* SoundCalls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC8032242122F8B100DEA5AC /* SoundCalls.cpp */; };
+		AC80322A2122F8DD00DEA5AC /* BridgeDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC8032282122F8DC00DEA5AC /* BridgeDelegate.mm */; };
+		ACC6F8382121E8DF00CEDC5C /* Sounds.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC6F8372121E8DF00CEDC5C /* Sounds.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +110,16 @@
 		84D0FEC11E274E3700EC3FE5 /* vorbis-tremor-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "vorbis-tremor-ios.xcodeproj"; path = "../../libs/vorbis-tremor-ios/vorbis-tremor-ios.xcodeproj"; sourceTree = "<group>"; };
 		84D0FECA1E274EBC00EC3FE5 /* main_code.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main_code.cpp; path = ../game/main_code.cpp; sourceTree = "<group>"; };
 		84D0FECB1E274EBC00EC3FE5 /* main_code.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main_code.h; path = ../game/main_code.h; sourceTree = "<group>"; };
+		AC67C87C211C8DD3003AA164 /* NativeSoundCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeSoundCalls.swift; sourceTree = "<group>"; };
+		AC67C87E211C8DE3003AA164 /* NativeSoundCallsImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeSoundCallsImpl.swift; sourceTree = "<group>"; };
+		AC67C880211C8E24003AA164 /* gunshot_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gunshot_sound.mp3; sourceTree = "<group>"; };
+		AC67C881211C8E24003AA164 /* background_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background_sound.mp3; sourceTree = "<group>"; };
+		AC8032242122F8B100DEA5AC /* SoundCalls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundCalls.cpp; sourceTree = "<group>"; };
+		AC8032282122F8DC00DEA5AC /* BridgeDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BridgeDelegate.mm; sourceTree = "<group>"; };
+		AC8032292122F8DD00DEA5AC /* BridgeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgeDelegate.h; sourceTree = "<group>"; };
+		AC80322B2122FBC100DEA5AC /* SoundCalls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundCalls.h; sourceTree = "<group>"; };
+		ACC6F8372121E8DF00CEDC5C /* Sounds.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Sounds.m; sourceTree = "<group>"; };
+		ACC6F8392121E8ED00CEDC5C /* Sounds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sounds.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +145,8 @@
 		4C49B2AE15B0991B003512CD = {
 			isa = PBXGroup;
 			children = (
+				AC67C881211C8E24003AA164 /* background_sound.mp3 */,
+				AC67C880211C8E24003AA164 /* gunshot_sound.mp3 */,
 				84D0FEC11E274E3700EC3FE5 /* vorbis-tremor-ios.xcodeproj */,
 				4C902A7015C5735500FBC901 /* Salmon Engine.xcodeproj */,
 				4C7B819515C40F770024D61A /* Libs */,
@@ -217,6 +236,8 @@
 		4CE6A9E315B2F9A4006A3965 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				AC8032272122F8C500DEA5AC /* Bridages */,
+				AC67C87B211C8DB6003AA164 /* sounds */,
 				74C3AE251E2E2A40003C07F2 /* creditscode.cpp */,
 				74C3AE261E2E2A40003C07F2 /* creditscode.h */,
 				74C3AE271E2E2A40003C07F2 /* game_area_interface.h */,
@@ -228,6 +249,8 @@
 				74C3AE2D1E2E2A40003C07F2 /* menucode.h */,
 				84D0FECA1E274EBC00EC3FE5 /* main_code.cpp */,
 				84D0FECB1E274EBC00EC3FE5 /* main_code.h */,
+				AC8032242122F8B100DEA5AC /* SoundCalls.cpp */,
+				AC80322B2122FBC100DEA5AC /* SoundCalls.h */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -238,6 +261,26 @@
 				84D0FEC61E274E3700EC3FE5 /* libvorbis-tremor-ios.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AC67C87B211C8DB6003AA164 /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				AC67C87C211C8DD3003AA164 /* NativeSoundCalls.swift */,
+				AC67C87E211C8DE3003AA164 /* NativeSoundCallsImpl.swift */,
+				ACC6F8372121E8DF00CEDC5C /* Sounds.m */,
+				ACC6F8392121E8ED00CEDC5C /* Sounds.h */,
+			);
+			name = sounds;
+			sourceTree = "<group>";
+		};
+		AC8032272122F8C500DEA5AC /* Bridages */ = {
+			isa = PBXGroup;
+			children = (
+				AC8032292122F8DD00DEA5AC /* BridgeDelegate.h */,
+				AC8032282122F8DC00DEA5AC /* BridgeDelegate.mm */,
+			);
+			name = Bridages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -326,6 +369,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC67C882211C8E24003AA164 /* gunshot_sound.mp3 in Resources */,
+				AC67C883211C8E24003AA164 /* background_sound.mp3 in Resources */,
 				841270C91E639C2F00776DAE /* Images.xcassets in Resources */,
 				841D49651E65981600C85722 /* LaunchScreen.storyboard in Resources */,
 				4C49B2CC15B0991B003512CD /* InfoPlist.strings in Resources */,
@@ -343,15 +388,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				74EEBAEF1E2D13A6004C6C65 /* AppDelegate.swift in Sources */,
+				ACC6F8382121E8DF00CEDC5C /* Sounds.m in Sources */,
 				74C3AE2E1E2E2A40003C07F2 /* creditscode.cpp in Sources */,
 				74C3AE2F1E2E2A40003C07F2 /* gamecode.cpp in Sources */,
+				AC67C87D211C8DD3003AA164 /* NativeSoundCalls.swift in Sources */,
+				AC80322A2122F8DD00DEA5AC /* BridgeDelegate.mm in Sources */,
 				74EEBAF11E2D1C7C004C6C65 /* CustomGLKView.swift in Sources */,
 				84D0FECC1E274EBC00EC3FE5 /* main_code.cpp in Sources */,
 				74C3AE301E2E2A40003C07F2 /* loadingcode.cpp in Sources */,
 				74AC9EBD1E2CE407003C9749 /* ViewController.swift in Sources */,
 				74AC9EC11E2CF533003C9749 /* SENamespaceWrapper.cpp in Sources */,
 				74C3AE311E2E2A40003C07F2 /* menucode.cpp in Sources */,
+				AC67C87F211C8DE3003AA164 /* NativeSoundCallsImpl.swift in Sources */,
 				4C7AD44C15B1D77700A599F6 /* ios_api.cpp in Sources */,
+				AC8032262122F8B100DEA5AC /* SoundCalls.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

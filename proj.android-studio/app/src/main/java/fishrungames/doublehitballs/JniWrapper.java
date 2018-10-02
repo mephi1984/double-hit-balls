@@ -6,7 +6,6 @@ public class JniWrapper
         System.loadLibrary("DoubleHitBalls");
     }
 
-   
     public static native void Init(int width, int height);
 
 }

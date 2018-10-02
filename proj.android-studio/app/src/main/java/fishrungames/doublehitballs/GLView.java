@@ -9,6 +9,7 @@ import android.opengl.GLSurfaceView;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import fishrungames.doublehitballs.sounds.JniSoundCalls;
 import fishrungames.salmonengineandroid.GLViewAncestor;
 import fishrungames.salmonengineandroid.EngineWrapper;
 
@@ -59,6 +60,7 @@ class GLView extends GLViewAncestor
 		public void onSurfaceChanged(GL10 gl, int width, int height)
 		{
 			JniWrapper.Init(width,height);
+			JniSoundCalls.init();
 		}
 		
 		public void onSurfaceCreated(GL10 gl, EGLConfig config)
