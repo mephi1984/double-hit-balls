@@ -439,8 +439,10 @@ void TBall::Update(size_t dt)
 //===========================================
 
 
-TGameLevel::TGameLevel()
+TGameLevel::TGameLevel(int levelStar, int levelIndex)
 {
+	this->levelStar = levelStar;
+	this->levelIndex = levelIndex;
 
     BkgTexture = "";
     
@@ -461,6 +463,16 @@ TGameLevel::TGameLevel()
 
 TGameLevel::~TGameLevel()
 {
+}
+
+int TGameLevel::getStarIndex()
+{
+	return levelStar;
+}
+
+int TGameLevel::getLevelIndex()
+{
+	return levelIndex;
 }
 
 
@@ -1319,6 +1331,8 @@ void TGameLevel::Update(size_t dt)
     
     if (noMoreBlocks && LevelState != CONST_LEVELSTATE_FINISH_FREEZE)
     {
+		Application->SaveUserProgress(levelStar, levelIndex);
+
 		Application->fireworkEffect(); // Firework start
 
         Application->OpenNextLevel();

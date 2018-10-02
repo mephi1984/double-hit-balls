@@ -26,7 +26,8 @@
 					"paddingLeft": 10,
 					"paddingRight": 10,
 					"itemSpacing": 20,
-					"children" : [{
+					"children" : [
+					{
 							"type": "HorizontalLinearLayout",
 							"name": "row1",
 							"paddingBottom": 15,

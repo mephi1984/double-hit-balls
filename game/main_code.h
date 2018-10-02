@@ -138,6 +138,9 @@ public:
 
 	TMyApplication() : TApplication(), Loaded(false), Inited(false) { }
 
+	void LoadUserProgress();
+	void SaveUserProgress(int levelStar, int levelIndex);
+
 	virtual void InnerInit();
 
 	virtual void InnerDeinit();

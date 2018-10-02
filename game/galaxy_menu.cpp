@@ -28,7 +28,6 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 	boost::property_tree::ptree error_pt;
 	error_pt.put("error", "something goes wrong at InitGalaxyMenu");
 
-	int levelIndex = 1;
 
 	/*..Init Menu..*/
 	BOOST_FOREACH(auto menu_pt, config_pt.get_child("Space", error_pt)) {
@@ -39,6 +38,9 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 		galax.texture = menu_pt.second.get<std::string>("texture", "error");
 		galax.position = Eigen::Vector2f(menu_pt.second.get<float>("position.x_coord", 0.0f), menu_pt.second.get<float>("position.y_coord", 0.0f));
 		//boost::property_tree::ptree stars = menu_pt.second.get<boost::property_tree::ptree>("Stars", error_pt);
+
+		int levelStar = 0;
+
 		BOOST_FOREACH(auto stars_pt, menu_pt.second.get_child("Stars", error_pt)) {
 			StarObject star;
 
@@ -50,18 +52,24 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 			ResourceManager->TexList.AddTexture(star.texture);
 
 			star.position = Eigen::Vector2f(stars_pt.second.get<float>("position.x_coord", 0.0f), stars_pt.second.get<float>("position.y_coord", 0.0f));
+
+			int levelIndex = 0;
 			
 			/*..Levels..*/
 			BOOST_FOREACH(auto levels_pt, stars_pt.second.get_child("levels")) {
 
 				std::string levelName = levels_pt.second.get<std::string>("name", "empty");
 				
-				std::shared_ptr<TGameLevel> lvl = std::make_shared<TGameLevel>();
+				std::shared_ptr<TGameLevel> lvl = std::make_shared<TGameLevel>(levelStar, levelIndex);
 				lvl->FillWithFile(ST::PathToResources + levelName + ".txt");
 
 				star.selectionMenu.gameLevels.push_back(lvl);
+
+				++levelIndex;
 			}
 			galax.Stars.push_back(star);
+
+			++levelStar;
 		} 
 		galaxies.push_back(galax);
 	}
@@ -203,12 +211,15 @@ void GalaxyMenu::DrawGalaxyMenu() {
 		); // DrawRect
 
 		/*..Draw stars..*/
+		Renderer->PushShader("HoverableButtonShader");
 		if (stars_params.size() >= i) {
 			for (int j = 0; j < stars_params[i].size(); j++) {
 				if (planetHoverIndex == j) {
+					RenderUniform1i("Hover", 1);
 					glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[galaxies[i].Stars[j].textureName]);
 				}
 				else {
+					RenderUniform1i("Hover", 0);
 					glBindTexture(GL_TEXTURE_2D, SE::ResourceManager->TexList[galaxies[i].Stars[j].textureName]);
 				}
 				SE::Renderer->DrawRect(
@@ -223,6 +234,7 @@ void GalaxyMenu::DrawGalaxyMenu() {
 				); // DrawRect
 			}
 		}
+		Renderer->PopShader();
 
 		/*..Draw level selection menu..*/
 		//drawSelectionMenu(starIndex);
@@ -494,16 +506,32 @@ int GalaxyMenu::negativeV(float val) {
 }
 
 int GalaxyMenu::findPlanetByPos(Eigen::Vector2f pos) {
-	for (int i = 0; i < stars_params.size(); i++) {
-		for (int j = 0; j < stars_params[i].size(); j++) {
-			if (pos(0) >= (stars_params[i][j].first(0) - stars_params[i][j].second(0) / 2) && pos(0) <= (stars_params[i][j].first(0) + stars_params[i][j].second(0) / 2)) {
-				if (pos(1) >= (stars_params[i][j].first(1) - stars_params[i][j].second(1) / 2) && pos(1) <= (stars_params[i][j].first(1) + stars_params[i][j].second(1) / 2)) {
-					return j;
+
+	float minimalDistance = std::numeric_limits<float>::max();
+	int index = -1;
+
+	for (int i = 0; i < stars_params.size(); i++)
+	{
+		for (int j = 0; j < stars_params[i].size(); j++)
+		{
+			if (pos(0) >= (stars_params[i][j].first(0) - stars_params[i][j].second(0) / 2) && pos(0) <= (stars_params[i][j].first(0) + stars_params[i][j].second(0) / 2))
+			{
+				if (pos(1) >= (stars_params[i][j].first(1) - stars_params[i][j].second(1) / 2) && pos(1) <= (stars_params[i][j].first(1) + stars_params[i][j].second(1) / 2))
+				{
+					float dx = pos(0) - stars_params[i][j].first(0);
+					float dy = pos(1) - stars_params[i][j].first(1);
+					float distance = dx * dx + dy * dy;
+
+					if (distance < minimalDistance)
+					{
+						minimalDistance = distance;
+						index = j;
+					}
 				}
 			}
 		}
 	}
-	return -1;
+	return index;
 }
 
 bool GalaxyMenu::checkMenuBound(Eigen::Vector2f pos) {

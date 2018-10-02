@@ -130,6 +130,9 @@ protected:
     //std::string LevelScreenTexture;
     std::string LevelFileName;
 
+	int levelIndex;
+	int levelStar;
+
 	GLuint prerenderedImage;
     
     Vector2f ReflectorPos;
@@ -190,7 +193,7 @@ protected:
     void ReloadLevel();
     
 public:
-    TGameLevel();
+    TGameLevel(int levelStar, int levelIndex);
     ~TGameLevel();
     
     void FillWithFile(const std::string& filename);
@@ -198,6 +201,9 @@ public:
     
 	//void SetLevelScale();
 	//Vector2f GetLevelScale();
+
+	int getStarIndex();
+	int getLevelIndex();
 
     void SetStandBy();
     void SetLoading();

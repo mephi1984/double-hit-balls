@@ -76,3 +76,4 @@ iOSInjectionProject/
 *.db
 *.opendb
 /proj.android-studio/app/release/
+assets/levels/user_progress.json

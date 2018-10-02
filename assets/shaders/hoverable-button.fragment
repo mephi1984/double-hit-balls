@@ -1,0 +1,16 @@
+precision highp float;
+
+uniform sampler2D Texture;
+uniform bool Hover;
+varying vec2 texCoord;
+varying vec4 color;
+
+void main() 
+{
+	vec4 texColor = texture2D(Texture,texCoord).rgba;
+	gl_FragColor =  color * texColor.rgba;
+	if (Hover)
+	{
+		gl_FragColor.xyz *= 1.5;
+	}
+}

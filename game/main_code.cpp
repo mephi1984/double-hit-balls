@@ -54,9 +54,73 @@ const float CONST_CREDITS_SHOW_TIME = 150.f;
 TMyApplication* Application;
 
 
+int currentStar;
+std::vector<int> finishedLevels;
+
+void TMyApplication::LoadUserProgress()
+{
+	boost::property_tree::ptree userProgressJson;
+
+	try
+	{
+		boost::property_tree::json_parser::read_json(ST::PathToResources + "levels/user_progress.json", userProgressJson);
+		currentStar = userProgressJson.get<int>("currentStar");
+		for (auto& index : userProgressJson.get_child("finishedLevels"))
+		{
+			finishedLevels.push_back(index.second.get_value<int>());
+		}
+	}
+	catch (...)
+	{
+		currentStar = 0;
+		finishedLevels.clear();
+	}
+}
+
+void TMyApplication::SaveUserProgress(int levelStar, int levelIndex)
+{
+	if (levelStar < currentStar)
+	{
+		return;
+	}
+
+	auto iter = std::find(finishedLevels.begin(), finishedLevels.end(), levelIndex);
+	if (iter != finishedLevels.end())
+	{
+		return;
+	}
+
+	finishedLevels.push_back(levelIndex);
+
+	if (finishedLevels.size() == Menu.GalaxMenu.galaxies[0].Stars[currentStar].selectionMenu.gameLevels.size())
+	{
+		finishedLevels.clear();
+
+		if (currentStar < Menu.GalaxMenu.galaxies[0].Stars.size() - 1)
+		{
+			currentStar += 1;
+		}
+	}
+
+	boost::property_tree::ptree userProgressJson;
+
+	userProgressJson.put("currentStar", currentStar);
+
+	boost::property_tree::ptree finishedLevelsTree;
+	for (int index : finishedLevels)
+	{
+		boost::property_tree::ptree finishedLevel;
+		finishedLevel.put_value(index);
+		finishedLevelsTree.push_back(std::make_pair("", finishedLevel));
+	}
+
+	userProgressJson.put_child("finishedLevels", finishedLevelsTree);
+	boost::property_tree::json_parser::write_json(ST::PathToResources + "levels/user_progress.json", userProgressJson);
+}
+
+
 void TMyApplication::InnerInit()
 {
-
     Application = this;
     
 #ifdef TARGET_WIN32
@@ -76,6 +140,8 @@ void TMyApplication::InnerInit()
     ST::PathToResources = "";
 #endif
 
+	LoadUserProgress();
+
     if (Console != NULL)
     {
         *Console<<"APP INIT\n";
@@ -93,6 +159,7 @@ void TMyApplication::InnerInit()
 
 	//ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/texture-shader.vertex", "shaders/texture-shader.fragment");
 	ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/gui_transparent.vertex", "shaders/gui_transparent.fragment");
+	ResourceManager->ShaderManager.AddShader("HoverableButtonShader", "shaders/gui_transparent.vertex", "shaders/hoverable-button.fragment");
 	ResourceManager->ShaderManager.AddShader("BlackAndWhiteShader", "shaders/gui_transparent_blackandwhite.vertex", "shaders/gui_transparent_blackandwhite.fragment");
 	ResourceManager->ShaderManager.AddShader("ColorShader", "shaders/color-shader.vertex", "shaders/color-shader.fragment");
 	ResourceManager->ShaderManager.AddShader("FrameShader", "shaders/frameshader_vertex.txt", "shaders/frameshader_fragment.txt");
@@ -136,7 +203,6 @@ void TMyApplication::InnerInit()
 	else {
 		std::cout << "menu error" << std::endl;
 	}
-
 
 }
 
@@ -403,9 +469,7 @@ void TMyApplication::InnerDraw()
 {
 	//glDisable(GL_DEPTH_TEST);
 
-	Renderer->PushShader("DefaultShader");
     OnDrawSignal();
-	Renderer->PopShader();
 
 
 }
@@ -755,17 +819,7 @@ void TMyApplication::InnerOnMouseMove(TMouseState& mouseState) {
 
 bool TMyApplication::IsLevelOpened(int levelStar, int levelIndex)
 {
-	if (levelStar == 0)
-	{
-		return true;
-	}
-
-	if (levelStar == 1 && levelIndex < 3)
-	{
-		return true;
-	}
-
-	return false;
+	return levelStar <= currentStar;
 }
 
 
