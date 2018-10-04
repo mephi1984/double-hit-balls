@@ -840,7 +840,7 @@ void TMyApplication::InnerOnMouseMove(TMouseState& mouseState) {
 
 bool TMyApplication::IsLevelOpened(int levelStar, int levelIndex)
 {
-	return levelStar <= currentStar && levelIndex <= currentLevel;
+	return levelStar < currentStar || levelStar == currentStar && levelIndex <= currentLevel;
 }
 
 
