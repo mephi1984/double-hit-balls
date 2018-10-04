@@ -36,6 +36,8 @@ public class GL2JNIActivity extends Activity
 		EngineWrapper.LoadSalmonEngineLibrary();
 		EngineWrapper.SetActivityInstance(this);
 		EngineWrapper.SetupEnviroment();
+		JniWrapper.SetJavaVM();
+		JniWrapper.SetContext(this);
 		
 		String apkFilePath = null;
 		ApplicationInfo appInfo = null;

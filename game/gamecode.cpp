@@ -1328,7 +1328,6 @@ void TGameLevel::Update(size_t dt)
         }
     }
     
-    
     if (noMoreBlocks && LevelState != CONST_LEVELSTATE_FINISH_FREEZE)
     {
 		Application->SaveUserProgress(levelStar, levelIndex);

@@ -6,18 +6,14 @@ android {
     buildToolsVersion "28.0.0"
     defaultConfig {
         applicationId "fishrungames.DoubleHitBalls"
-        minSdkVersion 24
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-
-                abiFilters  "armeabi-v7a", "x86"
-
-                arguments "-DANDROID_STL=c++_shared"
-
+                abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86'
                 cppFlags "-std=c++17 -frtti -fexceptions -fsigned-char -Wno-c++11-narrowing"
             }
         }
@@ -36,6 +32,13 @@ android {
     sourceSets {
         main {
             assets.srcDirs = ['../../assets/']
+        }
+    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'arm64-v8a', 'armeabi-v7a', 'x86'
         }
     }
 }

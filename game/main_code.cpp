@@ -5,6 +5,7 @@
 #include <string>
 
 #include "include/Engine.h"
+#include "android_api.h"
 
 #include "menucode.h"
 
@@ -55,7 +56,7 @@ TMyApplication* Application;
 
 
 int currentStar;
-std::vector<int> finishedLevels;
+int currentLevel;
 
 void TMyApplication::LoadUserProgress()
 {
@@ -63,17 +64,22 @@ void TMyApplication::LoadUserProgress()
 
 	try
 	{
+#ifdef TARGET_WIN32
 		boost::property_tree::json_parser::read_json(ST::PathToResources + "levels/user_progress.json", userProgressJson);
-		currentStar = userProgressJson.get<int>("currentStar");
-		for (auto& index : userProgressJson.get_child("finishedLevels"))
-		{
-			finishedLevels.push_back(index.second.get_value<int>());
-		}
+#endif
+
+#ifdef TARGET_ANDROID
+        auto ss = LoadFileFromAndroid("user_progress.json");
+        boost::property_tree::json_parser::read_json(ss, userProgressJson);
+#endif
+
+        currentStar = userProgressJson.get<int>("currentStar");
+        currentLevel = userProgressJson.get<int>("currentLevel");
 	}
 	catch (...)
 	{
 		currentStar = 0;
-		finishedLevels.clear();
+        currentLevel = 0;
 	}
 }
 
@@ -84,38 +90,45 @@ void TMyApplication::SaveUserProgress(int levelStar, int levelIndex)
 		return;
 	}
 
-	auto iter = std::find(finishedLevels.begin(), finishedLevels.end(), levelIndex);
-	if (iter != finishedLevels.end())
+    if (levelIndex < currentLevel)
+    {
+        return;
+    }
+
+	if (currentStar == Menu.GalaxMenu.galaxies[0].Stars.size())
 	{
 		return;
 	}
 
-	finishedLevels.push_back(levelIndex);
+	currentLevel += 1;
 
-	if (finishedLevels.size() == Menu.GalaxMenu.galaxies[0].Stars[currentStar].selectionMenu.gameLevels.size())
+	if (currentLevel == Menu.GalaxMenu.galaxies[0].Stars[currentStar].selectionMenu.gameLevels.size())
 	{
-		finishedLevels.clear();
+		currentLevel = 0;
 
-		if (currentStar < Menu.GalaxMenu.galaxies[0].Stars.size() - 1)
+		currentStar += 1;
+
+		if (currentStar == Menu.GalaxMenu.galaxies[0].Stars.size())
 		{
-			currentStar += 1;
+
 		}
 	}
 
 	boost::property_tree::ptree userProgressJson;
 
 	userProgressJson.put("currentStar", currentStar);
+    userProgressJson.put("currentLevel", currentLevel);
 
-	boost::property_tree::ptree finishedLevelsTree;
-	for (int index : finishedLevels)
-	{
-		boost::property_tree::ptree finishedLevel;
-		finishedLevel.put_value(index);
-		finishedLevelsTree.push_back(std::make_pair("", finishedLevel));
-	}
+#ifdef TARGET_WIN32
+    boost::property_tree::json_parser::write_json(ST::PathToResources + "levels/user_progress.json", userProgressJson);
+#endif
 
-	userProgressJson.put_child("finishedLevels", finishedLevelsTree);
-	boost::property_tree::json_parser::write_json(ST::PathToResources + "levels/user_progress.json", userProgressJson);
+#ifdef TARGET_ANDROID
+    std::stringstream ss;
+    boost::property_tree::json_parser::write_json(ss, userProgressJson);
+
+    SaveFileToAndroid("user_progress.json", ss.str());
+#endif
 }
 
 
@@ -203,7 +216,6 @@ void TMyApplication::InnerInit()
 	else {
 		std::cout << "menu error" << std::endl;
 	}
-
 }
 
 void TMyApplication::InnerDeinit()
@@ -607,8 +619,10 @@ void TMyApplication::LoadGalaxyUi()
 
 	modal_background->onMouseUpSignal.connect(
 		[modal_background, this](Vector2f v, int i) {
-		modal_background->setVisibility(false);
-		Menu.GalaxMenu.setTimerActivity(false);
+            PerformInMainThreadAsync([modal_background, this]() {
+                modal_background->setVisibility(false);
+                Menu.GalaxMenu.setTimerActivity(false);
+            });
 	});
 
 }
@@ -686,11 +700,13 @@ void TMyApplication::SetupGalaxyUi(size_t levelStar)
 				
 				currentLevelButton->onMouseUpSignal.connect(
 					[this, modal_background, levelStar, levelIndex](Vector2f v, int i) {
-					modal_background->setVisibility(false);
+                        PerformInMainThreadAsync([this, modal_background, levelStar, levelIndex]() {
+							modal_background->setVisibility(false);
 
-					std::shared_ptr<TGameLevel> lvl = this->Menu.GalaxMenu.galaxies[0].Stars[levelStar].selectionMenu.gameLevels[levelIndex];
-					lvl->ReloadLevel();
-					this->GoFromMenuToGame(lvl);
+							std::shared_ptr<TGameLevel> lvl = this->Menu.GalaxMenu.galaxies[0].Stars[levelStar].selectionMenu.gameLevels[levelIndex];
+							lvl->ReloadLevel();
+							this->GoFromMenuToGame(lvl);
+						});
 				});
 
 			}
@@ -825,7 +841,7 @@ void TMyApplication::InnerOnMouseMove(TMouseState& mouseState) {
 
 bool TMyApplication::IsLevelOpened(int levelStar, int levelIndex)
 {
-	return levelStar <= currentStar;
+	return levelStar <= currentStar && levelIndex <= currentLevel;
 }
 
 
