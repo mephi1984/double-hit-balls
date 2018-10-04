@@ -47,6 +47,8 @@ public:
 	void tapUp(Eigen::Vector2f pos);
 	void tapMove(Eigen::Vector2f shift);
 
+	void setTimerActivity(bool value);
+
 
 private:
 

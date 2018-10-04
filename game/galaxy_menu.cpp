@@ -13,6 +13,11 @@ GalaxyMenu::~GalaxyMenu()
 {
 }
 
+void GalaxyMenu::setTimerActivity(bool value)
+{
+	timer_active = value;
+}
+
 bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 	try
 	{
@@ -244,6 +249,7 @@ void GalaxyMenu::DrawGalaxyMenu() {
 }
 
 void GalaxyMenu::InteractWithGalaxy(size_t dt) {
+
 	if (timer_active) {
 		// ::::::::::::: timer active ::::::::::::::
 		if (menuState == 0) { // main view
@@ -310,7 +316,6 @@ void GalaxyMenu::InteractWithGalaxy(size_t dt) {
 					if (starIndex != -1) {
 						planetHoverIndex = starIndex;
 						Application->SetupGalaxyUi(starIndex);
-						ResourceManager->newGuiManager.findWidgetByName("modal_background")->setVisibility(true);
 					}
 
 					timer_active = false;

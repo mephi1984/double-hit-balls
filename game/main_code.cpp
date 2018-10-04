@@ -606,8 +606,9 @@ void TMyApplication::LoadGalaxyUi()
 	std::shared_ptr<WidgetAncestor> modal_background = ResourceManager->newGuiManager.findWidgetByName("modal_background");
 
 	modal_background->onMouseUpSignal.connect(
-		[modal_background](Vector2f v, int i) {
-		modal_background->visible = false;
+		[modal_background, this](Vector2f v, int i) {
+		modal_background->setVisibility(false);
+		Menu.GalaxMenu.setTimerActivity(false);
 	});
 
 }
@@ -623,6 +624,10 @@ void TMyApplication::SetupGalaxyUi(size_t levelStar)
 	std::shared_ptr<WidgetAncestor> row4 = ResourceManager->newGuiManager.findWidgetByName("row4");
 
 	size_t levelCount = this->Menu.GalaxMenu.galaxies[0].Stars[levelStar].selectionMenu.gameLevels.size();
+
+	ResourceManager->newGuiManager.startEditing();
+
+	modal_background->setVisibility(true);
 
 	if (levelCount <= 3)
 	{
@@ -665,8 +670,6 @@ void TMyApplication::SetupGalaxyUi(size_t levelStar)
 
 
 		currentLevelButton->onMouseUpSignal.disconnect_all_slots();
-
-
 		
 		if (levelIndex < levelCount)
 		{
@@ -683,7 +686,7 @@ void TMyApplication::SetupGalaxyUi(size_t levelStar)
 				
 				currentLevelButton->onMouseUpSignal.connect(
 					[this, modal_background, levelStar, levelIndex](Vector2f v, int i) {
-					modal_background->visible = false;
+					modal_background->setVisibility(false);
 
 					std::shared_ptr<TGameLevel> lvl = this->Menu.GalaxMenu.galaxies[0].Stars[levelStar].selectionMenu.gameLevels[levelIndex];
 					lvl->ReloadLevel();
@@ -693,6 +696,8 @@ void TMyApplication::SetupGalaxyUi(size_t levelStar)
 			}
 			else
 			{
+				currentLevelButton->setVisibility(true);
+
 				currentLevelButton->setBackground(levelName + "_prerender_blackandwhite");
 			}
 
@@ -705,8 +710,9 @@ void TMyApplication::SetupGalaxyUi(size_t levelStar)
 		}
 		
 	}
-	
 
+
+	ResourceManager->newGuiManager.finishEditing();
 
 }
 
