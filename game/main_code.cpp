@@ -130,6 +130,11 @@ void TMyApplication::SaveUserProgress(int levelStar, int levelIndex)
 #endif
 }
 
+void TMyApplication::InnerChangeWidthHeight(int screenWidth, int screenHeight, float matrixWidth, float matrixHeight)
+{
+	Menu.GalaxMenu.UpdateGalaxyMenu(matrixWidth, matrixHeight, 0);
+	SetGameLevelScreenScale();
+}
 
 void TMyApplication::InnerInit()
 {
@@ -154,10 +159,8 @@ void TMyApplication::InnerInit()
 
 	LoadUserProgress();
 
-    if (Console != NULL)
-    {
-        *Console<<"APP INIT\n";
-    }
+	GetConsole() <<"APP INIT\n";
+
     srand (static_cast<size_t>(time(NULL)));
 	GameState = CONST_GAMESTATE_PRELOADING;
 	StateTimer = 0.f;
@@ -221,10 +224,8 @@ void TMyApplication::InnerDeinit()
 {
     Inited = false;
     Loaded = false;
-    if (Console != NULL)
-    {
-        *Console<<"APP DEINIT\n";
-    }
+
+	GetConsole() << "APP DEINIT\n";
 
     OnTapUpSignal.disconnect(boost::bind(&TGameLevel::OnTapUp, boost::ref(GameLevel), _1));
     OnTapUpSignal.disconnect(boost::bind(&TGameMenu::OnTapUp, boost::ref(Menu), _1));
@@ -474,7 +475,10 @@ void TMyApplication::TrySaveGame()
 
 }
 
-
+void TMyApplication::OnKeyPress(size_t key)
+{
+	TGameLevel::XXX = !TGameLevel::XXX;
+}
 	
 void TMyApplication::InnerDraw()
 {
@@ -519,8 +523,6 @@ void TMyApplication::InnerUpdate(size_t dt)
 
 			Renderer->SwitchToFrameBuffer("LevelBuffer");
 
-			Renderer->SetProjectionMatrix(768, 480);
-
 			Renderer->LoadIdentity();
 
 			for (auto &star : Menu.GalaxMenu.galaxies[0].Stars)
@@ -544,7 +546,9 @@ void TMyApplication::InnerUpdate(size_t dt)
 			GameState = CONST_GAMESTATE_MENU;
 			ApplySignalsToMenu();
 
-			LoadGalaxyUi();	
+			LoadGalaxyUi();
+
+			Menu.GalaxMenu.UpdateGalaxyMenu(Renderer->GetMatrixWidth(), Renderer->GetMatrixHeight(), 0);
 		
             OnDrawSignal.connect(0, boost::bind(&TGameMenu::Draw, boost::ref(Menu)));
             StateTimer = 0.f;
@@ -895,14 +899,47 @@ void TMyApplication::EffectsUpdate(size_t dt) {
 	lvlFirework.update(dt / 1000.f);
 }
 void TMyApplication::EffectsDraw() {
+
+	float screenRatio = Renderer->GetMatrixWidth() / (float)Renderer->GetMatrixHeight();
+	float screenRatioToFixedRatio = screenRatio / 1.6f;
+	Vector2f offset;
+	float scale;
+	if (screenRatioToFixedRatio > 1.f)
+	{
+		offset[0] = (Renderer->GetMatrixWidth() - Renderer->GetMatrixWidth() / screenRatioToFixedRatio) / 2.f;
+		offset[1] = 0;
+		scale = Renderer->GetMatrixHeight() / 480.f;
+	}
+	else
+	{
+		offset[0] = 0;
+		offset[1] = 0;// (screenHeight - screenHeight * screenRatioToFixedRatio) / 2.f;
+		scale = Renderer->GetMatrixWidth() / 768.f;
+	}
+
+	Renderer->PushMatrix();
+	Renderer->TranslateMatrix(Vector3f(offset[0], offset[1], 0));
+	Renderer->ScaleMatrix(scale);
+
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	lsparkler.draw();
 	rsparkler.draw();
 	tsparkler.draw();
 	bsparkler.draw();
 	lvlFirework.draw();
+
+	Renderer->PopMatrix();
+
+	glPopAttrib();
 }
 
 void TMyApplication::hitSpark(std::string direct,Vector2f Pos) {
+	   	 
 	if (direct == "left") {
 		lsparkler.setCoords({ Pos(0),Pos(1),0 });
 		lsparkler.stopSpawn();

@@ -36,6 +36,8 @@ public:
 	// ::#Params#::
 	Eigen::Vector2f menuPosition = Eigen::Vector2f(0.f, 0.f); // relative to the screen center(0.f,0.f means center) (not const!!)
 	float menuScale = 1.f; // (not const!!)
+	int currentWindowWidth;
+	int currentWindowHeight;
 	float xDimension;
 	float yDimension;
 	float anchorSize = 1.f;

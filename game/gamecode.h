@@ -195,6 +195,8 @@ protected:
 public:
     TGameLevel(int levelStar, int levelIndex);
     ~TGameLevel();
+
+	static bool XXX;
     
     void FillWithFile(const std::string& filename);
 	//void setBackground(const std::string& assignedShutterstock);

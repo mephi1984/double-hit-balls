@@ -141,6 +141,10 @@ public:
 	void LoadUserProgress();
 	void SaveUserProgress(int levelStar, int levelIndex);
 
+	void InnerChangeWidthHeight(int screenWidth, int screenHeight, float matrixWidth, float matrixHeight) override;
+
+
+	virtual void OnKeyPress(size_t key);
 	virtual void InnerInit();
 
 	virtual void InnerDeinit();

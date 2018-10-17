@@ -92,6 +92,15 @@ bool GalaxyMenu::InitGalaxyMenu(std::string config_json, float scale) {
 
 void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 	/*..Reset..*/
+
+	if (s_width == currentWindowWidth && s_height == currentWindowHeight)
+	{
+		return;
+	}
+
+	currentWindowWidth = s_width;
+	currentWindowHeight = s_height;
+
 	galaxies_params.clear();
 	stars_params.clear();
 
@@ -111,6 +120,7 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 		);*/
 
 	/*..Menu geometry..*/
+
 	xDimension = menuScale * gameScreenWidth;
 	yDimension = menuScale * gameScreenHeight;
 	Eigen::Vector2f currentMenuPos = Eigen::Vector2f(gameScreenCenter(0) + (gameScreenWidth/2/*relative to the screen x-dimension*/)*(menuPosition(0) - menu_offset(0)), gameScreenCenter(1) + (gameScreenHeight/2/*relative to the screen y-dimension*/)*(menuPosition(1) - menu_offset(1)));
@@ -158,34 +168,24 @@ void GalaxyMenu::UpdateGalaxyMenu(float s_width, float s_height, size_t dt) {
 
 }
 
-Eigen::Vector2f GalaxyMenu::textureSizeNormalize(Eigen::Vector2f texVec, int t_type) {
-	float tex_ratio = texVec(0)/texVec(1);
+Eigen::Vector2f GalaxyMenu::textureSizeNormalize(Eigen::Vector2f texVec, int t_type)
+{
 	float x_dim, y_dim;
-	float Xmax; // Max normalized texture width 
-	float Xmin;
-	float Ymax; // Max normalized texture height
-	float Ymin;
-	if (t_type == 0) {
-		Xmax = SE::Renderer->GetScreenWidth(); 
-		Xmin = Xmax;
-		Ymax = SE::Renderer->GetScreenHeight();
-		Ymin = Ymax;
-	}
-	else { // temp for star textures
-		Xmax = (((float)SE::Renderer->GetScreenWidth())/2);
-		Xmin = Xmax;
-		Ymax = (((float)SE::Renderer->GetScreenHeight())/2);
-		Ymin = Ymax;
-	}
 
-	if (texVec(0) > texVec(1)) {
-		x_dim = val_clamp(texVec(0), Xmin, Xmax);
+	float tex_ratio = texVec(0) / texVec(1);
+
+	float screenRatio = SE::Renderer->GetScreenWidth() / (float)SE::Renderer->GetScreenHeight();
+
+	if (tex_ratio > screenRatio)
+	{
+		y_dim = SE::Renderer->GetScreenHeight();
+		x_dim = y_dim * tex_ratio;
+	}
+	else
+	{
+		x_dim = SE::Renderer->GetScreenWidth();
 		y_dim = x_dim / tex_ratio;
 	}
-	else {
-		y_dim = val_clamp(texVec(1), Ymin, Ymax);
-		x_dim = y_dim * tex_ratio;
-	} 
 
 	return Eigen::Vector2f(x_dim, y_dim);
 }
@@ -200,6 +200,10 @@ float GalaxyMenu::val_clamp(float val, float min, float max) {
 }
 
 void GalaxyMenu::DrawGalaxyMenu() {
+
+	Renderer->PushOrthoProjection();
+	Renderer->PushMatrix();
+	Renderer->LoadIdentity();
 
 	for (int i = 0; i < galaxies_params.size(); i++) {
 
@@ -245,6 +249,9 @@ void GalaxyMenu::DrawGalaxyMenu() {
 		//drawSelectionMenu(starIndex);
 		
 	}
+
+	Renderer->PopMatrix();
+	Renderer->PopProjectionMatrix();
 
 }
 

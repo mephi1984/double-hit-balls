@@ -7,7 +7,7 @@
 				"y_coord": 0.0
 			},
 			"texture": "galaxy_0.png",
-			"scale": 1.2,
+			"scale": 1,
 			"Stars": [
 				{
 					"name": "star2",
@@ -157,7 +157,7 @@
 						"y_coord": 0.55
 					},
 					"texture": "levels/star3/star-flare-3.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star3/star3_level1"
@@ -204,7 +204,7 @@
 						"y_coord": 0.0
 					},
 					"texture": "levels/star4/star-flare-4.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star4/star4_level1"
@@ -247,11 +247,11 @@
 				{
 					"name": "star_0_5",
 					"position": {
-						"x_coord": 0.5,
+						"x_coord": 0.6,
 						"y_coord": -0.25
 					},
 					"texture": "levels/star5/star-flare-5.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star5/star5_level1"
@@ -298,7 +298,7 @@
 						"y_coord": -0.55
 					},
 					"texture": "levels/star6/star-flare-6.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star6/star6_level1"
@@ -345,7 +345,7 @@
 						"y_coord": -0.5
 					},
 					"texture": "levels/star7/star-flare-7.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star7/star7_level1"
@@ -392,7 +392,7 @@
 						"y_coord": -0.26
 					},
 					"texture": "levels/star8/star-flare-8.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star8/star8_level1"
@@ -439,7 +439,7 @@
 						"y_coord": 0.15
 					},
 					"texture": "levels/star9/star-flare-9.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star9/star9_level1"
@@ -486,7 +486,7 @@
 						"y_coord": 0.35
 					},
 					"texture": "levels/star10/star-flare-10.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star10/star10_level1"
@@ -533,7 +533,7 @@
 						"y_coord": 0.09
 					},
 					"texture": "levels/star11/star-flare-11.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star11/star11_level1"
@@ -580,7 +580,7 @@
 						"y_coord": -0.05
 					},
 					"texture": "levels/star12/star-flare-12.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star12/star12_level1"
@@ -627,7 +627,7 @@
 						"y_coord": -0.14
 					},
 					"texture": "levels/star13/star-flare-13.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star13/star13_level1"
@@ -674,7 +674,7 @@
 						"y_coord": -0.0
 					},
 					"texture": "levels/star14/star-flare-14.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star14/star14_level1"
@@ -721,7 +721,7 @@
 						"y_coord": 0.3
 					},
 					"texture": "levels/star15/star-flare-15.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star15/star15_level1"
@@ -735,7 +735,7 @@
 						"y_coord": 0.07
 					},
 					"texture": "levels/star16/star-flare-16.png",
-					"scale": 0.3,
+					"scale": 0.15,
 					"levels": [
 						{
 							"name": "levels/star16/star16_level1"

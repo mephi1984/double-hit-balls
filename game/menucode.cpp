@@ -90,7 +90,7 @@ void TGameMenu::Update(size_t dt)
 #ifdef GALAX_MENU_UPDATE
 	/*..Galaxy Menu..*/
 	GalaxMenu.InteractWithGalaxy(dt);
-	GalaxMenu.UpdateGalaxyMenu((float)SE::Renderer->GetScreenWidth(), (float)SE::Renderer->GetScreenHeight(), dt);
+	//GalaxMenu.UpdateGalaxyMenu((float)SE::Renderer->GetScreenWidth(), (float)SE::Renderer->GetScreenHeight(), dt);
 #else
 	if (HoldToTap)
 		return;
