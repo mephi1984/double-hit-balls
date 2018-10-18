@@ -139,6 +139,23 @@ void TMyApplication::InnerChangeWidthHeight(int screenWidth, int screenHeight, f
 {
 	Menu.GalaxMenu.UpdateGalaxyMenu(matrixWidth, matrixHeight, 0);
 	SetGameLevelScreenScale();
+
+	float screenRatio = Renderer->GetMatrixWidth() / (float)Renderer->GetMatrixHeight();
+	float screenRatioToFixedRatio = screenRatio / 1.6f;
+	float marginLeft;
+	if (screenRatioToFixedRatio > 1.f)
+	{
+		marginLeft = (Renderer->GetMatrixWidth() - Renderer->GetMatrixWidth() / screenRatioToFixedRatio) / 2.f;
+	}
+	else
+	{
+		marginLeft = 0;
+	}
+
+	if (GameState == CONST_GAMESTATE_LEVEL)
+	{
+		ResourceManager->newGuiManager.findWidgetByName("buttonList")->setMargin(0, 0, marginLeft, 0);
+	}
 }
 
 void TMyApplication::InnerInit()
@@ -604,6 +621,20 @@ void TMyApplication::InnerUpdate(size_t dt)
 			auto exitButton = (Button*)ResourceManager->newGuiManager.findWidgetByName("exitButton").get();
 			auto gameFrame = (WidgetAncestor*)ResourceManager->newGuiManager.findWidgetByName("gameFrame").get();
 			auto pauseBackground = (WidgetAncestor*)ResourceManager->newGuiManager.findWidgetByName("buttonList").get();
+
+			float screenRatio = Renderer->GetMatrixWidth() / (float)Renderer->GetMatrixHeight();
+			float screenRatioToFixedRatio = screenRatio / 1.6f;
+			float marginLeft;
+			if (screenRatioToFixedRatio > 1.f)
+			{
+				marginLeft = (Renderer->GetMatrixWidth() - Renderer->GetMatrixWidth() / screenRatioToFixedRatio) / 2.f;
+			}
+			else
+			{
+				marginLeft = 0;
+			}
+
+			pauseBackground->setMargin(0, 0, marginLeft, 0);
 
 			pauseButton->onMouseDownSignal.connect([this, gameFrame, pauseBackground](Vector2f, int) {
 				GameLevel->SetPause();

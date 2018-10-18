@@ -766,7 +766,7 @@ void TGameLevel::InitLevel(int screenWidth, int screenHeight)
 	//float LEVEL_VIEWPORT_WIDTH = Application->GetGameLevelScreenWidth();
 	//float LEVEL_VIEWPORT_HEIGHT = Application->GetGameLevelScreenHeight();
 	ReflectorPos = { 0.5f, 43.5 / Application->GetGameLevelScreenHeight() }; // Vector2f(screenWidth*0.5f, 16 * LEVEL_VIEWPORT_HEIGHT / 320.f + 13 * LEVEL_VIEWPORT_HEIGHT / 320.f);
-    Vector2f ballPos = Vector2f(screenWidth*0.5f, 80* 480/320.f);
+    Vector2f ballPos = Vector2f(768*0.5f, 80* 480/320.f);
     
     BallList.clear();
     BallList.push_back(TBall(ballPos, Vector2f(0, 0), BallColor));
@@ -1182,14 +1182,33 @@ void TGameLevel::DrawBuffer()
     
     RenderUniform1f("Brightness", brightness);
     glBindTexture(GL_TEXTURE_2D,ResourceManager->FrameManager.GetFrameTexture("LevelBuffer"));
+
+	float screenRatio = Renderer->GetMatrixWidth() / (float)Renderer->GetMatrixHeight();
+	float screenRatioToFixedRatio = screenRatio / 1.6f;
+	Vector2f offset;
+	float scale;
+	if (screenRatioToFixedRatio > 1.f)
+	{
+		offset[0] = (Renderer->GetMatrixWidth() - Renderer->GetMatrixWidth() / screenRatioToFixedRatio) / 2.f;
+		offset[1] = 0;
+		scale = Renderer->GetMatrixHeight() / 480.f;
+	}
+	else
+	{
+		offset[0] = 0;
+		offset[1] = 0;// (screenHeight - screenHeight * screenRatioToFixedRatio) / 2.f;
+		scale = Renderer->GetMatrixWidth() / 768.f;
+	}
     
 	//Matrix switched to identity
     //Vector2f RectPos = Vector2f(-1, -1);
     //Vector2f RectSize = Vector2f(2, 2);
 	float x_levelScreenCenter = Renderer->GetScreenWidth()*0.5f;
 	float y_levelScreenCenter = Renderer->GetScreenHeight()*0.5f;
+	float x_levelScreenSize = x_levelScreenCenter - offset[0];
+	float y_levelScreenSize = y_levelScreenCenter - offset[1];
 	Vector2f RectPos = Vector2f(x_levelScreenCenter, y_levelScreenCenter);
-	Vector2f RectSize = Vector2f(x_levelScreenCenter, y_levelScreenCenter);
+	Vector2f RectSize = Vector2f(x_levelScreenSize, y_levelScreenSize);
 
     Renderer->DrawRect(RectPos-RectSize, RectPos+RectSize);
 

@@ -29,11 +29,10 @@
 			"touchTransparency": 0,
 			"visible": 0,
 			"zLevel": 10,
-			"marginTop" : 20,
-			"marginBottom" : 20,
-			"marginLeft" : 20,
-			"marginRight" : 20,
+			"marginLeft" : 0,
 			"itemSpacing": 20,
+			"horizontalAlignment": "HA_LEFT",
+			"verticalAlignment": "VA_BOTTOM",
 			"children" : [
 			{
 				"type": "Button",
