@@ -911,10 +911,10 @@ void TGameLevel::InnerDraw(int screenWidth, int screenHeight, int matrixWidth, i
 		//Renderer->TranslateMatrix(-Vector3f(matrixWidth * 0.5f, matrixHeight * 0.5f, 0));
         DrawBuffer();
         
-        if (mustShowButtons)
-        {
-            DrawPauseButtons();
-        }
+        //if (mustShowButtons)
+        //{
+        //    DrawPauseButtons();
+        //}
         //Renderer->PopMatrix();
         CheckGlError();
 
@@ -1079,12 +1079,12 @@ void TGameLevel::InnerDraw(int screenWidth, int screenHeight, int matrixWidth, i
 
     if (!pause && LevelState != CONST_LEVELSTATE_SNAPSHOTTING)
     {
-        RenderUniform1f("Transparency", 1.f);
-        glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_BACK_BTN_TEXTURE]);
-        const Vector2f BackBtnPos(screenWidth*0.5f, Application->GetGameLevelScreenHeight() - 52.f*(Application->GetGameLevelScreenHeight()/320.f));
-		const float const_backBtnWidth = CONST_BACK_BTN_WIDTH * Application->GetGameLevelScreenWidth()/480.f;
-		const float const_backBtnHeight  = CONST_BACK_BTN_HEIGHT * Application->GetGameLevelScreenHeight()/320.f;
-        Renderer->DrawRect(Vector2f(-const_backBtnWidth*0.5f, -const_backBtnHeight*0.5f)+BackBtnPos, Vector2f(const_backBtnWidth*0.5f, const_backBtnHeight*0.5f)+BackBtnPos);
+  //      RenderUniform1f("Transparency", 1.f);
+  //      glBindTexture(GL_TEXTURE_2D,ResourceManager->TexList[CONST_BACK_BTN_TEXTURE]);
+  //      const Vector2f BackBtnPos(screenWidth*0.5f, Application->GetGameLevelScreenHeight() - 52.f*(Application->GetGameLevelScreenHeight()/320.f));
+		//const float const_backBtnWidth = CONST_BACK_BTN_WIDTH * Application->GetGameLevelScreenWidth()/480.f;
+		//const float const_backBtnHeight  = CONST_BACK_BTN_HEIGHT * Application->GetGameLevelScreenHeight()/320.f;
+  //      Renderer->DrawRect(Vector2f(-const_backBtnWidth*0.5f, -const_backBtnHeight*0.5f)+BackBtnPos, Vector2f(const_backBtnWidth*0.5f, const_backBtnHeight*0.5f)+BackBtnPos);
     }
 
 	drawOutline(screenWidth, screenHeight);
@@ -1104,10 +1104,10 @@ void TGameLevel::InnerDraw(int screenWidth, int screenHeight, int matrixWidth, i
         Renderer->ScaleMatrix(OutScale);
 		Renderer->TranslateMatrix(-Vector3f(matrixWidth * 0.5f, matrixHeight * 0.5f, 0));
         DrawBuffer();
-        if (mustShowButtons)
-        {
-            DrawPauseButtons();
-        }
+        //if (mustShowButtons)
+        //{
+        //    DrawPauseButtons();
+        //}
         Renderer->PopMatrix();
         RenderBufferReady = true;
         CheckGlError();
@@ -1200,6 +1200,10 @@ void TGameLevel::DrawBuffer()
 
 void TGameLevel::SetPause()
 {
+	if (LevelState == CONST_LEVELSTATE_STANDBY)
+	{
+		PrevLevelStateIsStandby = true;
+	}
 
     OutScaleVelocity = 0.f;
     OutScale = 1.f;
@@ -1254,7 +1258,7 @@ void TGameLevel::Update(size_t dt)
     if (LevelState == CONST_LEVELSTATE_PAUSE)
     {
         OutScale += OutScaleVelocity * dt;
-        TryGoToMenu();
+        //TryGoToMenu();
         CheckGlError();
         return;
     }
@@ -1825,37 +1829,20 @@ void TGameLevel::OnTapDown(Vector2f pos)
 
     if (LevelState == CONST_LEVELSTATE_STANDBY)
     {
-        if (TapInBackBtnArea({ xPos, yPos }))
-        {
-            SetPause();
-            PrevLevelStateIsStandby = true;
-        }
-        else
-        {
-        
-            LevelState = CONST_LEVELSTATE_PLAYING;
-            BallList.begin()->Go();
-        }
+        LevelState = CONST_LEVELSTATE_PLAYING;
+        BallList.begin()->Go();
     }
     else if (LevelState == CONST_LEVELSTATE_PLAYING)
     {        
-		if (TapInBackBtnArea({ xPos, yPos }))
-        {
-            SetPause();
-        }
-        else// if (fabs(ReflectorPos(0) - xPos / Application->GetGameLevelScreenWidth()) > 64.f / Application->GetGameLevelScreenWidth())
-        {
-            ReflectorPos(0) = xPos / Application->GetGameLevelScreenWidth();
-        }
-        
+        ReflectorPos(0) = xPos / Application->GetGameLevelScreenWidth();
     }
-    else if (LevelState == CONST_LEVELSTATE_PAUSE)
-    {
-        if (yPos > 128.f)
-        {
-            ReleasePause();
-        }
-    }
+    //else if (LevelState == CONST_LEVELSTATE_PAUSE)
+    //{
+    //    if (yPos > 128.f)
+    //    {
+    //        ReleasePause();
+    //    }
+    //}
 }
 
 void TGameLevel::OnTapUp(Vector2f pos)
@@ -1886,23 +1873,26 @@ void TGameLevel::OnScroll(Vector2f shift)
 
 		OutScale += shift(1)/320.f;
 
-        TryGoToMenu();
+        //TryGoToMenu();
     }
 }
 
 void TGameLevel::TryGoToMenu()
 {
 
-    if (OutScale < 0.5f)
-    {
-        OutScale = 0.5f;
-        LevelState = CONST_LEVELSTATE_NODRAW;
-        Application->GoFromGameToMenu();
-    }
-    if (OutScale > 1.f)
-    {
-        OutScale = 1.f;
-    }
+	LevelState = CONST_LEVELSTATE_NODRAW;
+	Application->GoFromGameToMenu();
+
+    //if (OutScale < 0.5f)
+    //{
+    //    OutScale = 0.5f;
+    //    LevelState = CONST_LEVELSTATE_NODRAW;
+    //    Application->GoFromGameToMenu();
+    //}
+    //if (OutScale > 1.f)
+    //{
+    //    OutScale = 1.f;
+    //}
 }
 
 bool TBrick::IsAppear() {

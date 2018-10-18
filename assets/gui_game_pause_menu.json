@@ -1,0 +1,53 @@
+{
+	"widgets": [
+	{
+		"type": "FrameLayout",
+		"name": "gameFrame",
+		"background": "#00000000",
+		"width": "match_parent",
+		"height": "match_parent",
+		"visible": 1,
+		"touchTransparency": 0,
+		"marginTop": 20,
+		"horizontalAlignment": "HA_CENTER",
+		"verticalAlignment": "VA_TOP",
+		"children" : [
+		{
+			"type": "Button",
+			"name": "pauseButton",
+			"width": 128,
+			"height": 64,
+			"background": "back_btn.png"
+		}]
+	},
+	{
+			"type": "VerticalLinearLayout",
+			"name": "buttonList",
+			"background": "#00000000",
+			"width": "match_parent",
+			"height": "match_parent",
+			"touchTransparency": 0,
+			"visible": 0,
+			"zLevel": 10,
+			"marginTop" : 20,
+			"marginBottom" : 20,
+			"marginLeft" : 20,
+			"marginRight" : 20,
+			"itemSpacing": 20,
+			"children" : [
+			{
+				"type": "Button",
+				"name": "exitButton",
+				"width": 128,
+				"height": 128,
+				"background": "slide_up_btn.png"
+			},
+			{
+				"type": "Button",
+				"name": "resumeButton",
+				"width": 128,
+				"height": 128,
+				"background": "tap_to_continue_btn.png"
+			}]
+	}]
+}

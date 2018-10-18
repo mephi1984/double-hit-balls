@@ -57,6 +57,11 @@ TMyApplication* Application;
 int currentStar;
 int currentLevel;
 
+boost::property_tree::ptree gamePauseMenuUi;
+boost::property_tree::ptree galaxyMenuUi;
+
+bool ignoreTapUp = false;
+
 void TMyApplication::LoadUserProgress()
 {
 	boost::property_tree::ptree userProgressJson;
@@ -143,7 +148,7 @@ void TMyApplication::InnerInit()
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
 	ST::PathToResources = "resources/";
-	//ST::PathToResources = "../../../assets/";
+	ST::PathToResources = "../../../assets/";
 #else
 	ST::PathToResources = "../../../assets/";
 #endif
@@ -203,6 +208,10 @@ void TMyApplication::InnerInit()
 	EffectsInit();
 	
 	// ------- UI -------
+
+	boost::property_tree::json_parser::read_json(ST::PathToResources + "gui_game_pause_menu.json", gamePauseMenuUi);
+	boost::property_tree::json_parser::read_json(ST::PathToResources + "gui_main_menu.json", galaxyMenuUi);
+
 	ResourceManager->FontManager.AddFont("arial32", "arial32.png", "arial32.txt");
 	ResourceManager->FontManager.AddFont("lucon12", "lucon12.png", "lucon12.txt");
 	ResourceManager->FontManager.PushFont("lucon12");
@@ -253,11 +262,21 @@ void TMyApplication::InnerDeinit()
 
 void TMyApplication::InnerOnTapUp(Vector2f p)
 {
+	if (ignoreTapUp)
+	{
+		return;
+	}
+
 	OnTapUpSignal(Vector2f(p(0), p(1)));
 }
 
 void TMyApplication::InnerOnTapUpAfterMove(Vector2f p)
 {
+	if (ignoreTapUp)
+	{
+		return;
+	}
+
 	OnTapUpAfterMoveSignal(Vector2f(p(0), p(1)));
 }
 
@@ -422,9 +441,9 @@ void TMyApplication::LoadResources()
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_WALL_UP_TEXTURE + ".png", CONST_WALL_UP_TEXTURE));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_WALL_BONUS_TEXTURE + ".png", CONST_WALL_BONUS_TEXTURE));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_REFLECTOR_TEXTURE + ".png", CONST_REFLECTOR_TEXTURE));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_BACK_BTN_TEXTURE + ".png", CONST_BACK_BTN_TEXTURE));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_SLIDE_UP_BTN_TEXTURE + ".png", CONST_SLIDE_UP_BTN_TEXTURE));
-    TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_TAP_TO_CONTINUE_BTN_TEXTURE + ".png", CONST_TAP_TO_CONTINUE_BTN_TEXTURE));
+    //TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_BACK_BTN_TEXTURE + ".png", CONST_BACK_BTN_TEXTURE));
+    //TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_SLIDE_UP_BTN_TEXTURE + ".png", CONST_SLIDE_UP_BTN_TEXTURE));
+    //TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_TAP_TO_CONTINUE_BTN_TEXTURE + ".png", CONST_TAP_TO_CONTINUE_BTN_TEXTURE));
     TextureNamesToLoad.push_back(std::pair<std::string, std::string>(CONST_CREDITS_TEXTURE + ".png", CONST_CREDITS_TEXTURE));
     
 #ifdef TARGET_IOS
@@ -577,6 +596,36 @@ void TMyApplication::InnerUpdate(size_t dt)
             //CONNECT SLOT
             DisapplySignalsToMenu();
             ApplySignalsToGame();
+
+			ResourceManager->newGuiManager.LoadFromConfig(gamePauseMenuUi);
+
+			auto pauseButton = (Button*)ResourceManager->newGuiManager.findWidgetByName("pauseButton").get();
+			auto resumeButton = (Button*)ResourceManager->newGuiManager.findWidgetByName("resumeButton").get();
+			auto exitButton = (Button*)ResourceManager->newGuiManager.findWidgetByName("exitButton").get();
+			auto gameFrame = (WidgetAncestor*)ResourceManager->newGuiManager.findWidgetByName("gameFrame").get();
+			auto pauseBackground = (WidgetAncestor*)ResourceManager->newGuiManager.findWidgetByName("buttonList").get();
+
+			pauseButton->onMouseDownSignal.connect([this, gameFrame, pauseBackground](Vector2f, int) {
+				GameLevel->SetPause();
+
+				gameFrame->setVisibility(false);
+				pauseBackground->setVisibility(true);
+			});
+
+			resumeButton->onMouseDownSignal.connect([this, gameFrame, pauseBackground](Vector2f, int) {
+				GameLevel->ReleasePause();
+
+				gameFrame->setVisibility(true);
+				pauseBackground->setVisibility(false);
+			});
+
+			pauseBackground->onMoveSignal.connect([this](Vector2f, Vector2f shift, int) {
+				SE::GetConsole() << shift.norm();
+				if (shift.norm() > 15)
+				{
+					GameLevel->TryGoToMenu();
+				}
+			});
         }
     }
     else if (GameState == CONST_GAMESTATE_FROM_MENU_TO_CREDITS)
@@ -616,7 +665,7 @@ void TMyApplication::InnerUpdate(size_t dt)
 void TMyApplication::LoadGalaxyUi()
 {
 	ResourceManager->newGuiManager.Clear();
-	ResourceManager->newGuiManager.LoadFromConfig("gui_main_menu.json");
+	ResourceManager->newGuiManager.LoadFromConfig(galaxyMenuUi);
 
 	std::shared_ptr<WidgetAncestor> modal_background = ResourceManager->newGuiManager.findWidgetByName("modal_background");
 
@@ -756,11 +805,21 @@ void TMyApplication::GoFromGameToMenu()
     //#ifndef TARGET_IOS
 //	ResourceManager->SoundManager.StopMusic("level1ogg.ogg");
 //#endif
-    TrySaveGame();
-    DisapplySignalsToGame();
-    ApplySignalsToMenu();
-    GameState = CONST_GAMESTATE_MENU;
-    OnDrawSignal.disconnect(boost::bind(&TGameLevel::Draw, boost::ref(GameLevel)));
+
+	PerformInMainThreadAsync([this]() {
+		TrySaveGame();
+		DisapplySignalsToGame();
+
+		ignoreTapUp = true;
+
+		LoadGalaxyUi();
+
+		Menu.GalaxMenu.UpdateGalaxyMenu(Renderer->GetMatrixWidth(), Renderer->GetMatrixHeight(), 0);
+
+		ApplySignalsToMenu();
+		GameState = CONST_GAMESTATE_MENU;
+		OnDrawSignal.disconnect(boost::bind(&TGameLevel::Draw, boost::ref(GameLevel)));
+	});
 }
 
 void TMyApplication::GoFromMenuToCredits()
@@ -834,6 +893,8 @@ float TMyApplication::GetGameLevelScreenHeight()
 }
 
 void TMyApplication::InnerOnMouseDown(TMouseState& mouseState) {
+
+	ignoreTapUp = false;
 
 	OnTapDownSignal(Vector2f(mouseState.X, ((Renderer->GetScreenHeight()) - mouseState.Y))); // Temp mouse down action for WIN32
 }
