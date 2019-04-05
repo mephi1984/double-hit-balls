@@ -19,7 +19,7 @@ void TMyApplication::InnerInit()
     
 #ifdef TARGET_WIN32
 #ifdef NDEBUG
-	ST::PathToResources = "../../../assets/";
+	ST::PathToResources = "assets/";
 #else
 	ST::PathToResources = "../../../assets/";
 #endif
@@ -29,10 +29,7 @@ void TMyApplication::InnerInit()
     ST::PathToResources = "assets/";
 #endif
 
-    if (Console != NULL)
-    {
-        *Console<<"APP INIT\n";
-    }
+	GetConsole() << "APP INIT\n";
     srand (static_cast<size_t>(time(NULL)));
 
 	ResourceManager->ShaderManager.AddShader("DefaultShader", "shaders/texture-shader.vertex", "shaders/texture-shader.fragment");
